@@ -4,12 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/whiteBackground"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:onClick="confirmMove"
+        android:text="CONFIRM"
+        app:backgroundTint="#4CAF50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="100dp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,14 +36,14 @@
             android:id="@+id/topRow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="150dp">
+            android:layout_marginTop="50dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/tlInner"
+                    android:id="@+id/topLeftInner"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="20dp"
@@ -34,11 +51,11 @@
                     android:layout_marginRight="20dp"
                     android:background="#E91E63"
                     android:elevation="5dp"
-                    app:layout_constraintEnd_toEndOf="@id/tlMiddle"
-                    app:layout_constraintTop_toTopOf="@id/tlMiddle" />
+                    app:layout_constraintEnd_toEndOf="@id/topLeftMiddle"
+                    app:layout_constraintTop_toTopOf="@id/topLeftMiddle" />
 
                 <View
-                    android:id="@+id/tlMiddle"
+                    android:id="@+id/topLeftMiddle"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="20dp"
@@ -58,7 +75,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
-                    android:paddingLeft="20dp"
+                    android:onClick="changeColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -70,7 +87,7 @@
 
 
                 <View
-                    android:id="@+id/tmInner"
+                    android:id="@+id/topMiddleInner"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="20dp"
@@ -78,11 +95,11 @@
                     android:layout_marginRight="20dp"
                     android:background="#E91E63"
                     android:elevation="5dp"
-                    app:layout_constraintEnd_toEndOf="@+id/tmMiddle"
-                    app:layout_constraintTop_toTopOf="@id/tmMiddle" />
+                    app:layout_constraintEnd_toEndOf="@+id/topMiddleMiddle"
+                    app:layout_constraintTop_toTopOf="@id/topMiddleMiddle" />
 
                 <View
-                    android:id="@+id/tmMiddle"
+                    android:id="@+id/topMiddleMiddle"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="20dp"
@@ -103,6 +120,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
+                    android:onClick="changeColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -114,7 +132,7 @@
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/trInner"
+                    android:id="@+id/topRightInner"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="20dp"
@@ -122,11 +140,11 @@
                     android:layout_marginRight="20dp"
                     android:background="#E91E63"
                     android:elevation="5dp"
-                    app:layout_constraintEnd_toEndOf="@id/trMiddle"
-                    app:layout_constraintTop_toTopOf="@id/trMiddle" />
+                    app:layout_constraintEnd_toEndOf="@id/topRightMiddle"
+                    app:layout_constraintTop_toTopOf="@id/topRightMiddle" />
 
                 <View
-                    android:id="@+id/trMiddle"
+                    android:id="@+id/topRightMiddle"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="20dp"
@@ -146,6 +164,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginRight="15dp"
+                    android:onClick="changeColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -162,7 +181,7 @@
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/mlInner"
+                    android:id="@+id/middleLeftInner"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="20dp"
@@ -170,11 +189,11 @@
                     android:layout_marginRight="20dp"
                     android:background="#E91E63"
                     android:elevation="5dp"
-                    app:layout_constraintEnd_toEndOf="@id/mlMiddle"
-                    app:layout_constraintTop_toTopOf="@id/mlMiddle" />
+                    app:layout_constraintEnd_toEndOf="@id/middleLeftMiddle"
+                    app:layout_constraintTop_toTopOf="@id/middleLeftMiddle" />
 
                 <View
-                    android:id="@+id/mlMiddle"
+                    android:id="@+id/middleLeftMiddle"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="20dp"
@@ -194,7 +213,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
-                    android:paddingLeft="20dp"
+                    android:onClick="changeColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -205,7 +224,7 @@
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/mmInner"
+                    android:id="@+id/middleMiddleInner"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="20dp"
@@ -213,11 +232,11 @@
                     android:layout_marginRight="20dp"
                     android:background="#E91E63"
                     android:elevation="5dp"
-                    app:layout_constraintEnd_toEndOf="@+id/mmMiddle"
-                    app:layout_constraintTop_toTopOf="@id/mmMiddle" />
+                    app:layout_constraintEnd_toEndOf="@+id/middleMiddleMiddle"
+                    app:layout_constraintTop_toTopOf="@id/middleMiddleMiddle" />
 
                 <View
-                    android:id="@+id/mmMiddle"
+                    android:id="@+id/middleMiddleMiddle"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="20dp"
@@ -238,6 +257,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
+                    android:onClick="changeColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -249,7 +269,7 @@
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/mrInner"
+                    android:id="@+id/middleRightInner"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="20dp"
@@ -257,11 +277,11 @@
                     android:layout_marginRight="20dp"
                     android:background="#E91E63"
                     android:elevation="5dp"
-                    app:layout_constraintEnd_toEndOf="@id/mrMiddle"
-                    app:layout_constraintTop_toTopOf="@id/mrMiddle" />
+                    app:layout_constraintEnd_toEndOf="@id/middleRightMiddle"
+                    app:layout_constraintTop_toTopOf="@id/middleRightMiddle" />
 
                 <View
-                    android:id="@+id/mrMiddle"
+                    android:id="@+id/middleRightMiddle"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="20dp"
@@ -281,6 +301,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginRight="15dp"
+                    android:onClick="changeColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -297,7 +318,7 @@
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/blInner"
+                    android:id="@+id/bottomLeftInner"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="20dp"
@@ -305,11 +326,11 @@
                     android:layout_marginRight="20dp"
                     android:background="#E91E63"
                     android:elevation="5dp"
-                    app:layout_constraintEnd_toEndOf="@id/blMiddle"
-                    app:layout_constraintTop_toTopOf="@id/blMiddle" />
+                    app:layout_constraintEnd_toEndOf="@id/bottomLeftMiddle"
+                    app:layout_constraintTop_toTopOf="@id/bottomLeftMiddle" />
 
                 <View
-                    android:id="@+id/blMiddle"
+                    android:id="@+id/bottomLeftMiddle"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="20dp"
@@ -329,8 +350,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
-                    android:paddingLeft="20dp"
-                    android:text="Button"
+                    android:onClick="changeColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -341,7 +361,7 @@
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/bmInner"
+                    android:id="@+id/bottomMiddleInner"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="20dp"
@@ -349,11 +369,11 @@
                     android:layout_marginRight="20dp"
                     android:background="#E91E63"
                     android:elevation="5dp"
-                    app:layout_constraintEnd_toEndOf="@+id/bmMiddle"
-                    app:layout_constraintTop_toTopOf="@id/bmMiddle" />
+                    app:layout_constraintEnd_toEndOf="@+id/bottomMiddleMiddle"
+                    app:layout_constraintTop_toTopOf="@id/bottomMiddleMiddle" />
 
                 <View
-                    android:id="@+id/bmMiddle"
+                    android:id="@+id/bottomMiddleMiddle"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="20dp"
@@ -374,6 +394,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
+                    android:onClick="changeColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -385,7 +406,7 @@
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/brInner"
+                    android:id="@+id/bottomRightInner"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="20dp"
@@ -393,11 +414,11 @@
                     android:layout_marginRight="20dp"
                     android:background="#E91E63"
                     android:elevation="5dp"
-                    app:layout_constraintEnd_toEndOf="@id/brMiddle"
-                    app:layout_constraintTop_toTopOf="@id/brMiddle" />
+                    app:layout_constraintEnd_toEndOf="@id/bottomRightMiddle"
+                    app:layout_constraintTop_toTopOf="@id/bottomRightMiddle" />
 
                 <View
-                    android:id="@+id/brMiddle"
+                    android:id="@+id/bottomRightMiddle"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="20dp"
@@ -417,6 +438,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginRight="15dp"
+                    android:onClick="changeColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
