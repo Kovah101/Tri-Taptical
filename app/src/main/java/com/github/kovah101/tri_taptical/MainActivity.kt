@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             tapCount = -1
         }
     }
-
+    // TODO old segment back to default
     fun setSegmentColor(cellID: Int, lastCellID: Int) {
         val playerOneColor = resources.getColor(R.color.playerOne)
         val playerTwoColor = resources.getColor(R.color.playerTwo)
