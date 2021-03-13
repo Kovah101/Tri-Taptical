@@ -70,22 +70,32 @@ class MainActivity : AppCompatActivity() {
     fun setSegmentColor(cellID: Int, lastCellID: Int) {
         val playerOneColor = resources.getColor(R.color.playerOne)
         val playerTwoColor = resources.getColor(R.color.playerTwo)
+        val white = resources.getColor(R.color.white)
         if (activePlayer == 1) {
             //set selected segment to p1 colour
             val currentView = findViewById<View>(locationIDs[cellID])
             currentView.setBackgroundColor(playerOneColor)
-
+            // set last view back to white
+            if (lastCellID != -1) {
+                val lastView = findViewById<View>(locationIDs[lastCellID])
+                lastView.setBackgroundColor(white)
+            }
 
         } else if (activePlayer == 2) {
             // set selected segment to p2 colour
             val currentView = findViewById<View>(locationIDs[cellID])
             currentView.setBackgroundColor(playerTwoColor)
-
+            // set last view back to white
+            if (lastCellID != -1) {
+                val lastView = findViewById<View>(locationIDs[lastCellID])
+                lastView.setBackgroundColor(white)
+            }
         }
 
     }
 
     fun confirmMove(view: View) {
+        trueCellID = -1
         if (activePlayer == 1){
             activePlayer = 2
         } else {

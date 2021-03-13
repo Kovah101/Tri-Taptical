@@ -13,9 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
+        android:background="#4CAF50"
         android:onClick="confirmMove"
         android:text="CONFIRM"
-        app:backgroundTint="#4CAF50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +49,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#E91E63"
+                    android:background="@color/whiteButton"
                     android:elevation="5dp"
                     app:layout_constraintEnd_toEndOf="@id/topLeftMiddle"
                     app:layout_constraintTop_toTopOf="@id/topLeftMiddle" />
@@ -61,7 +61,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#2196F3"
+                    android:background="@color/whiteButton"
                     android:elevation="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/topLeft"
                     app:layout_constraintTop_toTopOf="@+id/topLeft" />
@@ -76,6 +76,8 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:onClick="changeColor"
+                    app:background="@color/whiteButton"
+                    app:backgroundTint="#FFFFFF"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -93,7 +95,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#E91E63"
+                    android:background="@color/whiteButton"
                     android:elevation="5dp"
                     app:layout_constraintEnd_toEndOf="@+id/topMiddleMiddle"
                     app:layout_constraintTop_toTopOf="@id/topMiddleMiddle" />
@@ -105,7 +107,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#2196F3"
+                    android:background="@color/whiteButton"
                     android:elevation="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/topMiddle"
                     app:layout_constraintTop_toTopOf="@id/topMiddle" />
@@ -121,6 +123,8 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:onClick="changeColor"
+                    app:background="@color/whiteButton"
+                    app:backgroundTint="#FFFFFF"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -138,7 +142,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#E91E63"
+                    android:background="@color/whiteButton"
                     android:elevation="5dp"
                     app:layout_constraintEnd_toEndOf="@id/topRightMiddle"
                     app:layout_constraintTop_toTopOf="@id/topRightMiddle" />
@@ -150,7 +154,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#2196F3"
+                    android:background="@color/whiteButton"
                     android:elevation="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/topRight"
                     app:layout_constraintTop_toTopOf="@id/topRight" />
@@ -165,6 +169,8 @@
                     android:layout_marginEnd="15dp"
                     android:layout_marginRight="15dp"
                     android:onClick="changeColor"
+                    app:background="@color/whiteButton"
+                    app:backgroundTint="#FFFFFF"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -187,7 +193,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#E91E63"
+                    android:background="@color/whiteButton"
                     android:elevation="5dp"
                     app:layout_constraintEnd_toEndOf="@id/middleLeftMiddle"
                     app:layout_constraintTop_toTopOf="@id/middleLeftMiddle" />
@@ -199,7 +205,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#2196F3"
+                    android:background="@color/whiteButton"
                     android:elevation="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/middleLeft"
                     app:layout_constraintTop_toTopOf="@+id/middleLeft" />
@@ -214,6 +220,8 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:onClick="changeColor"
+                    app:background="@color/whiteButton"
+                    app:backgroundTint="#FFFFFF"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -230,7 +238,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#E91E63"
+                    android:background="@color/whiteButton"
                     android:elevation="5dp"
                     app:layout_constraintEnd_toEndOf="@+id/middleMiddleMiddle"
                     app:layout_constraintTop_toTopOf="@id/middleMiddleMiddle" />
@@ -242,7 +250,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#2196F3"
+                    android:background="@color/whiteButton"
                     android:elevation="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/middleMiddle"
                     app:layout_constraintTop_toTopOf="@id/middleMiddle" />
@@ -258,6 +266,8 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:onClick="changeColor"
+                    app:background="@color/whiteButton"
+                    app:backgroundTint="#FFFFFF"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -275,7 +285,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#E91E63"
+                    android:background="@color/whiteButton"
                     android:elevation="5dp"
                     app:layout_constraintEnd_toEndOf="@id/middleRightMiddle"
                     app:layout_constraintTop_toTopOf="@id/middleRightMiddle" />
@@ -287,7 +297,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#2196F3"
+                    android:background="@color/whiteButton"
                     android:elevation="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/middleRight"
                     app:layout_constraintTop_toTopOf="@id/middleRight" />
@@ -302,6 +312,8 @@
                     android:layout_marginEnd="15dp"
                     android:layout_marginRight="15dp"
                     android:onClick="changeColor"
+                    app:background="@color/whiteButton"
+                    app:backgroundTint="#FFFFFF"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -324,7 +336,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#E91E63"
+                    android:background="@color/whiteButton"
                     android:elevation="5dp"
                     app:layout_constraintEnd_toEndOf="@id/bottomLeftMiddle"
                     app:layout_constraintTop_toTopOf="@id/bottomLeftMiddle" />
@@ -336,7 +348,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#2196F3"
+                    android:background="@color/whiteButton"
                     android:elevation="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/bottomLeft"
                     app:layout_constraintTop_toTopOf="@+id/bottomLeft" />
@@ -351,6 +363,8 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:onClick="changeColor"
+                    app:background="@color/whiteButton"
+                    app:backgroundTint="#FFFFFF"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -367,7 +381,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#E91E63"
+                    android:background="@color/whiteButton"
                     android:elevation="5dp"
                     app:layout_constraintEnd_toEndOf="@+id/bottomMiddleMiddle"
                     app:layout_constraintTop_toTopOf="@id/bottomMiddleMiddle" />
@@ -379,7 +393,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#2196F3"
+                    android:background="@color/whiteButton"
                     android:elevation="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/bottomMiddle"
                     app:layout_constraintTop_toTopOf="@id/bottomMiddle" />
@@ -395,6 +409,8 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:onClick="changeColor"
+                    app:background="@color/whiteButton"
+                    app:backgroundTint="#FFFFFF"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -412,7 +428,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#E91E63"
+                    android:background="@color/whiteButton"
                     android:elevation="5dp"
                     app:layout_constraintEnd_toEndOf="@id/bottomRightMiddle"
                     app:layout_constraintTop_toTopOf="@id/bottomRightMiddle" />
@@ -424,7 +440,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="#2196F3"
+                    android:background="@color/whiteButton"
                     android:elevation="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/bottomRight"
                     app:layout_constraintTop_toTopOf="@id/bottomRight" />
@@ -439,6 +455,8 @@
                     android:layout_marginEnd="15dp"
                     android:layout_marginRight="15dp"
                     android:onClick="changeColor"
+                    app:background="@color/whiteButton"
+                    app:backgroundTint="#FFFFFF"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
