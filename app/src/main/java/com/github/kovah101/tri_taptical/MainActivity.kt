@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     var oldCellID = -1
     var trueCellID = -1
     var activePlayer = 1
+    var confirmedMoves = HashMap<Int, Int>()
+    var selectedCell = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,29 +47,61 @@ class MainActivity : AppCompatActivity() {
             R.id.bottomMiddle -> cellID = 21
             R.id.bottomRight -> cellID = 24
         }
+
+        // if new cell touched
+        if (oldCellID != cellID) {
+            selectedCell = cellID
+        }
+        // TODO work out confirmed moves
+        // check if all cells have already been taken
+//        if (confirmedMoves.containsKey(cellID) && confirmedMoves.containsKey(cellID+1) && confirmedMoves.containsKey(cellID+2)){
+//            Log.d("ButtonPress", "all cells taken")
+//            return
+//        } // check if outermost cell is taken
+//        if (confirmedMoves.containsKey(cellID)){
+//            selectedCell ++
+//        } // check if middle cell is taken
+//        if (confirmedMoves.containsKey(cellID+1)){
+//            selectedCell ++
+//        }
+
+        // check if tapping the same cell, if so increment tapCount
+        // add tapCount to cellID to find trueCellID
         if (oldCellID == cellID) {
+            // add one to selected cell, if its too big break
+            selectedCell++
             //add one to tapCount and add to cellID to cycle through
             tapCount++
         } else {
             tapCount = 0
         }
+        if (selectedCell > cellID + 2) {
+            selectedCell = cellID
+        }
+
+
         oldCellID = cellID
         var lastTrueCellID = trueCellID
-        trueCellID = cellID + tapCount
+        //trueCellID = cellID + tapCount
+        trueCellID = selectedCell
 
-        Log.d("ButtonPress", "selected cell: $cellID")
-        Log.d("ButtonPress", "selected segment: $trueCellID")
-        Log.d("ButtonPress", "last segment: $lastTrueCellID")
+        Log.d("ButtonPress", "cID: $cellID, oldID: $oldCellID, sCell: $selectedCell")
+        Log.d("ButtonPress", "tap count:$tapCount")
+
+//        Log.d("ButtonPress", "selected cell: $cellID")
+//        Log.d("ButtonPress", "selected segment: $trueCellID")
+//        Log.d("ButtonPress", "last segment: $lastTrueCellID")
+//        Log.d("ButtonPress", "selected cell: $selectedCell")
 
 
         setSegmentColor(trueCellID, lastTrueCellID)
         // reset tapCount
         if (tapCount >= 2) {
-            tapCount = -1
+            tapCount = 0
         }
     }
-    // TODO old segment back to default
-    fun setSegmentColor(cellID: Int, lastCellID: Int) {
+
+    private fun setSegmentColor(cellID: Int, lastCellID: Int) {
         val playerOneColor = resources.getColor(R.color.playerOne)
         val playerTwoColor = resources.getColor(R.color.playerTwo)
         val white = resources.getColor(R.color.white)
@@ -95,8 +129,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun confirmMove(view: View) {
+        // add confirmed move to hashmap with cell and active player
+        confirmedMoves.put(trueCellID, activePlayer)
+        // reset true cell ID
         trueCellID = -1
-        if (activePlayer == 1){
+        // change player
+        if (activePlayer == 1) {
             activePlayer = 2
         } else {
             activePlayer = 1
