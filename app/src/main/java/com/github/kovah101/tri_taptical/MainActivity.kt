@@ -138,17 +138,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun confirmMove(view: View) {
-        // add confirmed move to hashmap with cell and active player
+        // add confirmed move to hash map with cell and active player
         confirmedMoves[trueCellID] = activePlayer
         // reset old cell ID
         oldCellID = -1
         // reset true cell ID
         trueCellID = -1
         // change player
+        checkForWinner()
         activePlayer = if (activePlayer == 1) {
             2
         } else {
             1
         }
+    }
+
+    // TODO finish function
+    fun checkForWinner(){
+
     }
 }
