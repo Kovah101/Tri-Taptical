@@ -36,7 +36,8 @@
             android:id="@+id/topRow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="50dp"
+            android:gravity="center|center_horizontal">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -70,15 +71,14 @@
                     android:id="@+id/topLeft"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:onClick="changeColor"
                     app:background="@color/whiteButton"
                     app:backgroundTint="#FFFFFF"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -122,6 +122,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
+                    android:gravity="center"
                     android:onClick="changeColor"
                     app:background="@color/whiteButton"
                     app:backgroundTint="#FFFFFF"
@@ -163,15 +164,12 @@
                     android:id="@+id/topRight"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
                     android:onClick="changeColor"
                     app:background="@color/whiteButton"
                     app:backgroundTint="#FFFFFF"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -180,7 +178,8 @@
         <TableRow
             android:id="@+id/middleRow"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -214,11 +213,9 @@
                     android:id="@+id/middleLeft"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:onClick="changeColor"
                     app:background="@color/whiteButton"
                     app:backgroundTint="#FFFFFF"
@@ -306,11 +303,9 @@
                     android:id="@+id/middleRight"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
                     android:onClick="changeColor"
                     app:background="@color/whiteButton"
                     app:backgroundTint="#FFFFFF"
@@ -323,7 +318,8 @@
         <TableRow
             android:id="@+id/bottomRow"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -357,11 +353,10 @@
                     android:id="@+id/bottomLeft"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="left|center_vertical"
                     android:onClick="changeColor"
                     app:background="@color/whiteButton"
                     app:backgroundTint="#FFFFFF"
@@ -449,11 +444,9 @@
                     android:id="@+id/bottomRight"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
                     android:onClick="changeColor"
                     app:background="@color/whiteButton"
                     app:backgroundTint="#FFFFFF"
