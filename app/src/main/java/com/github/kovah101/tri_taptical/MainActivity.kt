@@ -48,22 +48,11 @@ class MainActivity : AppCompatActivity() {
             R.id.bottomRight -> cellID = 24
         }
 
+
         // if new cell touched
         if (oldCellID != cellID) {
             selectedCell = cellID
         }
-        // TODO work out confirmed moves
-        // check if all cells have already been taken
-//        if (confirmedMoves.containsKey(cellID) && confirmedMoves.containsKey(cellID+1) && confirmedMoves.containsKey(cellID+2)){
-//            Log.d("ButtonPress", "all cells taken")
-//            return
-//        } // check if outermost cell is taken
-//        if (confirmedMoves.containsKey(cellID)){
-//            selectedCell ++
-//        } // check if middle cell is taken
-//        if (confirmedMoves.containsKey(cellID+1)){
-//            selectedCell ++
-//        }
 
         // check if tapping the same cell, if so increment tapCount
         // add tapCount to cellID to find trueCellID
@@ -79,19 +68,37 @@ class MainActivity : AppCompatActivity() {
             selectedCell = cellID
         }
 
+        // check if current cell is taken
+        if (confirmedMoves.containsKey(selectedCell)) {
+            // if at inner cell, reset to outer, otherwise step to next
+            if (selectedCell == cellID + 2) {
+                selectedCell = cellID
+            } else {
+                selectedCell++
+            } // check if next cell is taken
+            if (confirmedMoves.containsKey(selectedCell)) {
+                // if at inner cell, reset to outer, otherwise step to next
+                if (selectedCell == cellID + 2) {
+                    selectedCell = cellID
+                } else {
+                    selectedCell++
+                }// check if final cell is taken
+                if (confirmedMoves.containsKey(selectedCell)) {
+                    return
+                }
+            }
+        }
 
+        // store last tapped cellID
         oldCellID = cellID
-        var lastTrueCellID = trueCellID
+        // store last tapped cell to be decoloured
+        val lastTrueCellID = trueCellID
         //trueCellID = cellID + tapCount
         trueCellID = selectedCell
 
         Log.d("ButtonPress", "cID: $cellID, oldID: $oldCellID, sCell: $selectedCell")
         Log.d("ButtonPress", "tap count:$tapCount")
 
-//        Log.d("ButtonPress", "selected cell: $cellID")
-//        Log.d("ButtonPress", "selected segment: $trueCellID")
-//        Log.d("ButtonPress", "last segment: $lastTrueCellID")
-//        Log.d("ButtonPress", "selected cell: $selectedCell")
 
 
         setSegmentColor(trueCellID, lastTrueCellID)
@@ -109,8 +116,9 @@ class MainActivity : AppCompatActivity() {
             //set selected segment to p1 colour
             val currentView = findViewById<View>(locationIDs[cellID])
             currentView.setBackgroundColor(playerOneColor)
+            // if last cell is not new cell or default
             // set last view back to white
-            if (lastCellID != -1) {
+            if (lastCellID != -1 && lastCellID != cellID) {
                 val lastView = findViewById<View>(locationIDs[lastCellID])
                 lastView.setBackgroundColor(white)
             }
@@ -119,8 +127,9 @@ class MainActivity : AppCompatActivity() {
             // set selected segment to p2 colour
             val currentView = findViewById<View>(locationIDs[cellID])
             currentView.setBackgroundColor(playerTwoColor)
+            // if last cell is not new cell or default
             // set last view back to white
-            if (lastCellID != -1) {
+            if (lastCellID != -1 && lastCellID != cellID) {
                 val lastView = findViewById<View>(locationIDs[lastCellID])
                 lastView.setBackgroundColor(white)
             }
@@ -130,14 +139,16 @@ class MainActivity : AppCompatActivity() {
 
     fun confirmMove(view: View) {
         // add confirmed move to hashmap with cell and active player
-        confirmedMoves.put(trueCellID, activePlayer)
+        confirmedMoves[trueCellID] = activePlayer
+        // reset old cell ID
+        oldCellID = -1
         // reset true cell ID
         trueCellID = -1
         // change player
-        if (activePlayer == 1) {
-            activePlayer = 2
+        activePlayer = if (activePlayer == 1) {
+            2
         } else {
-            activePlayer = 1
+            1
         }
     }
 }
