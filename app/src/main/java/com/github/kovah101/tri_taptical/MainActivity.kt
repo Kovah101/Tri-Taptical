@@ -202,18 +202,19 @@ class MainActivity : AppCompatActivity() {
                 currentCell.setBackgroundColor(white)
             }
             // show winning moves
-            // TODO colour winning moves, wait then clear
+            val activeColor = pickColor(activePlayer)
             for (move in winningMoves){
                 println("winning move: $move")
-//                val winningCell = findViewById<View>(move)
-//                winningCell.setBackgroundColor(R.color.playerOne)
+                val winningCell = findViewById<View>(locationIDs[move])
+                winningCell.setBackgroundColor(activeColor)
             } // wait 2s
-//            Thread.sleep(2000)
-//            // clear winning moves
-//            for (move in winningMoves){
-//                val winningCell = findViewById<View>(move)
-//                winningCell.setBackgroundColor(white)
-//            }
+            // TODO clear and restart button
+            //Thread.sleep(2000)
+            // clear winning moves
+            for (move in winningMoves){
+                val winningCell = findViewById<View>(locationIDs[move])
+                winningCell.setBackgroundColor(white)
+            }
             // clear saved moves
             confirmedMoves.clear()
             winningMoves.clear()
@@ -221,7 +222,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun pickColor(activePlayer: Int): Int{
+        return when(activePlayer){
+            1 -> resources.getColor(R.color.playerOne)
+            2 -> resources.getColor(R.color.playerTwo)
+            else -> R.color.white
+        }
+    }
+
     private fun spotWinner(): Boolean {
+        // check for same cell winners
         for (i in 0..locationIDs.size step 3) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 1] == activePlayer && confirmedMoves[i + 2] == activePlayer) {
                 winningMoves.add(i)
