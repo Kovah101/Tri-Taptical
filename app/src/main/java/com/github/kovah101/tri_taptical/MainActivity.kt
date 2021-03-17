@@ -2,19 +2,22 @@ package com.github.kovah101.tri_taptical
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.transition.Visibility
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
 
+
+// TODO add screen for choosing player number 2-4
+// TODO add autoPlay AI, possibly with difficulty?
 class MainActivity : AppCompatActivity() {
 
-    val locationIDs = arrayOf(
+    private val locationIDs = arrayOf(
         R.id.topLeft, R.id.topLeftMiddle, R.id.topLeftInner,
         R.id.topMiddle, R.id.topMiddleMiddle, R.id.topMiddleInner,
         R.id.topRight, R.id.topRightMiddle, R.id.topRightInner,
@@ -25,21 +28,18 @@ class MainActivity : AppCompatActivity() {
         R.id.bottomMiddle, R.id.bottomMiddleMiddle, R.id.bottomMiddleInner,
         R.id.bottomRight, R.id.bottomRightMiddle, R.id.bottomRightInner
     )
-    var tapCount = 0
-    var oldCellID = -1
-    var trueCellID = -1
-    var activePlayer = 1
 
-    //var activePlayerColor = 0
-    var confirmedMoves = HashMap<Int, Int>()
-    var winningMoves = arrayListOf<Int>()
-    var selectedCell = -1
+    private var oldCellID = -1
+    private var trueCellID = -1
+    private var activePlayer = 1
+    private var score = arrayOf(0,0)
+    private var confirmedMoves = HashMap<Int, Int>()
+    private var winningMoves = arrayListOf<Int>()
+    private var selectedCell = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // activePlayerColor = resources.getColor(R.color.playerOne)
     }
 
     fun changeColor(view: View) {
@@ -69,11 +69,7 @@ class MainActivity : AppCompatActivity() {
         if (oldCellID == cellID) {
             // add one to selected cell, if its too big break
             selectedCell++
-            //add one to tapCount and add to cellID to cycle through
-            tapCount++
-        } else {
-            tapCount = 0
-        }
+        } // if selected cell is too big, reset to original
         if (selectedCell > cellID + 2) {
             selectedCell = cellID
         }
@@ -106,16 +102,8 @@ class MainActivity : AppCompatActivity() {
         //trueCellID = cellID + tapCount
         trueCellID = selectedCell
 
-        Log.d("ButtonPress", "cID: $cellID, oldID: $oldCellID, sCell: $selectedCell")
-        Log.d("ButtonPress", "tap count:$tapCount")
-
-
-
+        // colour correct segment & decolour last picked
         setSegmentColor(trueCellID, lastTrueCellID)
-        // reset tapCount
-        if (tapCount >= 2) {
-            tapCount = 0
-        }
     }
 
     private fun setSegmentColor(cellID: Int, lastCellID: Int) {
@@ -158,12 +146,10 @@ class MainActivity : AppCompatActivity() {
         checkForWinner()
 
         // change player
-        if (activePlayer == 1) {
-            activePlayer = 2
-            //activePlayerColor = resources.getColor(R.color.playerTwo)
+        activePlayer = if (activePlayer == 1) {
+            2
         } else {
-            activePlayer = 1
-            //activePlayerColor = resources.getColor(R.color.playerOne)
+            1
         }
     }
 
@@ -179,6 +165,12 @@ class MainActivity : AppCompatActivity() {
         confirmedMoves.clear()
         winningMoves.clear()
 
+        // alternate starting player
+        val totalGames = score[0] + score[1]
+        activePlayer = if (totalGames % 2 == 0){
+            1
+        }else 2
+
         // hide reset button
         view.visibility = View.GONE
         // reveal confirm button
@@ -187,7 +179,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // TODO finish function
+
     private fun checkForWinner() {
         var winFlag = false
 
@@ -216,18 +208,17 @@ class MainActivity : AppCompatActivity() {
         // if there is a winner, add to scoreboard, show toast notification & reset board
         if (winFlag) {
             // increment score counter
-            // TODO score view & counter
-            // show toast win notification
-            Toast.makeText(this, "Player $activePlayer is the Winner!", Toast.LENGTH_LONG).show()
+            updateScore()
+            Toast.makeText(this, "Player $activePlayer is the Winner!", Toast.LENGTH_SHORT).show()
 
             // set up blink animation
             val blinkAnimation = AlphaAnimation(1f, 0f)
             blinkAnimation.duration = 300
             blinkAnimation.interpolator = LinearInterpolator()
-            blinkAnimation.repeatCount = 3
+            blinkAnimation.repeatCount = 5
             blinkAnimation.repeatMode = Animation.RESTART
             // show winning moves by blinking
-            val activeColor = pickColor(activePlayer)
+
             for (move in winningMoves) {
                 println("winning move: $move")
                 val winningCell = findViewById<View>(locationIDs[move])
@@ -244,12 +235,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun pickColor(activePlayer: Int): Int {
-        return when (activePlayer) {
-            1 -> resources.getColor(R.color.playerOne)
-            2 -> resources.getColor(R.color.playerTwo)
-            else -> R.color.white
-        }
+    private fun updateScore(){
+            score[activePlayer-1]++
+        val scoreBoard = findViewById<TextView>(R.id.scoreBoard)
+        val scoreString = "P1: ${score[0]}  P2: ${score[1]}"
+        scoreBoard.text = scoreString
+        scoreBoard.gravity = Gravity.CENTER
     }
 
     private fun spotWinner(): Boolean {
@@ -269,7 +260,7 @@ class MainActivity : AppCompatActivity() {
         // check for same size winning rows
         for (i in 0..18 step 9) {
             for (j in 0..2) {
-                var k = i + j
+                val k = i + j
                 if (confirmedMoves[k] == activePlayer && confirmedMoves[k + 3] == activePlayer && confirmedMoves[k + 6] == activePlayer) {
                     winningMoves.add(k)
                     winningMoves.add(k+3)
