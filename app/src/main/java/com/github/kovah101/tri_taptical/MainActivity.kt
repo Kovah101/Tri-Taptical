@@ -2,6 +2,7 @@ package com.github.kovah101.tri_taptical
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.transition.Visibility
 import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     var oldCellID = -1
     var trueCellID = -1
     var activePlayer = 1
+
     //var activePlayerColor = 0
     var confirmedMoves = HashMap<Int, Int>()
     var winningMoves = arrayListOf<Int>()
@@ -37,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-       // activePlayerColor = resources.getColor(R.color.playerOne)
+        // activePlayerColor = resources.getColor(R.color.playerOne)
     }
 
     fun changeColor(view: View) {
@@ -165,6 +167,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun resetBoard(view: View) {
+        // reset the board
+        val white = resources.getColor(R.color.white)
+        for (cell in locationIDs.indices) {
+            val currentCell = findViewById<View>(locationIDs[cell])
+            currentCell.setBackgroundColor(white)
+        }
+
+        // clear saved moves
+        confirmedMoves.clear()
+        winningMoves.clear()
+
+        // hide reset button
+        view.visibility = View.GONE
+        // reveal confirm button
+        val confirmButton = findViewById<Button>(R.id.confirmButton)
+        confirmButton.visibility = View.VISIBLE
+
+    }
+
     // TODO finish function
     private fun checkForWinner() {
         var winFlag = false
@@ -194,45 +216,36 @@ class MainActivity : AppCompatActivity() {
         // if there is a winner, add to scoreboard, show toast notification & reset board
         if (winFlag) {
             // increment score counter
-
+            // TODO score view & counter
             // show toast win notification
             Toast.makeText(this, "Player $activePlayer is the Winner!", Toast.LENGTH_LONG).show()
 
-//            // reset the board
-            val white = resources.getColor(R.color.white)
-
-            val blinkAnimation = AlphaAnimation(1f,0f)
+            // set up blink animation
+            val blinkAnimation = AlphaAnimation(1f, 0f)
             blinkAnimation.duration = 300
-            blinkAnimation.interpolator =  LinearInterpolator()
+            blinkAnimation.interpolator = LinearInterpolator()
             blinkAnimation.repeatCount = 3
-            blinkAnimation.repeatMode = Animation.REVERSE
+            blinkAnimation.repeatMode = Animation.RESTART
             // show winning moves by blinking
             val activeColor = pickColor(activePlayer)
-            for (move in winningMoves){
+            for (move in winningMoves) {
                 println("winning move: $move")
                 val winningCell = findViewById<View>(locationIDs[move])
                 winningCell.startAnimation(blinkAnimation)
-            } // wait 2s
-            // TODO hide confirm button, show reset button = clear and reset values
-            for (cell in locationIDs.indices) {
-                val currentCell = findViewById<View>(locationIDs[cell])
-                currentCell.setBackgroundColor(white)
             }
-            //Thread.sleep(2000)
-            // clear winning moves
-//            for (move in winningMoves){
-//                val winningCell = findViewById<View>(locationIDs[move])
-//                winningCell.setBackgroundColor(white)
-//            }
-            // clear saved moves
-            confirmedMoves.clear()
-            winningMoves.clear()
+
+            // hide confirm button
+            val confirmButton = findViewById<Button>(R.id.confirmButton)
+            confirmButton.visibility = View.GONE
+            // reveal reset button
+            val resetButton = findViewById<Button>(R.id.resetButton)
+            resetButton.visibility = View.VISIBLE
 
         }
     }
 
-    private fun pickColor(activePlayer: Int): Int{
-        return when(activePlayer){
+    private fun pickColor(activePlayer: Int): Int {
+        return when (activePlayer) {
             1 -> resources.getColor(R.color.playerOne)
             2 -> resources.getColor(R.color.playerTwo)
             else -> R.color.white
@@ -258,6 +271,9 @@ class MainActivity : AppCompatActivity() {
             for (j in 0..2) {
                 var k = i + j
                 if (confirmedMoves[k] == activePlayer && confirmedMoves[k + 3] == activePlayer && confirmedMoves[k + 6] == activePlayer) {
+                    winningMoves.add(k)
+                    winningMoves.add(k+3)
+                    winningMoves.add(k+6)
                     return true
                 }
             }
@@ -265,12 +281,18 @@ class MainActivity : AppCompatActivity() {
         // check ascending size
         for (i in 2..20 step 9) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 2] == activePlayer && confirmedMoves[i + 4] == activePlayer) {
+                winningMoves.add(i)
+                winningMoves.add(i+2)
+                winningMoves.add(i+4)
                 return true
             }
         }
         // check descending size
         for (i in 0..18 step 9) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 4] == activePlayer && confirmedMoves[i + 8] == activePlayer) {
+                winningMoves.add(i)
+                winningMoves.add(i+4)
+                winningMoves.add(i+8)
                 return true
             }
         }
@@ -281,18 +303,27 @@ class MainActivity : AppCompatActivity() {
         // check for same size winning columns
         for (i in 0..8) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 9] == activePlayer && confirmedMoves[i + 18] == activePlayer) {
+                winningMoves.add(i)
+                winningMoves.add(i+9)
+                winningMoves.add(i+18)
                 return true
             }
         }
         // check ascending size
         for (i in 2..8 step 3) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 8] == activePlayer && confirmedMoves[i + 16] == activePlayer) {
+                winningMoves.add(i)
+                winningMoves.add(i+8)
+                winningMoves.add(i+16)
                 return true
             }
         }
         // check descending size
         for (i in 0..6 step 3) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 10] == activePlayer && confirmedMoves[i + 20] == activePlayer) {
+                winningMoves.add(i)
+                winningMoves.add(i+10)
+                winningMoves.add(i+20)
                 return true
             }
         }
@@ -303,12 +334,18 @@ class MainActivity : AppCompatActivity() {
         // check topLeft to bottomRight
         for (i in 0..2 step 2) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[13] == activePlayer && confirmedMoves[26 - i] == activePlayer) {
+                winningMoves.add(i)
+                winningMoves.add(13)
+                winningMoves.add(26-i)
                 return true
             }
         }
         // check bottomLeft to topRight
         for (i in 18..20 step 2) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[13] == activePlayer && confirmedMoves[26 - i] == activePlayer) {
+                winningMoves.add(i)
+                winningMoves.add(13)
+                winningMoves.add(26-i)
                 return true
             }
         }
