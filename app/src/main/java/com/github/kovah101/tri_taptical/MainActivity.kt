@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkForWinner() {
         var winFlag = false
-
+        Log.d("ButtonPress", "Check Winner")
         // check for Spot winner
         if (spotWinner()) {
             winFlag = true
@@ -323,6 +323,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun diagonalWinner(): Boolean {
         // check topLeft to bottomRight
+        // same size
+        for (i in 0..2){
+            if (confirmedMoves[i] == activePlayer && confirmedMoves[i+12] == activePlayer && confirmedMoves[i + 24] == activePlayer){
+                winningMoves.add(i)
+                winningMoves.add(i+12)
+                winningMoves.add(i+24)
+                return true
+            }
+        }
+        // ascending or descending in size
         for (i in 0..2 step 2) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[13] == activePlayer && confirmedMoves[26 - i] == activePlayer) {
                 winningMoves.add(i)
@@ -332,6 +342,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
         // check bottomLeft to topRight
+        // same size
+        for (i in 18..20){
+            if (confirmedMoves[i] == activePlayer && confirmedMoves[i-6] == activePlayer && confirmedMoves[i - 12] == activePlayer){
+                winningMoves.add(i)
+                winningMoves.add(i-6)
+                winningMoves.add(i-12)
+                return true
+            }
+        }
+        // ascending or descending in size
         for (i in 18..20 step 2) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[13] == activePlayer && confirmedMoves[26 - i] == activePlayer) {
                 winningMoves.add(i)
