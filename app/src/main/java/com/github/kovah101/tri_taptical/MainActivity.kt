@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
 import android.widget.Button
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -195,26 +198,32 @@ class MainActivity : AppCompatActivity() {
             // show toast win notification
             Toast.makeText(this, "Player $activePlayer is the Winner!", Toast.LENGTH_LONG).show()
 
-            // reset the board
+//            // reset the board
             val white = resources.getColor(R.color.white)
-            for (cell in locationIDs.indices) {
-                val currentCell = findViewById<View>(locationIDs[cell])
-                currentCell.setBackgroundColor(white)
-            }
-            // show winning moves
+
+            val blinkAnimation = AlphaAnimation(1f,0f)
+            blinkAnimation.duration = 300
+            blinkAnimation.interpolator =  LinearInterpolator()
+            blinkAnimation.repeatCount = 3
+            blinkAnimation.repeatMode = Animation.REVERSE
+            // show winning moves by blinking
             val activeColor = pickColor(activePlayer)
             for (move in winningMoves){
                 println("winning move: $move")
                 val winningCell = findViewById<View>(locationIDs[move])
-                winningCell.setBackgroundColor(activeColor)
+                winningCell.startAnimation(blinkAnimation)
             } // wait 2s
-            // TODO clear and restart button
+            // TODO hide confirm button, show reset button = clear and reset values
+            for (cell in locationIDs.indices) {
+                val currentCell = findViewById<View>(locationIDs[cell])
+                currentCell.setBackgroundColor(white)
+            }
             //Thread.sleep(2000)
             // clear winning moves
-            for (move in winningMoves){
-                val winningCell = findViewById<View>(locationIDs[move])
-                winningCell.setBackgroundColor(white)
-            }
+//            for (move in winningMoves){
+//                val winningCell = findViewById<View>(locationIDs[move])
+//                winningCell.setBackgroundColor(white)
+//            }
             // clear saved moves
             confirmedMoves.clear()
             winningMoves.clear()
