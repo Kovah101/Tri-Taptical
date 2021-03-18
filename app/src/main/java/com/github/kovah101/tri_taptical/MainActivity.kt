@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private var oldCellID = -1
     private var trueCellID = -1
-    private var maxPlayers = 3
+    private var maxPlayers = 4
     private var activePlayer = 1
     private var playerColors = arrayOf(0,0,0,0)
     private var score = arrayOf(0,0,0,0)
@@ -163,18 +163,15 @@ class MainActivity : AppCompatActivity() {
         confirmedMoves.clear()
         winningMoves.clear()
 
-        // alternate starting player
-//        activePlayer ++
-//        if (activePlayer > maxPlayers){
-//            activePlayer = 1
-//        }
-
         // hide reset button
         view.visibility = View.GONE
         // reveal confirm button
         val confirmButton = findViewById<Button>(R.id.confirmButton)
         confirmButton.visibility = View.VISIBLE
+    }
 
+    fun showSettings(view:View){
+        Toast.makeText(this, "Settings coming Soon!", Toast.LENGTH_SHORT).show()
     }
 
 
