@@ -11,4 +11,6 @@
     <color name="whiteButton">#F9F9F9</color>
     <color name="playerOne">#FF03DAC5</color>
     <color name="playerTwo">#FFE91E63</color>
+    <color name="playerThree">#FFFF5722</color>
+    <color name="playerFour">#FF9C27B0</color>
 </resources>

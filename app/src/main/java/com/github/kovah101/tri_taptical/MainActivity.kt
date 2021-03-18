@@ -29,9 +29,13 @@ class MainActivity : AppCompatActivity() {
         R.id.bottomRight, R.id.bottomRightMiddle, R.id.bottomRightInner
     )
 
+    private val scoreBoardIDs = arrayOf(
+        R.id.p1ScoreBoard, R.id.p2ScoreBoard, R.id.p3ScoreBoard, R.id.p4ScoreBoard
+    )
+
     private var oldCellID = -1
     private var trueCellID = -1
-    private var maxPlayers = 2
+    private var maxPlayers = 3
     private var activePlayer = 1
     private var playerColors = arrayOf(0,0,0,0)
     private var score = arrayOf(0,0,0,0)
@@ -111,8 +115,12 @@ class MainActivity : AppCompatActivity() {
     private fun setSegmentColor(cellID: Int, lastCellID: Int) {
         val playerOneColor = resources.getColor(R.color.playerOne)
         val playerTwoColor = resources.getColor(R.color.playerTwo)
+        val playerThreeColor = resources.getColor(R.color.playerThree)
+        val playerFourColor = resources.getColor(R.color.playerFour)
         playerColors[0] = playerOneColor
         playerColors[1] = playerTwoColor
+        playerColors[2] = playerThreeColor
+        playerColors[3] = playerFourColor
         val white = resources.getColor(R.color.white)
 
         //set selected segment to p1 colour
@@ -156,10 +164,10 @@ class MainActivity : AppCompatActivity() {
         winningMoves.clear()
 
         // alternate starting player
-        val totalGames = score[0] + score[1]
-        activePlayer = if (totalGames % 2 == 0){
-            1
-        }else 2
+//        activePlayer ++
+//        if (activePlayer > maxPlayers){
+//            activePlayer = 1
+//        }
 
         // hide reset button
         view.visibility = View.GONE
@@ -227,10 +235,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateScore(){
             score[activePlayer-1]++
-        val scoreBoard = findViewById<TextView>(R.id.scoreBoard)
-        val scoreString = "P1: ${score[0]}  P2: ${score[1]}"
-        scoreBoard.text = scoreString
-        scoreBoard.gravity = Gravity.CENTER
+        for (player in 1..maxPlayers){
+            val scoreBoardID = scoreBoardIDs[player-1]
+            val scoreBoard = findViewById<TextView>(scoreBoardID)
+            val scoreString = "P$player: ${score[player-1]}"
+            scoreBoard.text = scoreString
+            scoreBoard.gravity = Gravity.CENTER
+        }
+
     }
 
     private fun spotWinner(): Boolean {
