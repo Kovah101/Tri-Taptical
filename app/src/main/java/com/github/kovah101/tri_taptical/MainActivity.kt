@@ -31,8 +31,10 @@ class MainActivity : AppCompatActivity() {
 
     private var oldCellID = -1
     private var trueCellID = -1
+    private var maxPlayers = 2
     private var activePlayer = 1
-    private var score = arrayOf(0,0)
+    private var playerColors = arrayOf(0,0,0,0)
+    private var score = arrayOf(0,0,0,0)
     private var confirmedMoves = HashMap<Int, Int>()
     private var winningMoves = arrayListOf<Int>()
     private var selectedCell = -1
@@ -109,30 +111,19 @@ class MainActivity : AppCompatActivity() {
     private fun setSegmentColor(cellID: Int, lastCellID: Int) {
         val playerOneColor = resources.getColor(R.color.playerOne)
         val playerTwoColor = resources.getColor(R.color.playerTwo)
+        playerColors[0] = playerOneColor
+        playerColors[1] = playerTwoColor
         val white = resources.getColor(R.color.white)
-        if (activePlayer == 1) {
-            //set selected segment to p1 colour
-            val currentView = findViewById<View>(locationIDs[cellID])
-            currentView.setBackgroundColor(playerOneColor)
-            // if last cell is not new cell or default
-            // set last view back to white
-            if (lastCellID != -1 && lastCellID != cellID) {
-                val lastView = findViewById<View>(locationIDs[lastCellID])
-                lastView.setBackgroundColor(white)
-            }
 
-        } else if (activePlayer == 2) {
-            // set selected segment to p2 colour
-            val currentView = findViewById<View>(locationIDs[cellID])
-            currentView.setBackgroundColor(playerTwoColor)
-            // if last cell is not new cell or default
-            // set last view back to white
-            if (lastCellID != -1 && lastCellID != cellID) {
-                val lastView = findViewById<View>(locationIDs[lastCellID])
-                lastView.setBackgroundColor(white)
-            }
+        //set selected segment to p1 colour
+        val currentView = findViewById<View>(locationIDs[cellID])
+        currentView.setBackgroundColor(playerColors[activePlayer-1])
+        // if last cell is not new cell or default
+        // set last view back to white
+        if (lastCellID != -1 && lastCellID != cellID) {
+            val lastView = findViewById<View>(locationIDs[lastCellID])
+            lastView.setBackgroundColor(white)
         }
-
     }
 
     fun confirmMove(view: View) {
@@ -146,10 +137,9 @@ class MainActivity : AppCompatActivity() {
         checkForWinner()
 
         // change player
-        activePlayer = if (activePlayer == 1) {
-            2
-        } else {
-            1
+        activePlayer ++
+        if (activePlayer > maxPlayers){
+            activePlayer = 1
         }
     }
 
