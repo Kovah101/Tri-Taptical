@@ -28,7 +28,9 @@
         android:background="@color/purpleButton"
         android:onClick="confirmMove"
         android:text="CONFIRM"
+        android:textColor="@color/whiteButton"
         android:textSize="24sp"
+        app:backgroundTint="@color/purpleButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,8 +45,10 @@
         android:background="@color/purpleButton"
         android:onClick="resetBoard"
         android:text="RESET"
+        android:textColor="@color/whiteButton"
         android:textSize="24sp"
         android:visibility="gone"
+        app:backgroundTint="@color/purpleButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -491,10 +495,10 @@
         android:id="@+id/topScoreBoard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="480dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tableLayout"
+        android:layout_marginTop="88dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tableLayout">
 
         <TextView
             android:id="@+id/p1ScoreBoard"
@@ -505,7 +509,7 @@
             android:gravity="center|center_horizontal"
             android:text="P1:"
             android:textColor="@color/playerOne"
-            android:textSize="60sp"
+            android:textSize="64sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -518,7 +522,7 @@
             android:gravity="center|center_horizontal"
             android:text="P2:"
             android:textColor="@color/playerTwo"
-            android:textSize="60sp"
+            android:textSize="64sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -527,7 +531,7 @@
         android:id="@+id/bottomScoreBoard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -541,7 +545,7 @@
             android:gravity="center|center_horizontal"
             android:text="P3:"
             android:textColor="@color/playerThree"
-            android:textSize="60sp"
+            android:textSize="64sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -554,7 +558,7 @@
             android:gravity="center|center_horizontal"
             android:text="P4:"
             android:textColor="@color/playerFour"
-            android:textSize="60sp"
+            android:textSize="64sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
