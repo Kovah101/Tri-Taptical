@@ -2,6 +2,7 @@ package com.github.kovah101.tri_taptical
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.transition.Visibility
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -164,14 +165,22 @@ class MainActivity : AppCompatActivity() {
         winningMoves.clear()
 
         // hide reset button
-        view.visibility = View.GONE
+        val resetButton = findViewById<Button>(R.id.resetButton)
+        resetButton.visibility = View.GONE
         // reveal confirm button
         val confirmButton = findViewById<Button>(R.id.confirmButton)
         confirmButton.visibility = View.VISIBLE
+
+        // reset active player to 1 if restarting
+        if (view == findViewById(R.id.restartSettingsButton)){
+            activePlayer = 1
+        }
     }
 
     fun showSettings(view:View){
-        Toast.makeText(this, "Settings coming Soon!", Toast.LENGTH_SHORT).show()
+        val settingsMenu = findViewById<View>(R.id.settingsMenu)
+        settingsMenu.visibility = View.VISIBLE
+        //Toast.makeText(this, "Settings coming Soon!", Toast.LENGTH_SHORT).show()
     }
 
 
@@ -360,5 +369,27 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return false
+    }
+
+    fun closeSettings(view: View) {
+        val settingsMenu = findViewById<View>(R.id.settingsMenu)
+        settingsMenu.visibility = View.GONE
+    }
+
+    fun incrementPlayers(view: View) {
+        maxPlayers ++
+        if (maxPlayers > 4){
+            maxPlayers = 4
+        }
+        val playerNumberView = findViewById<TextView>(R.id.maxPlayerNumber)
+        playerNumberView.text = maxPlayers.toString()
+    }
+    fun decrementPlayers(view: View) {
+        maxPlayers --
+        if (maxPlayers < 2){
+            maxPlayers = 2
+        }
+        val playerNumberView = findViewById<TextView>(R.id.maxPlayerNumber)
+        playerNumberView.text = maxPlayers.toString()
     }
 }
