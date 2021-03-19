@@ -14,7 +14,6 @@ import android.widget.TextView
 import android.widget.Toast
 
 
-// TODO add screen for choosing player number 2-4
 // TODO add autoPlay AI, possibly with difficulty?
 class MainActivity : AppCompatActivity() {
 
@@ -371,11 +370,13 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    // hide settings menu
     fun closeSettings(view: View) {
         val settingsMenu = findViewById<View>(R.id.settingsMenu)
         settingsMenu.visibility = View.GONE
     }
 
+    // increase max player count
     fun incrementPlayers(view: View) {
         maxPlayers ++
         if (maxPlayers > 4){
@@ -383,7 +384,7 @@ class MainActivity : AppCompatActivity() {
         }
         val playerNumberView = findViewById<TextView>(R.id.maxPlayerNumber)
         playerNumberView.text = maxPlayers.toString()
-    }
+    }// or decrease max player count
     fun decrementPlayers(view: View) {
         maxPlayers --
         if (maxPlayers < 2){
