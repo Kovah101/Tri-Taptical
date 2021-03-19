@@ -170,9 +170,14 @@ class MainActivity : AppCompatActivity() {
         val confirmButton = findViewById<Button>(R.id.confirmButton)
         confirmButton.visibility = View.VISIBLE
 
-        // reset active player to 1 if restarting
+        // reset active player & scores if restarting
         if (view == findViewById(R.id.restartSettingsButton)){
             activePlayer = 1
+            for (playerScore in score){
+                score[playerScore] = 0
+            }
+            updateScore()
+
         }
     }
 
@@ -210,7 +215,8 @@ class MainActivity : AppCompatActivity() {
 
         // if there is a winner, add to scoreboard, show toast notification & reset board
         if (winFlag) {
-            // increment score counter
+            // increment score counter & update score boards
+            score[activePlayer-1]++
             updateScore()
             Toast.makeText(this, "Player $activePlayer is the Winner!", Toast.LENGTH_SHORT).show()
 
@@ -239,7 +245,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateScore(){
-            score[activePlayer-1]++
         for (player in 1..maxPlayers){
             val scoreBoardID = scoreBoardIDs[player-1]
             val scoreBoard = findViewById<TextView>(scoreBoardID)
