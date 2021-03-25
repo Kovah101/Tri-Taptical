@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1058332865048",
+    "project_id": "tri-taptical",
+    "storage_bucket": "tri-taptical.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058332865048:android:d6dd06857c44fa8da9896d",
+        "android_client_info": {
+          "package_name": "com.github.kovah101.tri_taptical"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1058332865048-3cftlvnkau31a05aklmhian1jnti65j1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf4KyKYry_UmKru9aGJufrBZMDRAomewg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1058332865048-3cftlvnkau31a05aklmhian1jnti65j1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

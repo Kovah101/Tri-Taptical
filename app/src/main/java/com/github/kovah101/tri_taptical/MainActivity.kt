@@ -12,10 +12,13 @@ import android.view.animation.LinearInterpolator
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.analytics.FirebaseAnalytics
 
 
 // TODO add autoPlay AI, possibly with difficulty?
 class MainActivity : AppCompatActivity() {
+
+   private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
     private val locationIDs = arrayOf(
         R.id.topLeft, R.id.topLeftMiddle, R.id.topLeftInner,
@@ -46,6 +49,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
     }
 
     fun changeColor(view: View) {
@@ -63,7 +68,6 @@ class MainActivity : AppCompatActivity() {
             R.id.bottomMiddle -> cellID = 21
             R.id.bottomRight -> cellID = 24
         }
-
 
         // if new cell touched
         if (oldCellID != cellID) {
@@ -177,7 +181,6 @@ class MainActivity : AppCompatActivity() {
                 score[playerScore] = 0
             }
             updateScore()
-
         }
     }
 
