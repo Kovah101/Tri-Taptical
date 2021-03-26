@@ -2,10 +2,14 @@ package com.github.kovah101.tri_taptical
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
 
 class Login : AppCompatActivity() {
@@ -16,11 +20,19 @@ class Login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        mAuth = FirebaseAuth.getInstance()
+        mAuth = Firebase.auth
     }
 
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = mAuth.currentUser
+        if(currentUser != null){
+            Toast.makeText(applicationContext, "Already logged in", Toast.LENGTH_SHORT).show()
+        }
+    }
 
-    private fun loginButtonClick(view: View) {
+     fun loginButtonClick(view: View) {
         // take info and login to firebase
         loginToFireBase(
             userEmail.text.toString(),
@@ -35,7 +47,9 @@ class Login : AppCompatActivity() {
         if (user != null) {
             // user already signed in
             //TODO skip to menu screen
-        } else{
+            Toast.makeText(applicationContext, "Already logged in", Toast.LENGTH_SHORT).show()
+
+        } else {
             // No user so create new one
             mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
@@ -44,20 +58,25 @@ class Login : AppCompatActivity() {
                             .show()
                         // set user name
                         val currentUser = mAuth.currentUser
-                        val profileUpdates = userProfileChangeRequest {
-                            displayName = name
-                        }
+                        // compiler error
+//                        val profileUpdates = userProfileChangeRequest {
+//                            displayName = name
+//                        }
+                        val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(name).build()
                         currentUser!!.updateProfile(profileUpdates)
-                            .addOnCompleteListener{
-                                if (it.isSuccessful){
-                                    Toast.makeText(applicationContext, "Successfully updated display name", Toast.LENGTH_SHORT)
-
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "Successfully updated display name",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                     } else {
                         Toast.makeText(applicationContext, "Failed login", Toast.LENGTH_SHORT)
                             .show()
-
+                        Log.d("Task", "${task.exception}")
                     }
                 }
         }
