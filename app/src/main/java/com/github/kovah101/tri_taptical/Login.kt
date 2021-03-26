@@ -1,5 +1,6 @@
 package com.github.kovah101.tri_taptical
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -25,10 +26,21 @@ class Login : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
+        loadMenu()
+
+    }
+
+    fun loadMenu(){
+        // Check if user is signed in (non-null) and move to menu
         val currentUser = mAuth.currentUser
-        if(currentUser != null){
+        if(currentUser != null) {
             Toast.makeText(applicationContext, "Already logged in", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, Menu::class.java)
+            intent.putExtra("email", currentUser.email)
+            intent.putExtra("userID", currentUser.uid)
+            intent.putExtra("userName", currentUser.displayName)
+
+            startActivity(intent)
         }
     }
 
@@ -48,6 +60,7 @@ class Login : AppCompatActivity() {
             // user already signed in
             //TODO skip to menu screen
             Toast.makeText(applicationContext, "Already logged in", Toast.LENGTH_SHORT).show()
+            loadMenu()
 
         } else {
             // No user so create new one
@@ -73,6 +86,7 @@ class Login : AppCompatActivity() {
                                     ).show()
                                 }
                             }
+                        loadMenu()
                     } else {
                         Toast.makeText(applicationContext, "Failed login", Toast.LENGTH_SHORT)
                             .show()

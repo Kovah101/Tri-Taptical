@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whiteBackground"
+    android:background="@color/black"
     tools:context=".Login">
 
     <EditText
@@ -13,8 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:ems="10"
+        android:gravity="center"
         android:hint="Enter your email"
         android:inputType="textPersonName"
+        android:textColor="@color/whiteButton"
+        android:textColorHint="@color/whiteButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userName" />
@@ -25,8 +28,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:ems="10"
+        android:gravity="center"
         android:hint="Enter your password"
         android:inputType="textPassword"
+        android:textColor="@color/whiteButton"
+        android:textColorHint="@color/whiteButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userEmail" />
@@ -50,8 +56,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:ems="10"
+        android:gravity="center"
         android:hint="Enter your user name"
         android:inputType="textPersonName"
+        android:textColor="@color/whiteButton"
+        android:textColorHint="@color/whiteButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
