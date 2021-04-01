@@ -20,6 +20,7 @@
             android:id="@+id/localMultiplayer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/roundedbutton"
             android:onClick="launchLocalGame"
             android:text="Local Multiplayer"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,6 +34,7 @@
             android:layout_marginTop="72dp"
             android:onClick="launchOnline"
             android:text="Online Multiplayer"
+            android:background="@drawable/roundedbutton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/localMultiplayer" />
@@ -44,6 +46,7 @@
             android:layout_marginTop="72dp"
             android:onClick="launchBots"
             android:text="Solo Training"
+            android:background="@drawable/roundedbutton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/onlineMultiplayer" />
