@@ -2,7 +2,6 @@ package com.github.kovah101.tri_taptical
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.transition.Visibility
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -18,7 +17,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 // TODO add autoPlay AI, possibly with difficulty?
 class MainActivity : AppCompatActivity() {
 
-   private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
     private val locationIDs = arrayOf(
         R.id.topLeft, R.id.topLeftMiddle, R.id.topLeftInner,
@@ -40,8 +39,8 @@ class MainActivity : AppCompatActivity() {
     private var trueCellID = -1
     private var maxPlayers = 4
     private var activePlayer = 1
-    private var playerColors = arrayOf(0,0,0,0)
-    private var score = arrayOf(0,0,0,0)
+    private var playerColors = arrayOf(0, 0, 0, 0)
+    private var score = arrayOf(0, 0, 0, 0)
     private var confirmedMoves = HashMap<Int, Int>()
     private var winningMoves = arrayListOf<Int>()
     private var selectedCell = -1
@@ -129,7 +128,7 @@ class MainActivity : AppCompatActivity() {
 
         //set selected segment to p1 colour
         val currentView = findViewById<View>(locationIDs[cellID])
-        currentView.setBackgroundColor(playerColors[activePlayer-1])
+        currentView.setBackgroundColor(playerColors[activePlayer - 1])
         // if last cell is not new cell or default
         // set last view back to white
         if (lastCellID != -1 && lastCellID != cellID) {
@@ -149,8 +148,8 @@ class MainActivity : AppCompatActivity() {
         checkForWinner()
 
         // change player
-        activePlayer ++
-        if (activePlayer > maxPlayers){
+        activePlayer++
+        if (activePlayer > maxPlayers) {
             activePlayer = 1
         }
     }
@@ -174,17 +173,31 @@ class MainActivity : AppCompatActivity() {
         val confirmButton = findViewById<Button>(R.id.confirmButton)
         confirmButton.visibility = View.VISIBLE
 
+        // increment starting player
+        activePlayer = startingPlayer(maxPlayers, score)
+
         // reset active player & scores if restarting
-        if (view == findViewById(R.id.restartSettingsButton)){
+        if (view == findViewById(R.id.restartSettingsButton)) {
+            Log.d("ButtonPress", "Restart Game")
             activePlayer = 1
-            for (playerScore in score){
-                score[playerScore] = 0
+            // reset score array
+            for (scores in score.indices){
+                score[scores] = 0
             }
+            Log.d("ButtonPress", "${score[0]},${score[1]},${score[2]},${score[3]}")
             updateScore()
         }
+
+
     }
 
-    fun showSettings(view:View){
+    private fun startingPlayer(maxPlayers: Int, score: Array<Int>): Int {
+        val totalScore = score[0] + score[1] + score[2] + score[3]
+        return (totalScore % maxPlayers) + 1
+
+    }
+
+    fun showSettings(view: View) {
         val settingsMenu = findViewById<View>(R.id.settingsMenu)
         settingsMenu.visibility = View.VISIBLE
         //Toast.makeText(this, "Settings coming Soon!", Toast.LENGTH_SHORT).show()
@@ -219,7 +232,7 @@ class MainActivity : AppCompatActivity() {
         // if there is a winner, add to scoreboard, show toast notification & reset board
         if (winFlag) {
             // increment score counter & update score boards
-            score[activePlayer-1]++
+            score[activePlayer - 1]++
             updateScore()
             Toast.makeText(this, "Player $activePlayer is the Winner!", Toast.LENGTH_SHORT).show()
 
@@ -247,11 +260,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateScore(){
-        for (player in 1..maxPlayers){
-            val scoreBoardID = scoreBoardIDs[player-1]
+    private fun updateScore() {
+        for (player in 1..score.size) {
+            val scoreBoardID = scoreBoardIDs[player - 1]
             val scoreBoard = findViewById<TextView>(scoreBoardID)
-            val scoreString = "P$player: ${score[player-1]}"
+            val scoreString = "P$player: ${score[player - 1]}"
             scoreBoard.text = scoreString
             scoreBoard.gravity = Gravity.CENTER
         }
@@ -278,8 +291,8 @@ class MainActivity : AppCompatActivity() {
                 val k = i + j
                 if (confirmedMoves[k] == activePlayer && confirmedMoves[k + 3] == activePlayer && confirmedMoves[k + 6] == activePlayer) {
                     winningMoves.add(k)
-                    winningMoves.add(k+3)
-                    winningMoves.add(k+6)
+                    winningMoves.add(k + 3)
+                    winningMoves.add(k + 6)
                     return true
                 }
             }
@@ -288,8 +301,8 @@ class MainActivity : AppCompatActivity() {
         for (i in 2..20 step 9) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 2] == activePlayer && confirmedMoves[i + 4] == activePlayer) {
                 winningMoves.add(i)
-                winningMoves.add(i+2)
-                winningMoves.add(i+4)
+                winningMoves.add(i + 2)
+                winningMoves.add(i + 4)
                 return true
             }
         }
@@ -297,8 +310,8 @@ class MainActivity : AppCompatActivity() {
         for (i in 0..18 step 9) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 4] == activePlayer && confirmedMoves[i + 8] == activePlayer) {
                 winningMoves.add(i)
-                winningMoves.add(i+4)
-                winningMoves.add(i+8)
+                winningMoves.add(i + 4)
+                winningMoves.add(i + 8)
                 return true
             }
         }
@@ -310,8 +323,8 @@ class MainActivity : AppCompatActivity() {
         for (i in 0..8) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 9] == activePlayer && confirmedMoves[i + 18] == activePlayer) {
                 winningMoves.add(i)
-                winningMoves.add(i+9)
-                winningMoves.add(i+18)
+                winningMoves.add(i + 9)
+                winningMoves.add(i + 18)
                 return true
             }
         }
@@ -319,8 +332,8 @@ class MainActivity : AppCompatActivity() {
         for (i in 2..8 step 3) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 8] == activePlayer && confirmedMoves[i + 16] == activePlayer) {
                 winningMoves.add(i)
-                winningMoves.add(i+8)
-                winningMoves.add(i+16)
+                winningMoves.add(i + 8)
+                winningMoves.add(i + 16)
                 return true
             }
         }
@@ -328,8 +341,8 @@ class MainActivity : AppCompatActivity() {
         for (i in 0..6 step 3) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 10] == activePlayer && confirmedMoves[i + 20] == activePlayer) {
                 winningMoves.add(i)
-                winningMoves.add(i+10)
-                winningMoves.add(i+20)
+                winningMoves.add(i + 10)
+                winningMoves.add(i + 20)
                 return true
             }
         }
@@ -339,11 +352,11 @@ class MainActivity : AppCompatActivity() {
     private fun diagonalWinner(): Boolean {
         // check topLeft to bottomRight
         // same size
-        for (i in 0..2){
-            if (confirmedMoves[i] == activePlayer && confirmedMoves[i+12] == activePlayer && confirmedMoves[i + 24] == activePlayer){
+        for (i in 0..2) {
+            if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 12] == activePlayer && confirmedMoves[i + 24] == activePlayer) {
                 winningMoves.add(i)
-                winningMoves.add(i+12)
-                winningMoves.add(i+24)
+                winningMoves.add(i + 12)
+                winningMoves.add(i + 24)
                 return true
             }
         }
@@ -352,17 +365,17 @@ class MainActivity : AppCompatActivity() {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[13] == activePlayer && confirmedMoves[26 - i] == activePlayer) {
                 winningMoves.add(i)
                 winningMoves.add(13)
-                winningMoves.add(26-i)
+                winningMoves.add(26 - i)
                 return true
             }
         }
         // check bottomLeft to topRight
         // same size
-        for (i in 18..20){
-            if (confirmedMoves[i] == activePlayer && confirmedMoves[i-6] == activePlayer && confirmedMoves[i - 12] == activePlayer){
+        for (i in 18..20) {
+            if (confirmedMoves[i] == activePlayer && confirmedMoves[i - 6] == activePlayer && confirmedMoves[i - 12] == activePlayer) {
                 winningMoves.add(i)
-                winningMoves.add(i-6)
-                winningMoves.add(i-12)
+                winningMoves.add(i - 6)
+                winningMoves.add(i - 12)
                 return true
             }
         }
@@ -371,7 +384,7 @@ class MainActivity : AppCompatActivity() {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[13] == activePlayer && confirmedMoves[26 - i] == activePlayer) {
                 winningMoves.add(i)
                 winningMoves.add(13)
-                winningMoves.add(26-i)
+                winningMoves.add(26 - i)
                 return true
             }
         }
@@ -383,19 +396,19 @@ class MainActivity : AppCompatActivity() {
         val settingsMenu = findViewById<View>(R.id.settingsMenu)
         settingsMenu.visibility = View.GONE
     }
-
     // increase max player count
     fun incrementPlayers(view: View) {
-        maxPlayers ++
-        if (maxPlayers > 4){
+        maxPlayers++
+        if (maxPlayers > 4) {
             maxPlayers = 4
         }
         val playerNumberView = findViewById<TextView>(R.id.maxPlayerNumber)
         playerNumberView.text = maxPlayers.toString()
-    }// or decrease max player count
+    }
+    // or decrease max player count
     fun decrementPlayers(view: View) {
-        maxPlayers --
-        if (maxPlayers < 2){
+        maxPlayers--
+        if (maxPlayers < 2) {
             maxPlayers = 2
         }
         val playerNumberView = findViewById<TextView>(R.id.maxPlayerNumber)
