@@ -8,9 +8,20 @@ import android.view.View
 import android.widget.Toast
 
 class Menu : AppCompatActivity() {
+
+    private lateinit var myEmail : String
+    private lateinit var myID : String
+    private lateinit var myUsername : String
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
+
+        val loginIntent = intent
+         myEmail = loginIntent.getStringExtra("email")
+         myID = loginIntent.getStringExtra("userID")
+         myUsername = loginIntent.getStringExtra("username")
     }
 
     private val menuTag = "Menu"
@@ -25,7 +36,7 @@ class Menu : AppCompatActivity() {
     // players can host or join games
     fun launchOnline(view: View) {
         Log.d(menuTag, "Online Games coming soon")
-        Toast.makeText(applicationContext, "Online Games Coming Soon", Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, "$myEmail, $myID, $myUsername", Toast.LENGTH_SHORT).show()
     }
 
     // Pop up for bot difficulty & number

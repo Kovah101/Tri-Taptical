@@ -42,7 +42,7 @@ class Login : AppCompatActivity() {
             val intent = Intent(this, Menu::class.java)
             intent.putExtra("email", currentUser.email)
             intent.putExtra("userID", currentUser.uid)
-            intent.putExtra("userName", currentUser.displayName)
+            intent.putExtra("username", currentUser.displayName)
 
             startActivity(intent)
         }
