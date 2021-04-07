@@ -35,8 +35,15 @@ class Menu : AppCompatActivity() {
     // Goes to match making screen
     // players can host or join games
     fun launchOnline(view: View) {
-        Log.d(menuTag, "Online Games coming soon")
-        Toast.makeText(applicationContext, "$myEmail, $myID, $myUsername", Toast.LENGTH_SHORT).show()
+        val onlineLobby = Intent(this, OnlineLobby::class.java)
+        onlineLobby.putExtra("email", myEmail)
+        onlineLobby.putExtra("userID", myID)
+        onlineLobby.putExtra("username", myUsername)
+
+        startActivity(onlineLobby)
+
+        //Log.d(menuTag, "Online Games coming soon")
+        //Toast.makeText(applicationContext, "$myEmail, $myID, $myUsername", Toast.LENGTH_SHORT).show()
     }
 
     // Pop up for bot difficulty & number
