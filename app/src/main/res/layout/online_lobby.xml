@@ -8,8 +8,168 @@
     tools:context=".OnlineLobby">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:id="@+id/userInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/playerHubs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text="Username  MaxPlayers:"
+            android:textColor="@color/whiteButton"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/maxPlayers"
+            app:layout_constraintEnd_toStartOf="@+id/maxPlayers"
+            app:layout_constraintTop_toTopOf="@+id/maxPlayers" />
+
+        <TextView
+            android:id="@+id/maxPlayers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:text="4"
+            android:textColor="@color/whiteButton"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/downArrow"
+            app:layout_constraintEnd_toStartOf="@+id/upArrow"
+            app:layout_constraintTop_toTopOf="@+id/upArrow" />
+
+        <ImageButton
+            android:id="@+id/upArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundedbutton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/up_arrow" />
+
+        <ImageButton
+            android:id="@+id/downArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundedbutton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/upArrow"
+            app:srcCompat="@drawable/down_arrow" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/playerHubs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/p1Hub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/p1Request">
+
+                <View
+                    android:id="@+id/p1BigSquare"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@color/playerOne"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/p1BigSquareMiddle"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/p1BigSquare"
+                    app:layout_constraintEnd_toEndOf="@+id/p1BigSquare" />
+
+                <View
+                    android:id="@+id/p1MiddleSquare"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/playerOne"
+                    app:layout_constraintBottom_toBottomOf="@+id/p1BigSquare"
+                    app:layout_constraintStart_toEndOf="@+id/p1BigSquare" />
+
+                <View
+                    android:id="@+id/p1MiddleSquareMiddle"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/p1MiddleSquare"
+                    app:layout_constraintEnd_toEndOf="@+id/p1MiddleSquare" />
+
+                <View
+                    android:id="@+id/p1SmallSquare"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/playerOne"
+                    app:layout_constraintBottom_toBottomOf="@+id/p1MiddleSquare"
+                    app:layout_constraintStart_toEndOf="@+id/p1MiddleSquare" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <EditText
+                android:id="@+id/player1Username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Player 1 Username"
+                android:inputType="textPersonName"
+                android:textColor="@color/whiteButton"
+                android:textColorHint="@color/whiteButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/p1Request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/roundedbutton"
+                android:text="Request"
+                app:layout_constraintStart_toEndOf="@+id/player1Username"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/p1Accept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/roundedbutton"
+                android:text="Accept"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/p1Request"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/p2Hub"
@@ -17,7 +177,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/p1Hub">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
@@ -102,9 +262,12 @@
                 android:id="@+id/p2Accept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/roundedbutton"
                 android:text="Accept"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p2Request"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -201,9 +364,12 @@
                 android:id="@+id/p3Accept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/roundedbutton"
                 android:text="Accept"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p3Request"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -279,7 +445,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="Player 3 Username"
+                android:hint="Player 4 Username"
                 android:inputType="textPersonName"
                 android:textColor="@color/whiteButton"
                 android:textColorHint="@color/whiteButton"
@@ -300,12 +466,26 @@
                 android:id="@+id/p4Accept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/roundedbutton"
                 android:text="Accept"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p4Request"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/confirmOnline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedbutton"
+        android:text="Confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playerHubs" />
 </androidx.constraintlayout.widget.ConstraintLayout>
