@@ -9,13 +9,22 @@ import androidx.constraintlayout.widget.ConstraintLayout
 
 class OnlineLobby : AppCompatActivity() {
 
-    var maxPlayers = 4
+    private var maxPlayers = 4
+    private lateinit var myEmail : String
+    private lateinit var myID : String
+    private lateinit var myUsername : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.online_lobby)
 
+        val menuIntent = intent
+        myEmail = menuIntent.getStringExtra("email")
+        myID = menuIntent.getStringExtra("userID")
+        myUsername = menuIntent.getStringExtra("username")
 
+        val username = findViewById<TextView>(R.id.username)
+        username.text = myUsername
     }
 
     // increase max player count

@@ -19,14 +19,12 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="Username    MaxPlayers:"
+            android:layout_marginEnd="24dp"
+            android:text="Username"
             android:textColor="@color/whiteButton"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/maxPlayers"
-            app:layout_constraintEnd_toStartOf="@+id/maxPlayers"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/maxPlayers" />
+            app:layout_constraintBottom_toBottomOf="@+id/maxPlayerLabel"
+            app:layout_constraintEnd_toStartOf="@+id/maxPlayerLabel" />
 
         <TextView
             android:id="@+id/maxPlayers"
@@ -63,6 +61,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/down_arrow" />
+
+        <TextView
+            android:id="@+id/maxPlayerLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:text="Max Players:"
+            android:textColor="@color/whiteButton"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/upArrow"
+            app:layout_constraintEnd_toStartOf="@+id/maxPlayers"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -493,4 +503,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playerHubs" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
