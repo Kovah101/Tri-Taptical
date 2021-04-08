@@ -11,7 +11,6 @@
         android:id="@+id/userInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/playerHubs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -27,8 +26,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/maxPlayers"
             app:layout_constraintEnd_toStartOf="@+id/maxPlayers"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/maxPlayers"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/maxPlayers" />
 
         <TextView
             android:id="@+id/maxPlayers"
@@ -37,16 +35,16 @@
             android:layout_marginEnd="16dp"
             android:text="4"
             android:textColor="@color/whiteButton"
-            android:textSize="24sp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="@+id/downArrow"
-            app:layout_constraintEnd_toStartOf="@+id/upArrow"
-            app:layout_constraintTop_toTopOf="@+id/upArrow" />
+            app:layout_constraintEnd_toStartOf="@+id/upArrow" />
 
         <ImageButton
             android:id="@+id/upArrow"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/roundedbutton"
+            android:onClick="incrementPlayers"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/downArrow"
@@ -59,6 +57,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/roundedbutton"
+            android:onClick="decrementPlayers"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,10 +70,9 @@
         android:id="@+id/playerHubs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/userInfo">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/p1Hub"
