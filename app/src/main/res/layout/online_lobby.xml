@@ -20,42 +20,49 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:text="Username  MaxPlayers:"
+            android:layout_marginEnd="16dp"
+            android:text="Username    MaxPlayers:"
             android:textColor="@color/whiteButton"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="@+id/maxPlayers"
             app:layout_constraintEnd_toStartOf="@+id/maxPlayers"
-            app:layout_constraintTop_toTopOf="@+id/maxPlayers" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/maxPlayers"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/maxPlayers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
+            android:layout_marginEnd="16dp"
             android:text="4"
             android:textColor="@color/whiteButton"
-            android:textSize="30sp"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="@+id/downArrow"
             app:layout_constraintEnd_toStartOf="@+id/upArrow"
             app:layout_constraintTop_toTopOf="@+id/upArrow" />
 
         <ImageButton
             android:id="@+id/upArrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/roundedbutton"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/downArrow"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.489"
             app:srcCompat="@drawable/up_arrow" />
 
         <ImageButton
             android:id="@+id/downArrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/roundedbutton"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/upArrow"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/down_arrow" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
