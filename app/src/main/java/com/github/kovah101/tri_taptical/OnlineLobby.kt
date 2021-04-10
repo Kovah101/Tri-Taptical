@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import kotlinx.android.synthetic.main.online_lobby.*
 
 class OnlineLobby : AppCompatActivity() {
 
@@ -23,14 +25,39 @@ class OnlineLobby : AppCompatActivity() {
         myID = menuIntent.getStringExtra("userID")
         myUsername = menuIntent.getStringExtra("username")
 
-        val username = findViewById<TextView>(R.id.username)
+        //val username = findViewById<TextView>(R.id.username)
         username.text = myUsername
+
+        // if Send button clicks then disable Accept as player is host
+        listOf(p1Request, p2Request, p3Request, p4Request).forEach{ button ->
+            button.setOnClickListener { sentButtonClicked() }
+        }
+
+        // if Accept button clicks then disable Send as player is guest
+        listOf(p1Accept, p2Accept, p3Accept, p4Accept).forEach{
+            it.setOnClickListener { acceptButtonClicked() }
+        }
+    }
+
+    private fun sentButtonClicked(){
+        Log.d("Test", "sentButton Clicked")
+        p1Accept.isEnabled = false
+        p2Accept.isEnabled = false
+        p3Accept.isEnabled = false
+        p4Accept.isEnabled = false
+    }
+
+    private fun acceptButtonClicked(){
+        Log.d("Test", "acceptButton Clicked")
+        p1Request.isEnabled = false
+        p2Request.isEnabled = false
+        p3Request.isEnabled = false
+        p4Request.isEnabled = false
     }
 
     // increase max player count
     fun incrementPlayers(view: View) {
         Log.d("Test", "Button Clicked successfully")
-
         maxPlayers ++
         if (maxPlayers > 4) {
             maxPlayers = 4
