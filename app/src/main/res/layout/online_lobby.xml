@@ -20,7 +20,7 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="32dp"
             android:text="Username"
             android:textColor="@color/whiteButton"
             android:textSize="24sp"
@@ -36,10 +36,10 @@
             android:textColor="@color/whiteButton"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="@+id/downArrow"
-            app:layout_constraintEnd_toStartOf="@+id/upArrow" />
+            app:layout_constraintEnd_toStartOf="@+id/plus" />
 
         <ImageButton
-            android:id="@+id/upArrow"
+            android:id="@+id/plus"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="8dp"
@@ -50,7 +50,7 @@
             app:layout_constraintEnd_toStartOf="@+id/downArrow"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.489"
-            app:srcCompat="@drawable/up_arrow" />
+            app:srcCompat="@drawable/plus_symbol" />
 
         <ImageButton
             android:id="@+id/downArrow"
@@ -62,7 +62,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/down_arrow" />
+            app:srcCompat="@drawable/minus_symbol" />
 
         <TextView
             android:id="@+id/maxPlayerLabel"
@@ -72,7 +72,7 @@
             android:text="Max Players:"
             android:textColor="@color/whiteButton"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/upArrow"
+            app:layout_constraintBottom_toBottomOf="@+id/plus"
             app:layout_constraintEnd_toStartOf="@+id/maxPlayers"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -165,6 +165,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/roundedbutton"
                 android:backgroundTint="@color/purpleButton"
+                android:onClick="acceptRequest"
                 android:text="Accept"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -251,6 +252,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/roundedbutton"
+                android:onClick="acceptRequest"
                 android:text="Accept"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -337,6 +339,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/roundedbutton"
+                android:onClick="acceptRequest"
                 android:text="Accept"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -423,6 +426,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/roundedbutton"
+                android:onClick="acceptRequest"
                 android:text="Accept"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -432,15 +436,35 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/confirmOnline"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/roundedbutton"
-        android:text="Confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playerHubs" />
+        app:layout_constraintTop_toBottomOf="@+id/playerHubs">
+
+        <Button
+            android:id="@+id/confirmOnline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:background="@drawable/roundedbutton"
+            android:text="Confirm"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/clearInvites" />
+
+        <Button
+            android:id="@+id/clearInvites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:onClick="clearInvites"
+            android:text=" Clear Invites"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/confirmOnline"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

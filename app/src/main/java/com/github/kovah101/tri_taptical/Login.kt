@@ -87,9 +87,10 @@ class Login : AppCompatActivity() {
                                         "Successfully updated display name",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    // save to database & create Requests branch
+                                    // save to database then create Requests & Accepts branches
                                     myRef.child("Users").child(currentUser.displayName!!).setValue(currentUser.uid)
                                     myRef.child("Users").child(currentUser.displayName!!).child("Requests").setValue(currentUser.email)
+                                    myRef.child("Users").child(currentUser.displayName!!).child("Accepts").setValue(currentUser.email)
                                 }
                             }
 
