@@ -33,16 +33,10 @@ class OnlineLobby : AppCompatActivity() {
     private val TAG = "OnlineLobby"
     // loading square ids
     private val loadingSquareIDs = arrayOf(
-        R.id.p1BigSquare,
-        R.id.p2BigSquare,
-        R.id.p3BigSquare,
-        R.id.p4BigSquare
-    )
-//    private val loadingSquareIDs = arrayOf(
-//        p1BigSquare, p1MiddleSquare, p1SmallSquare,
-//        p2BigSquare, p2MiddleSquare, p2SmallSquare,
-//        p3BigSquare, p3MiddleSquare, p3SmallSquare,
-//        p4BigSquare, p4MiddleSquare, p4SmallSquare)
+        R.id.p1BigSquare, R.id.p1MiddleSquare, R.id.p1SmallSquare,
+        R.id.p2BigSquare, R.id.p2MiddleSquare, R.id.p2SmallSquare,
+        R.id.p3BigSquare, R.id.p3MiddleSquare, R.id.p3SmallSquare,
+        R.id.p4BigSquare, R.id.p4MiddleSquare, R.id.p4SmallSquare)
 
     // TODO: Make sure send and receive + listeners work
 
@@ -63,10 +57,10 @@ class OnlineLobby : AppCompatActivity() {
         username.text = myUsername
 
         // set up request listeners on your own Requests branch of database
-        //listenForInvites()
+        listenForInvites()
 
         // set up accept listeners on your own Accepts branch of database
-        //listenForAccepts()
+        listenForAccepts()
 
         // if Send button clicks then disable Accept as player is host
 //        listOf(p1Request, p2Request, p3Request, p4Request).forEach { button ->
@@ -83,26 +77,40 @@ class OnlineLobby : AppCompatActivity() {
     fun sendRequest(view: View) {
         var playerNumber = 0
         var guestPlayer = ""
+
+        // check if edit texts are empty
         when (view) {
             p1Request -> {
                 playerNumber = 1
                 lightUpSquare(playerNumber, 1)
                 guestPlayer = player1Username.text.toString()
+                if (checkIfEmpty(guestPlayer)){
+                    return;
+                }
             }
             p2Request -> {
                 playerNumber = 2
                 lightUpSquare(playerNumber, 1)
                 guestPlayer = player2Username.text.toString()
+                if (checkIfEmpty(guestPlayer)){
+                    return;
+                }
             }
             p3Request -> {
                 playerNumber = 3
                 lightUpSquare(playerNumber, 1)
                 guestPlayer = player3Username.text.toString()
+                if (checkIfEmpty(guestPlayer)){
+                    return;
+                }
             }
             p4Request -> {
                 playerNumber = 4
                 lightUpSquare(playerNumber, 1)
                 guestPlayer = player4Username.text.toString()
+                if (checkIfEmpty(guestPlayer)){
+                    return;
+                }
             }
         }
         myRef.child("Users").child(guestPlayer).child("Requests").push()
@@ -110,19 +118,40 @@ class OnlineLobby : AppCompatActivity() {
 
     }
 
+    // check if edit text is empty
+    private fun checkIfEmpty(string: String): Boolean {
+        return if (string.isEmpty()){
+            Toast.makeText(this, "You did not enter a username", Toast.LENGTH_SHORT).show();
+            true
+        } else {
+            false
+        }
+    }
+
+
+
     // send accept invite back to host with confirmed name and lock edit texts
     // accept listener will lock in
     // lights up 2nd loading square
     fun acceptRequest(view: View) {
-        when (view) {
-            p1Accept -> lightUpSquare(1,2)
-            p2Accept -> lightUpSquare(2,2)
-            p3Accept -> lightUpSquare(3,2)
-            p4Accept -> lightUpSquare(4,2)
-        }
-        myRef.child("Users").child(hostUsername).child("Accepts").push()
-            .setValue("$myUsername@$myPlayerNumber")
 
+        if (myPlayerNumber != 0) {
+            when (view) {
+                p1Accept -> lightUpSquare(1, 2)
+                p2Accept -> lightUpSquare(2, 2)
+                p3Accept -> lightUpSquare(3, 2)
+                p4Accept -> lightUpSquare(4, 2)
+            }
+            myRef.child("Users").child(hostUsername).child("Accepts").push()
+                .setValue("$myUsername@$myPlayerNumber")
+        }
+        else {
+            Toast.makeText(
+                applicationContext,
+                "You have no requests to accept",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     // clears your Request and Accept lists
@@ -248,24 +277,24 @@ class OnlineLobby : AppCompatActivity() {
             arrayOf(R.color.playerOne, R.color.playerTwo, R.color.playerThree, R.color.playerFour)
         when (playerNumber) {
             1 -> when (stageToColor) {
-                1 -> p1BigSquare.setBackgroundColor(playerColors[playerNumber - 1])
-                2 -> p1MiddleSquare.setBackgroundColor(playerColors[playerNumber - 1])
-                3 -> p1SmallSquare.setBackgroundColor(playerColors[playerNumber - 1])
+                1 -> p1BigSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
+                2 -> p1MiddleSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
+                3 -> p1SmallSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
             }
             2 -> when (stageToColor) {
-                1 -> p2BigSquare.setBackgroundColor(playerColors[playerNumber - 1])
-                2 -> p2MiddleSquare.setBackgroundColor(playerColors[playerNumber - 1])
-                3 -> p2SmallSquare.setBackgroundColor(playerColors[playerNumber - 1])
+                1 -> p2BigSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
+                2 -> p2MiddleSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
+                3 -> p2SmallSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
             }
             3 -> when (stageToColor) {
-                1 -> p3BigSquare.setBackgroundColor(playerColors[playerNumber - 1])
-                2 -> p3MiddleSquare.setBackgroundColor(playerColors[playerNumber - 1])
-                3 -> p3SmallSquare.setBackgroundColor(playerColors[playerNumber - 1])
+                1 -> p3BigSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
+                2 -> p3MiddleSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
+                3 -> p3SmallSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
             }
             4 -> when (stageToColor) {
-                1 -> p4BigSquare.setBackgroundColor(playerColors[playerNumber - 1])
-                2 -> p4MiddleSquare.setBackgroundColor(playerColors[playerNumber - 1])
-                3 -> p4SmallSquare.setBackgroundColor(playerColors[playerNumber - 1])
+                1 -> p4BigSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
+                2 -> p4MiddleSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
+                3 -> p4SmallSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
             }
         }
     }
