@@ -27,6 +27,7 @@ class OnlineLobby : AppCompatActivity() {
     private lateinit var hostUsername: String
     private var myPlayerNumber = 0
     private var playerNames = arrayOf("","","","")
+    private var myTotalPlayerNumbers = arrayOf(0,0,0,0)
     // instance of database
     private val database = Firebase.database
     private val myRef = database.reference
@@ -156,7 +157,8 @@ class OnlineLobby : AppCompatActivity() {
 
     // clears your Request and Accept lists
     // colours loading squares black
-    // TODO reset text field and buttons to clickable = true
+    // TODO reset text field and buttons to clickable = true, reset variables
+    //
     fun clearInvites(view: View) {
         myRef.child("Users").child(myUsername).child("Requests").setValue(myEmail)
         myRef.child("Users").child(myUsername).child("Accepts").setValue(myEmail)
@@ -186,6 +188,7 @@ class OnlineLobby : AppCompatActivity() {
                         ).show()
                         fillPlayerHub(myUsername, myPlayerNumber)
                         //TODO add waiting for other players and possibility of being multiple players
+                        myTotalPlayerNumbers[myPlayerNumber-1] = myPlayerNumber
                     } catch (ex: Exception) {
                         Log.w(TAG, "requestListener:onChildAdded", ex)
                         Toast.makeText(
@@ -262,7 +265,7 @@ class OnlineLobby : AppCompatActivity() {
             })
     }
 
-    fun fillPlayerHub(username: String, playerNumber: Int) {
+    private fun fillPlayerHub(username: String, playerNumber: Int) {
         when (playerNumber) {
             1 -> player1Username.setText(username)
             2 -> player2Username.setText(username)
@@ -308,7 +311,6 @@ class OnlineLobby : AppCompatActivity() {
             3 -> player3Username.inputType = 0
             4 -> player4Username.inputType = 0
         }
-
     }
 
     // splits string into list around "@"
@@ -368,5 +370,45 @@ class OnlineLobby : AppCompatActivity() {
         }
         val playerNumberView = findViewById<TextView>(R.id.maxPlayers)
         playerNumberView.text = maxPlayers.toString()
+    }
+
+    // creates game name from all confirmed players
+    // sends game name to each player
+    fun confirmGameDetails(view: View) {
+        // return if not host or no accepted players
+        if (playerNames[0].isEmpty() || playerNames[1].isEmpty() || playerNames[2].isEmpty() || playerNames[3].isEmpty()){
+            Toast.makeText(applicationContext, "No Players/Not Host", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val gameName = createGameName(playerNames)
+        Toast.makeText(applicationContext, "$gameName", Toast.LENGTH_SHORT).show()
+        //TODO send game name to confirmed players
+        // Light up 3rd loading box
+        // replace clear & confirm buttons with Play button that launches MainActivity
+    }
+
+
+    // adds confirmed players names together to form game name
+    // bug on missing players ?? e.g. 1 - 3 4
+    // TODO fic missing player bug
+    private fun createGameName(playerNames : Array<String>) : String{
+        var gameName = ""
+        if (playerNames[0].isNotEmpty()){
+            gameName = playerNames[0]
+            if (playerNames[1].isNotEmpty()){
+                gameName += "@"
+                gameName += playerNames[1]
+                if (playerNames[2].isNotEmpty()){
+                    gameName +="@"
+                    gameName += playerNames[2]
+                    if (playerNames[3].isNotEmpty()){
+                        gameName += "@"
+                        gameName += playerNames[3]
+                    }
+                }
+            }
+        }
+        return gameName
     }
 }

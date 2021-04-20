@@ -119,7 +119,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="40dp"
-                    android:background="@color/playerOne"
+                    android:background="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/p1BigSquare"
                     app:layout_constraintStart_toEndOf="@+id/p1BigSquare" />
 
@@ -128,7 +128,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="40dp"
-                    android:background="@color/playerOne"
+                    android:background="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/p1MiddleSquare"
                     app:layout_constraintStart_toEndOf="@+id/p1MiddleSquare" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -206,7 +206,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="40dp"
-                    android:background="@color/playerTwo"
+                    android:background="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/p2BigSquare"
                     app:layout_constraintStart_toEndOf="@+id/p2BigSquare" />
 
@@ -216,7 +216,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="40dp"
-                    android:background="@color/playerTwo"
+                    android:background="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/p2MiddleSquare"
                     app:layout_constraintStart_toEndOf="@+id/p2MiddleSquare" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -293,7 +293,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="40dp"
-                    android:background="@color/playerThree"
+                    android:background="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/p3BigSquare"
                     app:layout_constraintStart_toEndOf="@+id/p3BigSquare" />
 
@@ -303,7 +303,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="40dp"
-                    android:background="@color/playerThree"
+                    android:background="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/p3MiddleSquare"
                     app:layout_constraintStart_toEndOf="@+id/p3MiddleSquare" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -380,7 +380,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="40dp"
-                    android:background="@color/playerFour"
+                    android:background="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/p4BigSquare" />
 
@@ -390,7 +390,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="40dp"
-                    android:background="@color/playerFour"
+                    android:background="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/p4MiddleSquare"
                     app:layout_constraintStart_toEndOf="@+id/p4MiddleSquare" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -450,6 +450,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:background="@drawable/roundedbutton"
+            android:onClick="confirmGameDetails"
             android:text="Confirm"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
