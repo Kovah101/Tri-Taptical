@@ -31,7 +31,24 @@ class OnlineLobby : AppCompatActivity() {
     private val database = Firebase.database
     private val myRef = database.reference
     private val TAG = "OnlineLobby"
+    // loading square ids
+    private val loadingSquareIDs = arrayOf(
+        R.id.p1BigSquare,
+        R.id.p2BigSquare,
+        R.id.p3BigSquare,
+        R.id.p4BigSquare
+    )
+//    private val loadingSquareIDs = arrayOf(
+//        p1BigSquare, p1MiddleSquare, p1SmallSquare,
+//        p2BigSquare, p2MiddleSquare, p2SmallSquare,
+//        p3BigSquare, p3MiddleSquare, p3SmallSquare,
+//        p4BigSquare, p4MiddleSquare, p4SmallSquare)
 
+    // TODO: Make sure send and receive + listeners work
+
+    // TODO : Confirm button - create gameName string from playerNames and send to relevant players,
+    //  create game branch and launch game, adding gameName in intent to fill in player names and derive turn order using myUsername
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.online_lobby)
@@ -45,8 +62,11 @@ class OnlineLobby : AppCompatActivity() {
         //set username field to your actual username
         username.text = myUsername
 
-        // set up request listeners on your own branch of database
-        listenForInvites()
+        // set up request listeners on your own Requests branch of database
+        //listenForInvites()
+
+        // set up accept listeners on your own Accepts branch of database
+        //listenForAccepts()
 
         // if Send button clicks then disable Accept as player is host
 //        listOf(p1Request, p2Request, p3Request, p4Request).forEach { button ->
@@ -92,6 +112,7 @@ class OnlineLobby : AppCompatActivity() {
 
     // send accept invite back to host with confirmed name and lock edit texts
     // accept listener will lock in
+    // lights up 2nd loading square
     fun acceptRequest(view: View) {
         when (view) {
             p1Accept -> lightUpSquare(1,2)
@@ -105,10 +126,17 @@ class OnlineLobby : AppCompatActivity() {
     }
 
     // clears your Request and Accept lists
-    // TODO reset square colors to black
+    // colours loading squares black
+    // TODO reset text field and buttons to clickable = true
     fun clearInvites(view: View) {
         myRef.child("Users").child(myUsername).child("Requests").setValue(myEmail)
         myRef.child("Users").child(myUsername).child("Accepts").setValue(myEmail)
+
+        val black = R.color.black
+        for (loadingSquareID in loadingSquareIDs){
+            val loadingSquare = findViewById<View>(loadingSquareID)
+            loadingSquare.setBackgroundColor(resources.getColor(black))
+        }
     }
 
     // listen to your own requests in database
@@ -128,7 +156,7 @@ class OnlineLobby : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         fillPlayerHub(myUsername, myPlayerNumber)
-                        //TODO implement Accept button then add waiting for other players
+                        //TODO add waiting for other players and possibility of being multiple players
                     } catch (ex: Exception) {
                         Log.w(TAG, "requestListener:onChildAdded", ex)
                         Toast.makeText(
@@ -202,7 +230,6 @@ class OnlineLobby : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-
             })
     }
 

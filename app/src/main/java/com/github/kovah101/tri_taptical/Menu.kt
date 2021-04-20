@@ -22,6 +22,8 @@ class Menu : AppCompatActivity() {
          myEmail = loginIntent.getStringExtra("email")
          myID = loginIntent.getStringExtra("userID")
          myUsername = loginIntent.getStringExtra("username")
+
+        Toast.makeText(applicationContext, "$myEmail  $myUsername", Toast.LENGTH_SHORT).show()
     }
 
     private val menuTag = "Menu"
