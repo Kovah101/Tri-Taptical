@@ -179,7 +179,6 @@ class OnlineLobby : AppCompatActivity() {
     // creates game name from all confirmed players
     // sends game name to each player
     fun confirmGameDetails(view: View) {
-        // TODO tie to maxPlayer size
         // return if not host or no accepted players
         when(maxPlayers){
             2 -> if (playerNames[0].isEmpty() || playerNames[1].isEmpty()){
@@ -220,7 +219,7 @@ class OnlineLobby : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         fillPlayerHub(myUsername, myPlayerNumber)
-                        //TODO add waiting for other players and possibility of being multiple players
+                        //TODO add waiting for other players
                         myTotalPlayerNumbers[myPlayerNumber-1] = myPlayerNumber
                     } catch (ex: Exception) {
                         Log.w(TAG, "requestListener:onChildAdded", ex)
@@ -312,7 +311,7 @@ class OnlineLobby : AppCompatActivity() {
                         val lobbyPlayers = splitString(onlineGameName)
                         for (playerNumber in 1..lobbyPlayers.size){
                             //Toast.makeText(applicationContext, "player: $playerNumber = ${lobbyPlayers[playerNumber-1]}", Toast.LENGTH_SHORT).show()
-                            fillPlayerHub("Bill", playerNumber)
+                            fillPlayerHub(lobbyPlayers[playerNumber-1], playerNumber)
                         }
 
                     } catch (ex: java.lang.Exception){
