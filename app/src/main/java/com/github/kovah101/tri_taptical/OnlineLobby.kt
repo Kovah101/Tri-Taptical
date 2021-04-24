@@ -223,7 +223,9 @@ class OnlineLobby : AppCompatActivity() {
     // TODO launch activity with result
     fun playOnline(view: View) {
         val onlineGame = Intent(this, MainActivity::class.java)
+        onlineGame.putExtra("gameType", "OnlineGame")
         onlineGame.putExtra("gameName", onlineGameName)
+        onlineGame.putExtra("myUsername", myUsername)
         startActivity(onlineGame)
     }
 
@@ -289,7 +291,7 @@ class OnlineLobby : AppCompatActivity() {
                         playerNames[acceptedPlayerNumber - 1] = acceptedPlayerName
                         Toast.makeText(
                             applicationContext,
-                            "Accept from $acceptedPlayerName",
+                            "Accept from P$acceptedPlayerNumber:$acceptedPlayerName",
                             Toast.LENGTH_SHORT
                         ).show()
                         // disable the relevant editText & light up accept square

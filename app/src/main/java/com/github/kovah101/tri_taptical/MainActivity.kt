@@ -1,5 +1,6 @@
 package com.github.kovah101.tri_taptical
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -18,7 +19,15 @@ import com.google.firebase.analytics.FirebaseAnalytics
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
-
+    // game types
+    private val localGame = "LocalGame"
+    private val onlineGame = "OnlineGame"
+    private val botGame = "BotGame"
+    // online variables
+    private var onlineGameName = ""
+    private var myUsername = ""
+    private var onlineFlag = false
+    private var playerNames = arrayOf("", "", "", "")
     private val locationIDs = arrayOf(
         R.id.topLeft, R.id.topLeftMiddle, R.id.topLeftInner,
         R.id.topMiddle, R.id.topMiddleMiddle, R.id.topMiddleInner,
@@ -51,10 +60,37 @@ class MainActivity : AppCompatActivity() {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         // TODO startActivityFromResult depreciated look into it, could check intent content? could use registerForActivityResult
-        //
-        //
-        val callingActivity = callingActivity
-        Toast.makeText(this, callingActivity.toString(), Toast.LENGTH_SHORT).show()
+
+
+        val loadingIntent = intent
+        val gameType = loadingIntent.getStringExtra("gameType")
+        when(gameType){
+            // setup for local game
+            localGame -> {
+                Toast.makeText(this, "Local Game!", Toast.LENGTH_SHORT).show()
+            }
+            // setup for online game
+            onlineGame -> {
+                onlineFlag = true
+                Toast.makeText(this, "Online Game!", Toast.LENGTH_SHORT).show()
+                onlineGameName = loadingIntent.getStringExtra("gameName")!!
+                myUsername = loadingIntent.getStringExtra("myUsername")!!
+                playerNames = splitString(onlineGameName).toTypedArray()
+            }
+            // setup bot game
+            botGame -> {
+                Toast.makeText(this, "Bot Game!", Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                Toast.makeText(this, "How did you launch this?", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+    }
+
+    // splits string into list around "@"
+    private fun splitString(string: String): List<String> {
+        return string.split("@")
     }
 
     fun changeColor(view: View) {
