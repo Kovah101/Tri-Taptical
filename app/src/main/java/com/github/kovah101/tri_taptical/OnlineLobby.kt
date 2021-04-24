@@ -44,10 +44,9 @@ class OnlineLobby : AppCompatActivity() {
         R.id.p4BigSquare, R.id.p4MiddleSquare, R.id.p4SmallSquare
     )
 
+    // TODO: launch mainActivity and know if online, local, or bot, display in toast
     // TODO: fix bug - when playing with self and you do not send-accept each player in turn, only last invite is logged - have p1Invite, p3Accept variables from switch case structure
 
-    // TODO : Confirm button - create gameName string from playerNames and send to relevant players, and create Game branch with new gameName
-    //  TODO: listenForGames() listens for created games, changes bottom buttons to PLAY button, takes gameName through to game screen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -153,13 +152,13 @@ class OnlineLobby : AppCompatActivity() {
         }
     }
 
-    // clears your Request and Accept lists
-    // colours loading squares black
-    // TODO reset text field and buttons to clickable = true
+
     fun clearButton(view: View) {
         clearEverything()
     }
-
+    // clears your Request and Accept lists
+    // colours loading squares black
+    // TODO reset buttons to clickable = true
     private fun clearEverything() {
         // clear requests, accepts & games
         myRef.child("Users").child(myUsername).child("Requests").setValue(myEmail)
@@ -221,6 +220,7 @@ class OnlineLobby : AppCompatActivity() {
     }
 
     // play button launches game passing the gameName in the intent
+    // TODO launch activity with result
     fun playOnline(view: View) {
         val onlineGame = Intent(this, MainActivity::class.java)
         onlineGame.putExtra("gameName", onlineGameName)
@@ -330,7 +330,6 @@ class OnlineLobby : AppCompatActivity() {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     try {
                         // get game name & fill in the lobby with player info
-                        //TODO replace clear & confirm buttons with Play button that launches MainActivity
                         onlineGameName = snapshot.value.toString()
                         // first value is unique time stamp
                         val lobbyPlayers = splitString(onlineGameName)

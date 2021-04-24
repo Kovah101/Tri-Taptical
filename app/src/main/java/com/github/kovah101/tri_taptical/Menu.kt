@@ -31,7 +31,8 @@ class Menu : AppCompatActivity() {
     // starts classic local multi-player game
     fun launchLocalGame(view: View) {
         val localGame = Intent(this, MainActivity::class.java)
-        startActivity(localGame)
+        val launchLocal = 1
+        startActivityForResult(localGame, launchLocal)
     }
 
     // Goes to match making screen

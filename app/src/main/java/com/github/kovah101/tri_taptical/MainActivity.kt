@@ -50,7 +50,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-
+        // TODO startActivityFromResult depreciated look into it, could check intent content? could use registerForActivityResult
+        //
+        //
         val callingActivity = callingActivity
         Toast.makeText(this, callingActivity.toString(), Toast.LENGTH_SHORT).show()
     }
