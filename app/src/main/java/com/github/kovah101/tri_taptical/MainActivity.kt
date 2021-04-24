@@ -50,6 +50,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        val callingActivity = callingActivity
+        Toast.makeText(this, callingActivity.toString(), Toast.LENGTH_SHORT).show()
     }
 
     fun changeColor(view: View) {

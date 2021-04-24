@@ -1,5 +1,6 @@
 package com.github.kovah101.tri_taptical
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -27,24 +28,27 @@ class OnlineLobby : AppCompatActivity() {
     private lateinit var hostUsername: String
     private lateinit var onlineGameName: String
     private var myPlayerNumber = 0
-    private var playerNames = arrayOf("","","","")
-    private var myTotalPlayerNumbers = arrayOf(0,0,0,0)
+    private var playerNames = arrayOf("", "", "", "")
+    private var myTotalPlayerNumbers = arrayOf(0, 0, 0, 0)
+
     // instance of database
     private val database = Firebase.database
     private val myRef = database.reference
     private val TAG = "OnlineLobby"
+
     // loading square ids
     private val loadingSquareIDs = arrayOf(
         R.id.p1BigSquare, R.id.p1MiddleSquare, R.id.p1SmallSquare,
         R.id.p2BigSquare, R.id.p2MiddleSquare, R.id.p2SmallSquare,
         R.id.p3BigSquare, R.id.p3MiddleSquare, R.id.p3SmallSquare,
-        R.id.p4BigSquare, R.id.p4MiddleSquare, R.id.p4SmallSquare)
+        R.id.p4BigSquare, R.id.p4MiddleSquare, R.id.p4SmallSquare
+    )
 
-    // TODO: Make sure send and receive + listeners work
+    // TODO: fix bug - when playing with self and you do not send-accept each player in turn, only last invite is logged - have p1Invite, p3Accept variables from switch case structure
 
-    // TODO : Confirm button - create gameName string from playerNames and send to relevant players,
-    //  create game branch and launch game, adding gameName in intent to fill in player names and derive turn order using myUsername
-    
+    // TODO : Confirm button - create gameName string from playerNames and send to relevant players, and create Game branch with new gameName
+    //  TODO: listenForGames() listens for created games, changes bottom buttons to PLAY button, takes gameName through to game screen
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.online_lobby)
@@ -58,6 +62,9 @@ class OnlineLobby : AppCompatActivity() {
         //set username field to your actual username
         username.text = myUsername
 
+        // clear the screen & invites
+        clearEverything()
+
         // set up request listeners on your own Requests branch of database
         listenForInvites()
 
@@ -67,8 +74,6 @@ class OnlineLobby : AppCompatActivity() {
         // set up game listeners on your own Games branch of the database
         listenForGames()
 
-        // clear the screen & invites
-        clearEverything()
 
         // if Send button clicks then disable Accept as player is host
 //        listOf(p1Request, p2Request, p3Request, p4Request).forEach { button ->
@@ -120,7 +125,7 @@ class OnlineLobby : AppCompatActivity() {
 
     // check if edit text is empty
     private fun checkIfEmpty(string: String): Boolean {
-        return if (string.isEmpty()){
+        return if (string.isEmpty()) {
             Toast.makeText(this, "You did not enter a username", Toast.LENGTH_SHORT).show();
             true
         } else {
@@ -141,9 +146,9 @@ class OnlineLobby : AppCompatActivity() {
             }
             myRef.child("Users").child(hostUsername).child("Accepts").push()
                 .setValue("$myUsername@$myPlayerNumber")
-        }
-        else {
-            Toast.makeText(applicationContext,"You have no requests to accept",Toast.LENGTH_SHORT
+        } else {
+            Toast.makeText(
+                applicationContext, "You have no requests to accept", Toast.LENGTH_SHORT
             ).show()
         }
     }
@@ -151,9 +156,10 @@ class OnlineLobby : AppCompatActivity() {
     // clears your Request and Accept lists
     // colours loading squares black
     // TODO reset text field and buttons to clickable = true
-    fun clearButton(view: View){
+    fun clearButton(view: View) {
         clearEverything()
     }
+
     private fun clearEverything() {
         // clear requests, accepts & games
         myRef.child("Users").child(myUsername).child("Requests").setValue(myEmail)
@@ -161,11 +167,11 @@ class OnlineLobby : AppCompatActivity() {
         myRef.child("Users").child(myUsername).child("Games").setValue(myEmail)
         // reset variables
         myPlayerNumber = 0
-        myTotalPlayerNumbers = arrayOf(0,0,0,0)
-        playerNames = arrayOf("","","","")
+        myTotalPlayerNumbers = arrayOf(0, 0, 0, 0)
+        playerNames = arrayOf("", "", "", "")
         // reset loading squares to black
         val black = R.color.black
-        for (loadingSquareID in loadingSquareIDs){
+        for (loadingSquareID in loadingSquareIDs) {
             val loadingSquare = findViewById<View>(loadingSquareID)
             loadingSquare.setBackgroundColor(resources.getColor(black))
         }
@@ -179,27 +185,46 @@ class OnlineLobby : AppCompatActivity() {
     // creates game name from all confirmed players
     // sends game name to each player
     fun confirmGameDetails(view: View) {
+        Toast.makeText(
+            this,
+            "$maxPlayers with ${playerNames[0]},${playerNames[1]},${playerNames[2]},${playerNames[3]}",
+            Toast.LENGTH_SHORT
+        ).show()
         // return if not host or no accepted players
-        when(maxPlayers){
-            2 -> if (playerNames[0].isEmpty() || playerNames[1].isEmpty()){
+        when (maxPlayers) {
+            2 -> if (playerNames[0].isEmpty() || playerNames[1].isEmpty()) {
                 Toast.makeText(applicationContext, "No Players/Not Host", Toast.LENGTH_SHORT).show()
                 return
             }
-            3 -> if (playerNames[0].isEmpty() || playerNames[1].isEmpty() || playerNames[2].isEmpty()){
+            3 -> if (playerNames[0].isEmpty() || playerNames[1].isEmpty() || playerNames[2].isEmpty()) {
                 Toast.makeText(applicationContext, "No Players/Not Host", Toast.LENGTH_SHORT).show()
                 return
             }
-            4 -> if (playerNames[0].isEmpty() || playerNames[1].isEmpty() || playerNames[2].isEmpty() || playerNames[3].isEmpty()){
+            4 -> if (playerNames[0].isEmpty() || playerNames[1].isEmpty() || playerNames[2].isEmpty() || playerNames[3].isEmpty()) {
                 Toast.makeText(applicationContext, "No Players/Not Host", Toast.LENGTH_SHORT).show()
                 return
             }
         }
+        // create game name from player names
         val gameName = createGameName(playerNames)
         Toast.makeText(applicationContext, gameName, Toast.LENGTH_SHORT).show()
-        for (name in playerNames){
-            myRef.child("Users").child(name).child("Games").push()
-                .setValue(gameName)
+        // send each player the game name
+        for (name in playerNames) {
+            // else creates spare Games branch
+            if (name != "") {
+                myRef.child("Users").child(name).child("Games").push().setValue(gameName)
+                Log.d(TAG, name)
+            }
         }
+        // create the unique game on the Games branch
+        myRef.child("Games").push().setValue(gameName)
+    }
+
+    // play button launches game passing the gameName in the intent
+    fun playOnline(view: View) {
+        val onlineGame = Intent(this, MainActivity::class.java)
+        onlineGame.putExtra("gameName", onlineGameName)
+        startActivity(onlineGame)
     }
 
     // listen to your own requests in database
@@ -220,7 +245,7 @@ class OnlineLobby : AppCompatActivity() {
                         ).show()
                         fillPlayerHub(myUsername, myPlayerNumber)
                         //TODO add waiting for other players
-                        myTotalPlayerNumbers[myPlayerNumber-1] = myPlayerNumber
+                        myTotalPlayerNumbers[myPlayerNumber - 1] = myPlayerNumber
                     } catch (ex: Exception) {
                         Log.w(TAG, "requestListener:onChildAdded", ex)
                         Toast.makeText(
@@ -250,9 +275,9 @@ class OnlineLobby : AppCompatActivity() {
             })
     }
 
-    private fun listenForAccepts(){
+    private fun listenForAccepts() {
         myRef.child("Users").child(myUsername).child("Accepts")
-            .addChildEventListener(object  : ChildEventListener{
+            .addChildEventListener(object : ChildEventListener {
                 // get latest accept
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     try {
@@ -261,15 +286,16 @@ class OnlineLobby : AppCompatActivity() {
                         val acceptParts = splitString(acceptValue)
                         val acceptedPlayerNumber = acceptParts[1].toInt()
                         val acceptedPlayerName = acceptParts[0]
-                        playerNames[acceptedPlayerNumber-1] = acceptedPlayerName
+                        playerNames[acceptedPlayerNumber - 1] = acceptedPlayerName
                         Toast.makeText(
                             applicationContext,
                             "Accept from $acceptedPlayerName",
-                            Toast.LENGTH_SHORT).show()
+                            Toast.LENGTH_SHORT
+                        ).show()
                         // disable the relevant editText & light up accept square
                         lightUpSquare(acceptedPlayerNumber, 2)
                         disableUsernameInput(acceptedPlayerNumber)
-                    } catch (ex: java.lang.Exception){
+                    } catch (ex: java.lang.Exception) {
                         Log.w(TAG, "acceptListener:onChildAdded", ex)
                         Toast.makeText(
                             applicationContext, "Failed to listen for added Accept-Child.",
@@ -297,24 +323,25 @@ class OnlineLobby : AppCompatActivity() {
             })
     }
 
-    private fun listenForGames(){
+    private fun listenForGames() {
         myRef.child("Users").child(myUsername).child("Games")
-            .addChildEventListener(object: ChildEventListener{
+            .addChildEventListener(object : ChildEventListener {
                 // get latest game
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     try {
                         // get game name & fill in the lobby with player info
-                        //TODO
-                        // Light up 3rd loading box
-                        // replace clear & confirm buttons with Play button that launches MainActivity
+                        //TODO replace clear & confirm buttons with Play button that launches MainActivity
                         onlineGameName = snapshot.value.toString()
+                        // first value is unique time stamp
                         val lobbyPlayers = splitString(onlineGameName)
-                        for (playerNumber in 1..lobbyPlayers.size){
-                            //Toast.makeText(applicationContext, "player: $playerNumber = ${lobbyPlayers[playerNumber-1]}", Toast.LENGTH_SHORT).show()
-                            fillPlayerHub(lobbyPlayers[playerNumber-1], playerNumber)
+                        for (playerNumber in 1 until lobbyPlayers.size) {
+                            fillPlayerHub(lobbyPlayers[playerNumber], playerNumber)
+                            lightUpSquare(playerNumber, 3)
                         }
+                        confirmAndClearHub.visibility = View.GONE
+                        playHub.visibility = View.VISIBLE
 
-                    } catch (ex: java.lang.Exception){
+                    } catch (ex: java.lang.Exception) {
                         Log.w(TAG, "gameListener:onChildAdded", ex)
                         Toast.makeText(
                             applicationContext, "Failed to listen for added Games-Child.",
@@ -380,9 +407,9 @@ class OnlineLobby : AppCompatActivity() {
     }
 
     // disables username input field in UI
-    private fun disableUsernameInput(playerNumber: Int){
+    private fun disableUsernameInput(playerNumber: Int) {
         // 0 is not editable
-        when(playerNumber){
+        when (playerNumber) {
             1 -> player1Username.inputType = 0
             2 -> player2Username.inputType = 0
             3 -> player3Username.inputType = 0
@@ -452,17 +479,19 @@ class OnlineLobby : AppCompatActivity() {
     // adds confirmed players names together to form game name
     // bug on missing players ?? e.g. 1 - 3 4
     // TODO fix missing player bug
-    private fun createGameName(playerNames : Array<String>) : String{
-        var gameName = ""
-        if (playerNames[0].isNotEmpty()){
-            gameName = playerNames[0]
-            if (playerNames[1].isNotEmpty()){
+    private fun createGameName(playerNames: Array<String>): String {
+        // game name starts with unique timestamp
+        var gameName = System.currentTimeMillis().toString()
+        if (playerNames[0].isNotEmpty()) {
+            gameName += "@"
+            gameName += playerNames[0]
+            if (playerNames[1].isNotEmpty()) {
                 gameName += "@"
                 gameName += playerNames[1]
-                if (playerNames[2].isNotEmpty()){
-                    gameName +="@"
+                if (playerNames[2].isNotEmpty()) {
+                    gameName += "@"
                     gameName += playerNames[2]
-                    if (playerNames[3].isNotEmpty()){
+                    if (playerNames[3].isNotEmpty()) {
                         gameName += "@"
                         gameName += playerNames[3]
                     }
