@@ -13,16 +13,27 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 // TODO add autoPlay AI, possibly with difficulty?
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+
     // game types
     private val localGame = "LocalGame"
     private val onlineGame = "OnlineGame"
     private val botGame = "BotGame"
+
+    // instance of database
+    private val database = Firebase.database
+    private val myRef = database.reference
+    private val TAG = "OnlineGame"
     // online variables
     private var onlineGameName = ""
     private var myUsername = ""
@@ -59,12 +70,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        // TODO startActivityFromResult depreciated look into it, could check intent content? could use registerForActivityResult
 
 
         val loadingIntent = intent
         val gameType = loadingIntent.getStringExtra("gameType")
-        when(gameType){
+        when (gameType) {
             // setup for local game
             localGame -> {
                 Toast.makeText(this, "Local Game!", Toast.LENGTH_SHORT).show()
@@ -76,6 +86,11 @@ class MainActivity : AppCompatActivity() {
                 onlineGameName = loadingIntent.getStringExtra("gameName")!!
                 myUsername = loadingIntent.getStringExtra("myUsername")!!
                 playerNames = splitString(onlineGameName).toTypedArray()
+                Toast.makeText(this, "There are ${playerNames.size -1} players", Toast.LENGTH_SHORT).show()
+                maxPlayers = playerNames.size - 1
+                // TODO customise player names & disable settings menu
+                listenToGame()
+                //waitYourTurn()
             }
             // setup bot game
             botGame -> {
@@ -86,6 +101,50 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    // listen to specific game branch of database
+    // when new move logged update screen and check for winner
+    // activate or disable buttons if not your turn
+    private fun listenToGame() {
+        myRef.child("Games").child(onlineGameName)
+            .addChildEventListener(object : ChildEventListener {
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    try {
+                        val submittedMove = snapshot.value as String
+                        val onlineMoveParts = splitString(submittedMove)
+                        Toast.makeText(
+                            applicationContext,
+                            "Submitted move: Square:${onlineMoveParts[0]}, Player:${onlineMoveParts[1]}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    catch (ex: Exception){
+
+                    }
+                }
+
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onChildRemoved(snapshot: DataSnapshot) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "gameListener:onCancelled", error.toException())
+                    Toast.makeText(
+                        applicationContext, "Failed to listen to Game.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            })
     }
 
     // splits string into list around "@"
@@ -149,14 +208,13 @@ class MainActivity : AppCompatActivity() {
         oldCellID = cellID
         // store last tapped cell to be decoloured
         val lastTrueCellID = trueCellID
-        //trueCellID = cellID + tapCount
         trueCellID = selectedCell
 
         // colour correct segment & decolour last picked
-        setSegmentColor(trueCellID, lastTrueCellID)
+        setSegmentColor(trueCellID, lastTrueCellID, activePlayer)
     }
 
-    private fun setSegmentColor(cellID: Int, lastCellID: Int) {
+    private fun setSegmentColor(cellID: Int, lastCellID: Int, activePlayer: Int) {
         val playerOneColor = resources.getColor(R.color.playerOne)
         val playerTwoColor = resources.getColor(R.color.playerTwo)
         val playerThreeColor = resources.getColor(R.color.playerThree)
@@ -167,7 +225,7 @@ class MainActivity : AppCompatActivity() {
         playerColors[3] = playerFourColor
         val white = resources.getColor(R.color.white)
 
-        //set selected segment to p1 colour
+        //set selected segment to active player colour
         val currentView = findViewById<View>(locationIDs[cellID])
         currentView.setBackgroundColor(playerColors[activePlayer - 1])
         // if last cell is not new cell or default
@@ -181,6 +239,12 @@ class MainActivity : AppCompatActivity() {
     fun confirmMove(view: View) {
         // add confirmed move to hash map with cell and active player
         confirmedMoves[trueCellID] = activePlayer
+        Log.d(TAG, "$trueCellID")
+        // if online game then send confirmed move
+        if (onlineFlag){
+            val onlineMove = "$trueCellID@$activePlayer"
+            myRef.child("Games").child(onlineGameName).push().setValue(onlineMove)
+        }
         // reset old cell ID
         oldCellID = -1
         // reset true cell ID
@@ -222,7 +286,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("ButtonPress", "Restart Game")
             activePlayer = 1
             // reset score array
-            for (scores in score.indices){
+            for (scores in score.indices) {
                 score[scores] = 0
             }
             Log.d("ButtonPress", "${score[0]},${score[1]},${score[2]},${score[3]}")
@@ -437,6 +501,7 @@ class MainActivity : AppCompatActivity() {
         val settingsMenu = findViewById<View>(R.id.settingsMenu)
         settingsMenu.visibility = View.GONE
     }
+
     // increase max player count
     fun incrementPlayers(view: View) {
         maxPlayers++
@@ -446,6 +511,7 @@ class MainActivity : AppCompatActivity() {
         val playerNumberView = findViewById<TextView>(R.id.maxPlayerNumber)
         playerNumberView.text = maxPlayers.toString()
     }
+
     // or decrease max player count
     fun decrementPlayers(view: View) {
         maxPlayers--
