@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                 maxPlayers = playerNames.size - 1
                 // TODO customise player names & disable settings menu
                 listenToGame()
-                //waitYourTurn()
+                waitYourTurn(playerNames, myUsername, activePlayer)
             }
             // setup bot game
             botGame -> {
@@ -113,11 +113,23 @@ class MainActivity : AppCompatActivity() {
                     try {
                         val submittedMove = snapshot.value as String
                         val onlineMoveParts = splitString(submittedMove)
+                        val onlineMove = onlineMoveParts[0].toInt()
+                        val onlinePlayer = onlineMoveParts[1].toInt()
                         Toast.makeText(
                             applicationContext,
-                            "Submitted move: Square:${onlineMoveParts[0]}, Player:${onlineMoveParts[1]}",
+                            "Submitted move: Square:${onlineMove}, Player:${onlinePlayer}",
                             Toast.LENGTH_SHORT
                         ).show()
+                        // take online move and update local board
+                        setSegmentColor(onlineMove, -1, onlinePlayer)
+                        // update local variables
+                        confirmedMoves[onlineMove] = onlinePlayer
+                        // check for winner
+                        checkForWinner()
+                        // increment active player
+                        nextPlayer()
+                        // wait your turn
+                        waitYourTurn(playerNames, myUsername, activePlayer)
                     }
                     catch (ex: Exception){
 
@@ -143,8 +155,15 @@ class MainActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-
             })
+    }
+
+    // checks if it is your turn
+    private fun waitYourTurn(playerNames : Array<String>, myUsername : String, currentPlayer: Int ){
+        // check if it is your turn - enable buttons
+
+        // if not your turn - disable buttons
+
     }
 
     // splits string into list around "@"
@@ -253,6 +272,10 @@ class MainActivity : AppCompatActivity() {
         checkForWinner()
 
         // change player
+        nextPlayer()
+    }
+
+    private fun nextPlayer(){
         activePlayer++
         if (activePlayer > maxPlayers) {
             activePlayer = 1
