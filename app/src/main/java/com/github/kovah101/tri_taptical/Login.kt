@@ -20,7 +20,8 @@ class Login : AppCompatActivity() {
 
     // instance of database
     private val database = Firebase.database
-    private val myRef = database.getReference()
+    private val myRef = database.reference
+    private val TAG = "LOGIN-TEST"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +58,6 @@ class Login : AppCompatActivity() {
             userPassword.text.toString(),
             userName.text.toString()
         )
-        loadMenu()
     }
 
     fun signUp(view: View) {
@@ -82,6 +82,7 @@ class Login : AppCompatActivity() {
                     if (task.isSuccessful) {
                         Toast.makeText(applicationContext, "Successful login", Toast.LENGTH_SHORT)
                             .show()
+                        loadMenu()
                     } else {
                         Toast.makeText(
                             applicationContext,
@@ -97,51 +98,62 @@ class Login : AppCompatActivity() {
 
 
     private fun signUpToFireBase(email: String, password: String, name: String) {
-        // No user so create new one
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(applicationContext, "Successful create user", Toast.LENGTH_SHORT)
-                        .show()
-                    // sign in
-                    mAuth.signInWithEmailAndPassword(email, password)
-                    // set user name
-                    val currentUser = mAuth.currentUser
-                    val profileUpdates =
-                        UserProfileChangeRequest.Builder().setDisplayName(name).build()
-                    currentUser!!.updateProfile(profileUpdates)
-                        .addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Successfully updated display name",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                // save to database then create Requests, Accepts & Games branches
-                                myRef.child("Users").child(currentUser.displayName!!)
-                                    .setValue(currentUser.uid)
-                                myRef.child("Users").child(currentUser.displayName!!)
-                                    .child("Requests")
-                                    .setValue(currentUser.email)
-                                myRef.child("Users").child(currentUser.displayName!!)
-                                    .child("Accepts")
-                                    .setValue(currentUser.email)
-                                myRef.child("Users").child(currentUser.displayName!!).child("Games")
-                                    .setValue(currentUser.email)
+        // check if already logged in
+        val user = mAuth.currentUser
+        if (user != null) {
+            // user already signed in
+            Toast.makeText(applicationContext, "Already logged in", Toast.LENGTH_SHORT).show()
+            loadMenu()
+        } else {
+            // No user so create new one
+            mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(
+                            applicationContext,
+                            "Successful create user",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.d(TAG, "Just before username attempt!")
+                        // set user name
+                        val currentUser = mAuth.currentUser
+                        val profileUpdates =
+                            UserProfileChangeRequest.Builder().setDisplayName(name).build()
+                        currentUser!!.updateProfile(profileUpdates)
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    Log.d(TAG, "Successfully updated username")
+                                    // save to database then create Requests, Accepts & Games branches
+                                    myRef.child("Users").child(currentUser.displayName!!)
+                                        .setValue(currentUser.uid)
+                                    myRef.child("Users").child(currentUser.displayName!!)
+                                        .child("Requests")
+                                        .setValue(currentUser.email)
+                                    myRef.child("Users").child(currentUser.displayName!!)
+                                        .child("Accepts")
+                                        .setValue(currentUser.email)
+                                    myRef.child("Users").child(currentUser.displayName!!)
+                                        .child("Games")
+                                        .setValue(currentUser.email)
+                                    loadMenu()
+                                }
+                                else{
+                                    Log.d(TAG, "Failed to update username!")
+                                    Log.d(TAG, "${it.exception}")
+                                }
                             }
-                        }
-                    loadMenu()
-                }
-                else{
-                    Toast.makeText(
-                        applicationContext,
-                        "Failed sign up - ${task.exception}",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                    Log.d("Task", "${task.exception}")
+                        //loadMenu()
+                    } else {
+                        Toast.makeText(
+                            applicationContext,
+                            "Failed to create new user - ${task.exception}",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        Log.d(TAG, "${task.exception}")
 
+                    }
                 }
-            }
+        }
     }
 }

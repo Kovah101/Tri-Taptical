@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_menu.*
 
 class Menu : AppCompatActivity() {
 
@@ -24,6 +25,8 @@ class Menu : AppCompatActivity() {
          myEmail = loginIntent.getStringExtra("email")
          myID = loginIntent.getStringExtra("userID")
          myUsername = loginIntent.getStringExtra("username")
+
+        usernameLabel.text = myUsername
 
         Toast.makeText(applicationContext, "email:$myEmail, username:$myUsername", Toast.LENGTH_SHORT).show()
     }
