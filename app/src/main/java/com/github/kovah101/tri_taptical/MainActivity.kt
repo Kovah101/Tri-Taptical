@@ -122,11 +122,6 @@ class MainActivity : AppCompatActivity() {
                         val onlineMoveParts = splitString(submittedMove)
                         val onlineMove = onlineMoveParts[0].toInt()
                         val onlinePlayer = onlineMoveParts[1].toInt()
-                        Toast.makeText(
-                            applicationContext,
-                            "Submitted move: Square:${onlineMove}, Player:${onlinePlayer}",
-                            Toast.LENGTH_SHORT
-                        ).show()
                         // take online move and update local board
                         setSegmentColor(onlineMove, -1, onlinePlayer)
                         // update local variables

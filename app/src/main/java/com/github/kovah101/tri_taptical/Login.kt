@@ -41,7 +41,6 @@ class Login : AppCompatActivity() {
         // Check if user is signed in (non-null) and move to menu
         val currentUser = mAuth.currentUser
         if (currentUser != null) {
-
             val intent = Intent(this, Menu::class.java)
             intent.putExtra("email", currentUser.email)
             intent.putExtra("userID", currentUser.uid)
@@ -82,6 +81,8 @@ class Login : AppCompatActivity() {
                     if (task.isSuccessful) {
                         Toast.makeText(applicationContext, "Successful login", Toast.LENGTH_SHORT)
                             .show()
+                        val userName =mAuth.currentUser.displayName
+                        Log.d(TAG, "Current User:$userName")
                         loadMenu()
                     } else {
                         Toast.makeText(

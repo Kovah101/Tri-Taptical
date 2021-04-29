@@ -44,7 +44,6 @@ class OnlineLobby : AppCompatActivity() {
         R.id.p4BigSquare, R.id.p4MiddleSquare, R.id.p4SmallSquare
     )
 
-    // TODO: launch mainActivity and know if online, local, or bot, display in toast
     // TODO: fix bug - when playing with self and you do not send-accept each player in turn, only last invite is logged - have p1Invite, p3Accept variables from switch case structure
 
 
@@ -246,7 +245,8 @@ class OnlineLobby : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         fillPlayerHub(myUsername, myPlayerNumber)
-                        //TODO add waiting for other players
+                        lightUpSquare(myPlayerNumber, 1)
+                        //TODO add waiting for other players + light up first square
                         myTotalPlayerNumbers[myPlayerNumber - 1] = myPlayerNumber
                     } catch (ex: Exception) {
                         Log.w(TAG, "requestListener:onChildAdded", ex)
@@ -337,7 +337,12 @@ class OnlineLobby : AppCompatActivity() {
                         val lobbyPlayers = splitString(onlineGameName)
                         for (playerNumber in 1 until lobbyPlayers.size) {
                             fillPlayerHub(lobbyPlayers[playerNumber], playerNumber)
+                            lightUpSquare(playerNumber, 1)
+                            lightUpSquare(playerNumber, 2)
                             lightUpSquare(playerNumber, 3)
+                            maxPlayers = lobbyPlayers.size -1
+                            // TODO Hide or show player hubs
+                            displayPlayerHubs(maxPlayers)
                         }
                         confirmAndClearHub.visibility = View.GONE
                         playHub.visibility = View.VISIBLE
@@ -446,14 +451,8 @@ class OnlineLobby : AppCompatActivity() {
         if (maxPlayers > 4) {
             maxPlayers = 4
         }
-        if (maxPlayers >= 3) {
-            val player3Hub = findViewById<ConstraintLayout>(R.id.p3Hub)
-            player3Hub.visibility = View.VISIBLE
-        }
-        if (maxPlayers == 4) {
-            val player4Hub = findViewById<ConstraintLayout>(R.id.p4Hub)
-            player4Hub.visibility = View.VISIBLE
-        }
+        displayPlayerHubs(maxPlayers)
+
         val playerNumberView = findViewById<TextView>(R.id.maxPlayers)
         playerNumberView.text = maxPlayers.toString()
     }
@@ -465,16 +464,30 @@ class OnlineLobby : AppCompatActivity() {
         if (maxPlayers < 2) {
             maxPlayers = 2
         }
-        if (maxPlayers < 4) {
-            val player4Hub = findViewById<ConstraintLayout>(R.id.p4Hub)
-            player4Hub.visibility = View.GONE
-        }
-        if (maxPlayers < 3) {
-            val player3Hub = findViewById<ConstraintLayout>(R.id.p3Hub)
-            player3Hub.visibility = View.GONE
-        }
+        displayPlayerHubs(maxPlayers)
+
         val playerNumberView = findViewById<TextView>(R.id.maxPlayers)
         playerNumberView.text = maxPlayers.toString()
+    }
+
+    private fun displayPlayerHubs(maxPlayers: Int){
+        val player3Hub = findViewById<ConstraintLayout>(R.id.p3Hub)
+        val player4Hub = findViewById<ConstraintLayout>(R.id.p4Hub)
+
+        when(maxPlayers){
+            2 -> {
+                player3Hub.visibility = View.GONE
+                player4Hub.visibility = View.GONE
+            }
+            3 -> {
+                player3Hub.visibility = View.VISIBLE
+                player4Hub.visibility = View.GONE
+            }
+            4 -> {
+                player3Hub.visibility = View.VISIBLE
+                player4Hub.visibility = View.VISIBLE
+            }
+        }
     }
 
     // adds confirmed players names together to form game name

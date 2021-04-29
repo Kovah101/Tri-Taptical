@@ -154,6 +154,7 @@
                 android:onClick="sendRequest"
                 android:text="Send"
                 android:textSize="12sp"
+                android:textColor="@color/whiteButton"
                 app:layout_constraintStart_toEndOf="@+id/player1Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -168,6 +169,7 @@
                 android:onClick="acceptRequest"
                 android:text="Accept"
                 android:textSize="12sp"
+                android:textColor="@color/whiteButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p1Request"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -242,6 +244,7 @@
                 android:onClick="sendRequest"
                 android:text="Send"
                 android:textSize="12sp"
+                android:textColor="@color/whiteButton"
                 app:layout_constraintStart_toEndOf="@+id/player2Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -255,6 +258,7 @@
                 android:onClick="acceptRequest"
                 android:text="Accept"
                 android:textSize="12sp"
+                android:textColor="@color/whiteButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p2Request"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -329,6 +333,7 @@
                 android:onClick="sendRequest"
                 android:text="Send"
                 android:textSize="12sp"
+                android:textColor="@color/whiteButton"
                 app:layout_constraintStart_toEndOf="@+id/player3Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -342,6 +347,7 @@
                 android:onClick="acceptRequest"
                 android:text="Accept"
                 android:textSize="12sp"
+                android:textColor="@color/whiteButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p3Request"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -416,6 +422,7 @@
                 android:onClick="sendRequest"
                 android:text="Send"
                 android:textSize="12sp"
+                android:textColor="@color/whiteButton"
                 app:layout_constraintStart_toEndOf="@+id/player4Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -429,6 +436,7 @@
                 android:onClick="acceptRequest"
                 android:text="Accept"
                 android:textSize="12sp"
+                android:textColor="@color/whiteButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p4Request"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -453,6 +461,7 @@
             android:background="@drawable/roundedbutton"
             android:onClick="confirmGameDetails"
             android:text="Confirm"
+            android:textColor="@color/whiteButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/clearInvites" />
@@ -464,6 +473,7 @@
             android:layout_marginEnd="32dp"
             android:onClick="clearButton"
             android:text=" Clear Invites"
+            android:textColor="@color/whiteButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/confirmOnline"
             app:layout_constraintStart_toStartOf="parent" />
@@ -487,6 +497,7 @@
             android:background="@drawable/roundedbutton"
             android:onClick="playOnline"
             android:text="Play"
+            android:textColor="@color/whiteButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

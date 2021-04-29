@@ -27,6 +27,7 @@ class Menu : AppCompatActivity() {
          myUsername = loginIntent.getStringExtra("username")
 
         usernameLabel.text = myUsername
+        // do i keep this label???
 
         Toast.makeText(applicationContext, "email:$myEmail, username:$myUsername", Toast.LENGTH_SHORT).show()
     }
