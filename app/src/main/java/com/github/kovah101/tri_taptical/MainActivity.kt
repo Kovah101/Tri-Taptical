@@ -10,6 +10,7 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -55,6 +56,10 @@ class MainActivity : AppCompatActivity() {
         R.id.p1ScoreBoard, R.id.p2ScoreBoard, R.id.p3ScoreBoard, R.id.p4ScoreBoard
     )
 
+    private val playerButtonIDs = arrayOf(
+        R.id.topLeft, R.id.topMiddle, R.id.topRight, R.id.middleLeft
+    )
+
     private var oldCellID = -1
     private var trueCellID = -1
     private var maxPlayers = 4
@@ -88,7 +93,8 @@ class MainActivity : AppCompatActivity() {
                 playerNames = splitString(onlineGameName).toTypedArray()
                 Toast.makeText(this, "There are ${playerNames.size -1} players", Toast.LENGTH_SHORT).show()
                 maxPlayers = playerNames.size - 1
-                // TODO customise player names & disable settings menu
+                // TODO customise player names in hubs
+                enableSettings(false)
                 listenToGame()
                 waitYourTurn(playerNames, myUsername, activePlayer)
             }
@@ -106,6 +112,7 @@ class MainActivity : AppCompatActivity() {
     // listen to specific game branch of database
     // when new move logged update screen and check for winner
     // activate or disable buttons if not your turn
+    // TODO reset board after online winner
     private fun listenToGame() {
         myRef.child("Games").child(onlineGameName)
             .addChildEventListener(object : ChildEventListener {
@@ -160,10 +167,32 @@ class MainActivity : AppCompatActivity() {
 
     // checks if it is your turn
     private fun waitYourTurn(playerNames : Array<String>, myUsername : String, currentPlayer: Int ){
-        // check if it is your turn - enable buttons
+        Toast.makeText(this, "P$currentPlayer: ${playerNames[currentPlayer]} turn", Toast.LENGTH_SHORT).show()
+        // if it is your turn - enable buttons
+        if (playerNames[currentPlayer] == myUsername){
+            enablePlayerButtons(true)
+        }
+        // if not your turn disable buttons
+        else {
+            enablePlayerButtons(false)
+        }
+    }
 
-        // if not your turn - disable buttons
+    private fun enablePlayerButtons(enable: Boolean){
+        // enable or disable player buttons
+            for ( i in 0..24 step 3){
+                val buttonID = locationIDs[i]
+                val button = findViewById<Button>(buttonID)
+                button.isClickable = enable
+        }
+        // enable or disable confirm button
+        val confirmButton = findViewById<Button>(R.id.confirmButton)
+        confirmButton.isClickable = enable
+    }
 
+    private fun enableSettings(enable: Boolean){
+        val settingsButton = findViewById<ImageButton>(R.id.settings)
+        settingsButton.isClickable = enable
     }
 
     // splits string into list around "@"
@@ -268,11 +297,12 @@ class MainActivity : AppCompatActivity() {
         oldCellID = -1
         // reset true cell ID
         trueCellID = -1
-        // check for winner
-        checkForWinner()
 
-        // change player
-        nextPlayer()
+        //  if local game then check winner and go to next player
+        if(!onlineFlag){
+            checkForWinner()
+            nextPlayer()
+        }
     }
 
     private fun nextPlayer(){
@@ -328,7 +358,6 @@ class MainActivity : AppCompatActivity() {
     fun showSettings(view: View) {
         val settingsMenu = findViewById<View>(R.id.settingsMenu)
         settingsMenu.visibility = View.VISIBLE
-        //Toast.makeText(this, "Settings coming Soon!", Toast.LENGTH_SHORT).show()
     }
 
 

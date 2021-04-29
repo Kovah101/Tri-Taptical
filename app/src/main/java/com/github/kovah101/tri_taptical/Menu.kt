@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class Menu : AppCompatActivity() {
 
@@ -23,7 +25,7 @@ class Menu : AppCompatActivity() {
          myID = loginIntent.getStringExtra("userID")
          myUsername = loginIntent.getStringExtra("username")
 
-        Toast.makeText(applicationContext, "$myEmail  $myUsername", Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, "email:$myEmail, username:$myUsername", Toast.LENGTH_SHORT).show()
     }
 
     private val menuTag = "Menu"
@@ -54,6 +56,13 @@ class Menu : AppCompatActivity() {
     fun launchBots(view: View) {
         Log.d(menuTag, "Bot Game coming soon")
         Toast.makeText(applicationContext, "Bot Games Coming Soon", Toast.LENGTH_SHORT).show()
+    }
 
+    fun signOut(view: View){
+        // sign out
+        Firebase.auth.signOut()
+        // take user back to login screen
+        val login = Intent(this, Login::class.java)
+        startActivity(login)
     }
 }
