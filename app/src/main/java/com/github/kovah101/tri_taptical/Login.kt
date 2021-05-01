@@ -35,8 +35,6 @@ class Login : AppCompatActivity() {
         loadMenu()
     }
 
-    // TODO login and sign up buttons for new or old users
-
     private fun loadMenu() {
         // Check if user is signed in (non-null) and move to menu
         val currentUser = mAuth.currentUser

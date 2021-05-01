@@ -58,8 +58,14 @@ class Menu : AppCompatActivity() {
     // Pop up for bot difficulty & number
     // Confirm to launch bot game
     fun launchBots(view: View) {
-        Log.d(menuTag, "Bot Game coming soon")
-        Toast.makeText(applicationContext, "Bot Games Coming Soon", Toast.LENGTH_SHORT).show()
+        val botLobby = Intent(this, BotLobby::class.java)
+        //botLobby.putExtra("email", myEmail)
+        //botLobby.putExtra("userID", myID)
+        botLobby.putExtra("username", myUsername)
+
+        startActivity(botLobby)
+        //Log.d(menuTag, "Bot Game coming soon")
+        //Toast.makeText(applicationContext, "Bot Games Coming Soon", Toast.LENGTH_SHORT).show()
     }
 
     fun signOut(view: View){

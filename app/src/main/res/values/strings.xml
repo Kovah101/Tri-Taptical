@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Tri-Tap-Toe</string>
+    <string name="username">Username</string>
+    <string name="four">4</string>
+    <string name="max_players">Max Players:</string>
+    <string name="send">Send</string>
+    <string name="accept">Accept</string>
+    <string name="confirm">Confirm</string>
+    <string name="clear_invites">Clear Invites</string>
+    <string name="play">Play</string>
+    <string name="human">Human</string>
+    <string name="bot">Bot</string>
 </resources>

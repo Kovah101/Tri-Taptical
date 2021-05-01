@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TriTaptical">
-        <activity android:name=".OnlineLobby"></activity>
+        <activity android:name=".OnlineLobby"/>
+        <activity android:name=".BotLobby" />
         <activity android:name=".Menu" />
         <activity android:name=".Login">
             <intent-filter>
