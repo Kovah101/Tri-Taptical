@@ -34,12 +34,16 @@ class MainActivity : AppCompatActivity() {
     // instance of database
     private val database = Firebase.database
     private val myRef = database.reference
-    private val TAG = "OnlineGame"
+    //private val TAG = "OnlineGame"
     // online variables
     private var onlineGameName = ""
     private var myUsername = ""
     private var onlineFlag = false
     private var playerNames = arrayOf("", "", "", "")
+    // bot variables
+    private var botGameName = ""
+    private var bots = arrayOf(0,0,0,0)
+
     private val locationIDs = arrayOf(
         R.id.topLeft, R.id.topLeftMiddle, R.id.topLeftInner,
         R.id.topMiddle, R.id.topMiddleMiddle, R.id.topMiddleInner,
@@ -79,6 +83,7 @@ class MainActivity : AppCompatActivity() {
             // setup for local game
             localGame -> {
                 Toast.makeText(this, "Local Game!", Toast.LENGTH_SHORT).show()
+                onlineFlag = false
             }
             // setup for online game
             onlineGame -> {
@@ -97,6 +102,15 @@ class MainActivity : AppCompatActivity() {
             // setup bot game
             botGame -> {
                 Toast.makeText(this, "Bot Game!", Toast.LENGTH_SHORT).show()
+                onlineFlag = false
+                botGameName = loadingIntent.getStringExtra("gameName")!!
+                myUsername = loadingIntent.getStringExtra("myUsername")!!
+                var botString = loadingIntent.getStringExtra("bots")
+                botString = botString.dropLast(1)
+                // convert string to array of strings then to integers
+               // bots = splitString(botString).map { it.toInt() }.toTypedArray()
+                Toast.makeText(this, "Bots: $botString", Toast.LENGTH_SHORT).show()
+
             }
             else -> {
                 Toast.makeText(this, "How did you launch this?", Toast.LENGTH_SHORT).show()
@@ -147,7 +161,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.w(TAG, "gameListener:onCancelled", error.toException())
+                    Log.w(onlineGame, "gameListener:onCancelled", error.toException())
                     Toast.makeText(
                         applicationContext, "Failed to listen to Game.",
                         Toast.LENGTH_SHORT
@@ -278,7 +292,7 @@ class MainActivity : AppCompatActivity() {
     fun confirmMove(view: View) {
         // add confirmed move to hash map with cell and active player
         confirmedMoves[trueCellID] = activePlayer
-        Log.d(TAG, "$trueCellID")
+        Log.d(onlineGame, "$trueCellID")
         // if online game then send confirmed move
         if (onlineFlag){
             val onlineMove = "$trueCellID@$activePlayer"
