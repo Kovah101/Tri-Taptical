@@ -1,20 +1,13 @@
 package com.github.kovah101.tri_taptical
 
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputType
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.online_lobby.*
@@ -23,18 +16,18 @@ class BotLobby : AppCompatActivity() {
 
     private var maxPlayers = 4
     private lateinit var myEmail: String
-    //private lateinit var myID: String
     private lateinit var myUsername: String
     private lateinit var hostUsername: String
-    private lateinit var onlineGameName: String
+    private lateinit var botGameName: String
     private var myPlayerNumber = 0
     private var playerNames = arrayOf("", "", "", "")
     private var myTotalPlayerNumbers = arrayOf(0, 0, 0, 0)
+    private var botPlayers = arrayOf(0,0,0,0)
 
     // instance of database
     private val database = Firebase.database
     private val myRef = database.reference
-    private val TAG = "OnlineLobby"
+    private val TAG = "BotLobby"
 
     // loading square ids
     private val loadingSquareIDs = arrayOf(
@@ -53,8 +46,6 @@ class BotLobby : AppCompatActivity() {
 
         // extract info from login page
         val menuIntent = intent
-        //myEmail = menuIntent.getStringExtra("email")
-        //myID = menuIntent.getStringExtra("userID")
         myUsername = menuIntent.getStringExtra("username")
         myEmail = myUsername
 
@@ -65,63 +56,53 @@ class BotLobby : AppCompatActivity() {
         clearEverything()
 
         Toast.makeText(applicationContext, "Started Bot Lobby!", Toast.LENGTH_SHORT).show()
-
-        // set up request listeners on your own Requests branch of database
-        //listenForInvites()
-
-        // set up accept listeners on your own Accepts branch of database
-        //listenForAccepts()
-
-        // set up game listeners on your own Games branch of the database
-        //listenForGames()
-
-
-        // if Send button clicks then disable Accept as player is host
-//        listOf(p1Request, p2Request, p3Request, p4Request).forEach { button ->
-//            button.setOnClickListener { sentButtonClicked() }
-//        }
-
-        // if Accept button clicks then disable Send as player is guest
-//        listOf(p1Accept, p2Accept, p3Accept, p4Accept).forEach {
-//            it.setOnClickListener { acceptButtonClicked() }
-//        }
     }
 
     // confirms player as human
-    // TODO light up first two squares, store player names in array
     fun humanPlayer(view: View) {
         var playerNumber = 0
         var guestPlayer = ""
 
-        // check if edit texts are empty
+        // check if edit texts are empty if so show error and return
+        // if not empty, store name, clear bot in that place and light up first two squares
         when (view) {
             p1Request -> {
                 guestPlayer = player1Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 1
+                playerNames[playerNumber-1] = guestPlayer
+                botPlayers[playerNumber-1] = 0
                 lightUpSquare(playerNumber, 1)
+                lightUpSquare(playerNumber, 2)
             }
             p2Request -> {
                 guestPlayer = player2Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 2
+                playerNames[playerNumber-1] = guestPlayer
+                botPlayers[playerNumber-1] = 0
                 lightUpSquare(playerNumber, 1)
+                lightUpSquare(playerNumber, 2)
             }
             p3Request -> {
                 guestPlayer = player3Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 3
+                playerNames[playerNumber-1] = guestPlayer
+                botPlayers[playerNumber-1] = 0
                 lightUpSquare(playerNumber, 1)
+                lightUpSquare(playerNumber, 2)
             }
             p4Request -> {
                 guestPlayer = player4Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 4
+                playerNames[playerNumber-1] = guestPlayer
+                botPlayers[playerNumber-1] = 0
                 lightUpSquare(playerNumber, 1)
+                lightUpSquare(playerNumber, 2)
             }
         }
-        myRef.child("Users").child(guestPlayer).child("Requests").push()
-            .setValue("$myUsername@$playerNumber")
 
     }
 
@@ -138,20 +119,53 @@ class BotLobby : AppCompatActivity() {
     // creates a bot of easy, medium or hard difficulty
     // TODO cycle through easy, medium or hard bots and add to Bot array, light up two stages
     fun generateBot(view: View) {
-        if (myPlayerNumber != 0) {
+        var playerNumber = 0
+        var guestPlayer = ""
+
             when (view) {
-                p1Accept -> lightUpSquare(1, 2)
-                p2Accept -> lightUpSquare(2, 2)
-                p3Accept -> lightUpSquare(3, 2)
-                p4Accept -> lightUpSquare(4, 2)
+                p1Accept -> {
+                    guestPlayer = player1Username.text.toString()
+                    if (checkIfEmpty(guestPlayer)) return
+                    playerNumber = 1
+                    playerNames[playerNumber-1] = guestPlayer
+                    cycleBots(playerNumber)
+                    lightUpSquare(playerNumber, 1)
+                    lightUpSquare(playerNumber, 2)
+
+                }
+                p2Accept -> {
+                    guestPlayer = player1Username.text.toString()
+                    if (checkIfEmpty(guestPlayer)) return
+                    playerNumber = 2
+                    playerNames[playerNumber-1] = guestPlayer
+                    cycleBots(playerNumber)
+                    lightUpSquare(playerNumber, 1)
+                    lightUpSquare(playerNumber, 2)
+                }
+                p3Accept -> {
+                    guestPlayer = player1Username.text.toString()
+                    if (checkIfEmpty(guestPlayer)) return
+                    playerNumber = 3
+                    playerNames[playerNumber-1] = guestPlayer
+                    cycleBots(playerNumber)
+                    lightUpSquare(playerNumber, 1)
+                    lightUpSquare(playerNumber, 2)
+                }
+                p4Accept -> {
+                    guestPlayer = player1Username.text.toString()
+                    if (checkIfEmpty(guestPlayer)) return
+                    playerNumber = 4
+                    playerNames[playerNumber-1] = guestPlayer
+                    cycleBots(playerNumber)
+                    lightUpSquare(playerNumber, 1)
+                    lightUpSquare(playerNumber, 2)
+                }
             }
-            myRef.child("Users").child(hostUsername).child("Accepts").push()
-                .setValue("$myUsername@$myPlayerNumber")
-        } else {
-            Toast.makeText(
-                applicationContext, "You have no requests to accept", Toast.LENGTH_SHORT
-            ).show()
-        }
+    }
+
+    // TODO cycle through easy, medium, hard bots and change button to display difficulty and add to array
+    private fun cycleBots(playerNumber: Int){
+
     }
 
 
@@ -226,156 +240,9 @@ class BotLobby : AppCompatActivity() {
     fun playOnline(view: View) {
         val onlineGame = Intent(this, MainActivity::class.java)
         onlineGame.putExtra("gameType", "BotGame")
-        onlineGame.putExtra("gameName", onlineGameName)
+        onlineGame.putExtra("gameName", botGameName)
         onlineGame.putExtra("myUsername", myUsername)
         startActivity(onlineGame)
-    }
-
-    // listen to your own requests in database
-    private fun listenForInvites() {
-        myRef.child("Users").child(myUsername).child("Requests")
-            .addChildEventListener(object : ChildEventListener {
-                // get latest request
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    try {
-                        val requestValue = snapshot.value as String
-                        val requestParts = splitString(requestValue)
-                        myPlayerNumber = requestParts[1].toInt()
-                        hostUsername = requestParts[0]
-                        Toast.makeText(
-                            applicationContext,
-                            "Request from $hostUsername, You are player:${requestParts[1]}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        fillPlayerHub(myUsername, myPlayerNumber)
-                        lightUpSquare(myPlayerNumber, 1)
-                        //TODO add waiting for other players + light up first square
-                        myTotalPlayerNumbers[myPlayerNumber - 1] = myPlayerNumber
-                    } catch (ex: Exception) {
-                        Log.w(TAG, "requestListener:onChildAdded", ex)
-                        Toast.makeText(
-                            applicationContext, "Failed to listen for added Request-Child.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-
-                }
-
-                override fun onChildRemoved(snapshot: DataSnapshot) {
-                }
-
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.w(TAG, "requestListener:onCancelled", error.toException())
-                    Toast.makeText(
-                        applicationContext, "Failed to listen to Requests.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-    }
-
-    private fun listenForAccepts() {
-        myRef.child("Users").child(myUsername).child("Accepts")
-            .addChildEventListener(object : ChildEventListener {
-                // get latest accept
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    try {
-                        // get accept data and store confirmed guest
-                        val acceptValue = snapshot.value as String
-                        val acceptParts = splitString(acceptValue)
-                        val acceptedPlayerNumber = acceptParts[1].toInt()
-                        val acceptedPlayerName = acceptParts[0]
-                        playerNames[acceptedPlayerNumber - 1] = acceptedPlayerName
-                        Toast.makeText(
-                            applicationContext,
-                            "Accept from P$acceptedPlayerNumber:$acceptedPlayerName",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        // disable the relevant editText & light up accept square
-                        lightUpSquare(acceptedPlayerNumber, 2)
-                        disableUsernameInput(acceptedPlayerNumber)
-                    } catch (ex: java.lang.Exception) {
-                        Log.w(TAG, "acceptListener:onChildAdded", ex)
-                        Toast.makeText(
-                            applicationContext, "Failed to listen for added Accept-Child.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                }
-
-                override fun onChildRemoved(snapshot: DataSnapshot) {
-                }
-
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.w(TAG, "acceptListener:onCancelled", error.toException())
-                    Toast.makeText(
-                        applicationContext, "Failed to listen to Accepts.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-    }
-
-    private fun listenForGames() {
-        myRef.child("Users").child(myUsername).child("Games")
-            .addChildEventListener(object : ChildEventListener {
-                // get latest game
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    try {
-                        // get game name & fill in the lobby with player info
-                        onlineGameName = snapshot.value.toString()
-                        // first value is unique time stamp
-                        val lobbyPlayers = splitString(onlineGameName)
-                        for (playerNumber in 1 until lobbyPlayers.size) {
-                            fillPlayerHub(lobbyPlayers[playerNumber], playerNumber)
-                            lightUpSquare(playerNumber, 1)
-                            lightUpSquare(playerNumber, 2)
-                            lightUpSquare(playerNumber, 3)
-                            maxPlayers = lobbyPlayers.size -1
-                            // TODO Hide or show player hubs
-                            displayPlayerHubs(maxPlayers)
-                        }
-                        confirmAndClearHub.visibility = View.GONE
-                        playHub.visibility = View.VISIBLE
-
-                    } catch (ex: java.lang.Exception) {
-                        Log.w(TAG, "gameListener:onChildAdded", ex)
-                        Toast.makeText(
-                            applicationContext, "Failed to listen for added Games-Child.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                }
-
-                override fun onChildRemoved(snapshot: DataSnapshot) {
-                }
-
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.w(TAG, "gameListener:onCancelled", error.toException())
-                    Toast.makeText(
-                        applicationContext, "Failed to listen to Games.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
     }
 
     private fun fillPlayerHub(username: String, playerNumber: Int) {

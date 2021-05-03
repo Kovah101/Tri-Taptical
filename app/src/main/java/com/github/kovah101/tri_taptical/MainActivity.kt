@@ -56,9 +56,6 @@ class MainActivity : AppCompatActivity() {
         R.id.p1ScoreBoard, R.id.p2ScoreBoard, R.id.p3ScoreBoard, R.id.p4ScoreBoard
     )
 
-    private val playerButtonIDs = arrayOf(
-        R.id.topLeft, R.id.topMiddle, R.id.topRight, R.id.middleLeft
-    )
 
     private var oldCellID = -1
     private var trueCellID = -1
@@ -75,7 +72,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-
 
         val loadingIntent = intent
         val gameType = loadingIntent.getStringExtra("gameType")
