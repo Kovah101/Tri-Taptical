@@ -20,8 +20,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-
-// TODO add autoPlay AI, possibly with difficulty?
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
@@ -100,6 +98,7 @@ class MainActivity : AppCompatActivity() {
                 waitYourTurn(playerNames, myUsername, activePlayer)
             }
             // setup bot game
+            // TODO split botString, customise player names and implement bot turns
             botGame -> {
                 Toast.makeText(this, "Bot Game!", Toast.LENGTH_SHORT).show()
                 onlineFlag = false

@@ -135,7 +135,7 @@
 
             <EditText
                 android:id="@+id/player1Username"
-                android:layout_width="wrap_content"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
@@ -148,19 +148,20 @@
 
             <Button
                 android:id="@+id/p1Human"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/roundedbutton"
                 android:onClick="humanPlayer"
                 android:text="@string/human"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player1Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/p1Bot"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -225,7 +226,7 @@
 
             <EditText
                 android:id="@+id/player2Username"
-                android:layout_width="wrap_content"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
@@ -238,19 +239,20 @@
 
             <Button
                 android:id="@+id/p2Human"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/roundedbutton"
                 android:onClick="humanPlayer"
                 android:text="@string/human"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player2Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/p2Bot"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -314,7 +316,7 @@
 
             <EditText
                 android:id="@+id/player3Username"
-                android:layout_width="wrap_content"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
@@ -327,19 +329,20 @@
 
             <Button
                 android:id="@+id/p3Human"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/roundedbutton"
                 android:onClick="humanPlayer"
                 android:text="@string/human"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player3Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/p3Bot"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -403,7 +406,7 @@
 
             <EditText
                 android:id="@+id/player4Username"
-                android:layout_width="wrap_content"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
@@ -416,19 +419,20 @@
 
             <Button
                 android:id="@+id/p4Human"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/roundedbutton"
                 android:onClick="humanPlayer"
                 android:text="@string/human"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player4Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/p4Bot"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -456,7 +460,7 @@
         <Button
             android:id="@+id/confirmOnline"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginStart="32dp"
             android:background="@drawable/roundedbutton"
             android:onClick="confirmGameDetails"
@@ -469,8 +473,10 @@
         <Button
             android:id="@+id/clearInvites"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginEnd="32dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:onClick="clearButton"
             android:text=" Clear Invites"
             android:textColor="@color/whiteButton"

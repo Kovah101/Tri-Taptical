@@ -41,6 +41,7 @@ class BotLobby : AppCompatActivity() {
     private var myTotalPlayerNumbers = arrayOf(0, 0, 0, 0)
     private var botPlayers = arrayOf(0, 0, 0, 0)
     private val TAG = "BotLobby"
+    private val botTag = "Bot"
 
     // loading square ids
     private val loadingSquareIDs = arrayOf(
@@ -50,16 +51,13 @@ class BotLobby : AppCompatActivity() {
         R.id.p4BigSquare, R.id.p4MiddleSquare, R.id.p4SmallSquare
     )
 
-    // TODO: remove online database references
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.bot_lobby)
 
         // extract info from login page
         val menuIntent = intent
-        myUsername = menuIntent.getStringExtra("username")
+        myUsername = menuIntent.getStringExtra("username")!!
         myEmail = myUsername
 
         //set username field to your actual username
@@ -85,6 +83,7 @@ class BotLobby : AppCompatActivity() {
                 playerNumber = 1
                 playerNames[playerNumber - 1] = guestPlayer
                 botPlayers[playerNumber - 1] = 0
+                renameBotButton(playerNumber)
                 Log.d(TAG, "${botPlayers[playerNumber - 1]}")
                 resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
@@ -96,6 +95,7 @@ class BotLobby : AppCompatActivity() {
                 playerNumber = 2
                 playerNames[playerNumber - 1] = guestPlayer
                 botPlayers[playerNumber - 1] = 0
+                renameBotButton(playerNumber)
                 Log.d(TAG, "${botPlayers[playerNumber - 1]}")
                 resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
@@ -107,6 +107,7 @@ class BotLobby : AppCompatActivity() {
                 playerNumber = 3
                 playerNames[playerNumber - 1] = guestPlayer
                 botPlayers[playerNumber - 1] = 0
+                renameBotButton(playerNumber)
                 Log.d(TAG, "${botPlayers[playerNumber - 1]}")
                 resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
@@ -118,6 +119,7 @@ class BotLobby : AppCompatActivity() {
                 playerNumber = 4
                 playerNames[playerNumber - 1] = guestPlayer
                 botPlayers[playerNumber - 1] = 0
+                renameBotButton(playerNumber)
                 Log.d(TAG, "${botPlayers[playerNumber - 1]}")
                 resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
@@ -179,6 +181,7 @@ class BotLobby : AppCompatActivity() {
         }
     }
 
+    // cycle through easy, medium or hard (1-2-3) bots, fill array, and light squares
     private fun cycleBots(playerNumber: Int) {
         botPlayers[playerNumber - 1]++
         if (botPlayers[playerNumber - 1] >= 4) {
@@ -186,7 +189,18 @@ class BotLobby : AppCompatActivity() {
         }
         lightUpSquare(playerNumber, botPlayers[playerNumber - 1])
         Log.d(TAG, "${botPlayers[playerNumber - 1]}")
+        renameBotButton(playerNumber)
+    }
 
+    // rename corresponding bot button to display correct difficulty
+    private fun renameBotButton(playerNumber: Int){
+        val botNames = arrayOf("Bot", "Easy-Bot", "Med-Bot", "Hard-Bot")
+        when(playerNumber){
+            1 -> p1Bot.text = botNames[botPlayers[playerNumber-1]]
+            2 -> p2Bot.text = botNames[botPlayers[playerNumber-1]]
+            3 -> p3Bot.text = botNames[botPlayers[playerNumber-1]]
+            4 -> p4Bot.text = botNames[botPlayers[playerNumber-1]]
+        }
     }
 
     fun clearButton(view: View) {
