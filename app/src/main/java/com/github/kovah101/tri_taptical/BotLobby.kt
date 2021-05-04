@@ -31,9 +31,7 @@ import kotlinx.android.synthetic.main.online_lobby.username
 class BotLobby : AppCompatActivity() {
 
     private var maxPlayers = 4
-    private lateinit var myEmail: String
     private lateinit var myUsername: String
-    private lateinit var hostUsername: String
     private lateinit var botGameName: String
     private lateinit var bots : String
     private var myPlayerNumber = 0
@@ -41,7 +39,7 @@ class BotLobby : AppCompatActivity() {
     private var myTotalPlayerNumbers = arrayOf(0, 0, 0, 0)
     private var botPlayers = arrayOf(0, 0, 0, 0)
     private val TAG = "BotLobby"
-    private val botTag = "Bot"
+
 
     // loading square ids
     private val loadingSquareIDs = arrayOf(
@@ -58,7 +56,6 @@ class BotLobby : AppCompatActivity() {
         // extract info from login page
         val menuIntent = intent
         myUsername = menuIntent.getStringExtra("username")!!
-        myEmail = myUsername
 
         //set username field to your actual username
         username.text = myUsername
@@ -82,10 +79,9 @@ class BotLobby : AppCompatActivity() {
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 1
                 playerNames[playerNumber - 1] = guestPlayer
+                resetLoadingSquares(playerNumber)
                 botPlayers[playerNumber - 1] = 0
                 renameBotButton(playerNumber)
-                Log.d(TAG, "${botPlayers[playerNumber - 1]}")
-                resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
                 lightUpSquare(playerNumber, 2)
             }
@@ -94,10 +90,9 @@ class BotLobby : AppCompatActivity() {
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 2
                 playerNames[playerNumber - 1] = guestPlayer
+                resetLoadingSquares(playerNumber)
                 botPlayers[playerNumber - 1] = 0
                 renameBotButton(playerNumber)
-                Log.d(TAG, "${botPlayers[playerNumber - 1]}")
-                resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
                 lightUpSquare(playerNumber, 2)
             }
@@ -106,10 +101,9 @@ class BotLobby : AppCompatActivity() {
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 3
                 playerNames[playerNumber - 1] = guestPlayer
+                resetLoadingSquares(playerNumber)
                 botPlayers[playerNumber - 1] = 0
                 renameBotButton(playerNumber)
-                Log.d(TAG, "${botPlayers[playerNumber - 1]}")
-                resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
                 lightUpSquare(playerNumber, 2)
             }
@@ -118,10 +112,9 @@ class BotLobby : AppCompatActivity() {
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 4
                 playerNames[playerNumber - 1] = guestPlayer
+                resetLoadingSquares(playerNumber)
                 botPlayers[playerNumber - 1] = 0
                 renameBotButton(playerNumber)
-                Log.d(TAG, "${botPlayers[playerNumber - 1]}")
-                resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
                 lightUpSquare(playerNumber, 2)
             }
@@ -140,7 +133,6 @@ class BotLobby : AppCompatActivity() {
     }
 
     // creates a bot of easy, medium or hard difficulty
-    // TODO cycle through easy, medium or hard bots and add to Bot array, light up two stages
     fun generateBot(view: View) {
         var playerNumber = 0
         var guestPlayer = ""
@@ -180,6 +172,14 @@ class BotLobby : AppCompatActivity() {
             }
         }
     }
+    // possibly use for refactoring
+    private fun generatePlayer(playerNumber: Int){
+        val usernameHubs = arrayOf(player1Username, player2Username, player3Username, player4Username)
+        val guestPlayer = usernameHubs[playerNumber-1].text.toString()
+        if (checkIfEmpty(guestPlayer)) return
+        playerNames[playerNumber - 1] = guestPlayer
+        resetLoadingSquares(playerNumber)
+    }
 
     // cycle through easy, medium or hard (1-2-3) bots, fill array, and light squares
     private fun cycleBots(playerNumber: Int) {
@@ -209,7 +209,6 @@ class BotLobby : AppCompatActivity() {
 
     // clears your Request and Accept lists
     // colours loading squares black
-    // TODO reset buttons to clickable = true
     private fun clearEverything() {
         // reset variables
         myPlayerNumber = 0
@@ -286,10 +285,8 @@ class BotLobby : AppCompatActivity() {
         }
         // create game name from player names
         botGameName = createGameName(playerNames)
-        //Toast.makeText(applicationContext, gameName, Toast.LENGTH_SHORT).show()
         // create bot string to pass on
         bots = createBotString(botPlayers)
-        //Toast.makeText(applicationContext, playerBots, Toast.LENGTH_SHORT).show()
         // light up all squares available
         for (player in 1..maxPlayers){
             lightUpSquare(player, 1)
@@ -298,12 +295,9 @@ class BotLobby : AppCompatActivity() {
         }
         confirmAndClearHubBots.visibility  = View.GONE
         playHubBots.visibility = View.VISIBLE
-        //confirmAndClearHub.visibility = View.GONE
-        //playHub.visibility = View.VISIBLE
     }
 
     // play button launches game passing the gameName in the intent
-    // TODO launch activity with result
     fun playBots(view: View) {
         val botGame = Intent(this, MainActivity::class.java)
         botGame.putExtra("gameType", "BotGame")
@@ -349,38 +343,6 @@ class BotLobby : AppCompatActivity() {
                 3 -> p4SmallSquare.setBackgroundColor(resources.getColor(playerColors[playerNumber - 1]))
             }
         }
-    }
-
-    // disables username input field in UI
-    private fun disableUsernameInput(playerNumber: Int) {
-        // 0 is not editable
-        when (playerNumber) {
-            1 -> player1Username.inputType = 0
-            2 -> player2Username.inputType = 0
-            3 -> player3Username.inputType = 0
-            4 -> player4Username.inputType = 0
-        }
-    }
-
-    // splits string into list around "@"
-    private fun splitString(string: String): List<String> {
-        return string.split("@")
-    }
-
-    private fun sentButtonClicked() {
-        Log.d("Test", "sentButton Clicked")
-        p1Accept.isClickable = false
-        p2Accept.isClickable = false
-        p3Accept.isClickable = false
-        p4Accept.isClickable = false
-    }
-
-    private fun acceptButtonClicked() {
-        Log.d("Test", "acceptButton Clicked")
-        p1Human.isClickable = false
-        p2Request.isClickable = false
-        p3Request.isClickable = false
-        p4Request.isClickable = false
     }
 
     // increase max player count
