@@ -9,16 +9,15 @@ import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.*
+import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     private var onlineGameName = ""
     private var myUsername = ""
     private var onlineFlag = false
-    private var playerNames = arrayOf("", "", "", "")
+    private var playerNames = arrayOf("", "1", "2", "3", "4")
     // bot variables
     private var botGameName = ""
     private var bots = arrayOf(0,0,0,0)
@@ -82,6 +81,7 @@ class MainActivity : AppCompatActivity() {
             localGame -> {
                 Toast.makeText(this, "Local Game!", Toast.LENGTH_SHORT).show()
                 onlineFlag = false
+                enableSettings(false)
             }
             // setup for online game
             onlineGame -> {
@@ -90,7 +90,6 @@ class MainActivity : AppCompatActivity() {
                 onlineGameName = loadingIntent.getStringExtra("gameName")!!
                 myUsername = loadingIntent.getStringExtra("myUsername")!!
                 playerNames = splitString(onlineGameName).toTypedArray()
-                Toast.makeText(this, "There are ${playerNames.size -1} players", Toast.LENGTH_SHORT).show()
                 maxPlayers = playerNames.size - 1
                 // TODO customise player names in hubs
                 enableSettings(false)
@@ -98,23 +97,43 @@ class MainActivity : AppCompatActivity() {
                 waitYourTurn(playerNames, myUsername, activePlayer)
             }
             // setup bot game
-            // TODO split botString, customise player names and implement bot turns
+            // TODO customise player names and implement bot turns
             botGame -> {
                 Toast.makeText(this, "Bot Game!", Toast.LENGTH_SHORT).show()
                 onlineFlag = false
                 botGameName = loadingIntent.getStringExtra("gameName")!!
                 myUsername = loadingIntent.getStringExtra("myUsername")!!
-                var botString = loadingIntent.getStringExtra("bots")
+                var botString = loadingIntent.getStringExtra("bots")!!
                 botString = botString.dropLast(1)
                 // convert string to array of strings then to integers
-               // bots = splitString(botString).map { it.toInt() }.toTypedArray()
-                Toast.makeText(this, "Bots: $botString", Toast.LENGTH_SHORT).show()
+                bots = splitString(botString).map { it.toInt() }.toTypedArray()
+                playerNames = splitString(botGameName).toTypedArray()
+                setupGame(playerNames)
+                //Toast.makeText(this, "Player Names: ${playerNames.contentToString()}", Toast.LENGTH_SHORT).show()
+                enableSettings(false)
 
             }
             else -> {
                 Toast.makeText(this, "How did you launch this?", Toast.LENGTH_SHORT).show()
 
             }
+        }
+    }
+
+    // takes player names, assigns max players, and fills in Player hubs
+    private fun setupGame(playerNames: Array<String>){
+        maxPlayers = playerNames.size - 1
+        // hide all hubs
+        scoreBoardIDs.forEach { scoreboardID ->
+            val scoreboard = findViewById<View>(scoreboardID)
+            scoreboard.visibility = View.GONE
+        }
+        // show usable hubs and fill with player names
+        for (player in 1..maxPlayers){
+            val scoreboard = findViewById<TextView>(scoreBoardIDs[player-1])
+            scoreboard.visibility = View.VISIBLE
+            val scoreboardText = playerNames[player] + ":"
+            scoreboard.text = scoreboardText
         }
     }
 
@@ -422,10 +441,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateScore() {
-        for (player in 1..score.size) {
+        for (player in 1..maxPlayers) {
             val scoreBoardID = scoreBoardIDs[player - 1]
             val scoreBoard = findViewById<TextView>(scoreBoardID)
-            val scoreString = "P$player: ${score[player - 1]}"
+            val scoreString = "${playerNames[player]}:${score[player - 1]}"
             scoreBoard.text = scoreString
             scoreBoard.gravity = Gravity.CENTER
         }
