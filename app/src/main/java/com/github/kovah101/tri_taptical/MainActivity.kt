@@ -1,6 +1,6 @@
 package com.github.kovah101.tri_taptical
 
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +16,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.util.*
 import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
@@ -57,7 +56,6 @@ class MainActivity : AppCompatActivity() {
         R.id.p1ScoreBoard, R.id.p2ScoreBoard, R.id.p3ScoreBoard, R.id.p4ScoreBoard
     )
 
-
     private var oldCellID = -1
     private var trueCellID = -1
     private var maxPlayers = 4
@@ -91,13 +89,12 @@ class MainActivity : AppCompatActivity() {
                 myUsername = loadingIntent.getStringExtra("myUsername")!!
                 playerNames = splitString(onlineGameName).toTypedArray()
                 maxPlayers = playerNames.size - 1
-                // TODO customise player names in hubs
+                setupGame(playerNames)
                 enableSettings(false)
                 listenToGame()
                 waitYourTurn(playerNames, myUsername, activePlayer)
             }
             // setup bot game
-            // TODO customise player names and implement bot turns
             botGame -> {
                 Toast.makeText(this, "Bot Game!", Toast.LENGTH_SHORT).show()
                 onlineFlag = false
@@ -111,6 +108,7 @@ class MainActivity : AppCompatActivity() {
                 setupGame(playerNames)
                 //Toast.makeText(this, "Player Names: ${playerNames.contentToString()}", Toast.LENGTH_SHORT).show()
                 enableSettings(false)
+                waitForBots(bots)
 
             }
             else -> {
@@ -135,6 +133,12 @@ class MainActivity : AppCompatActivity() {
             val scoreboardText = playerNames[player] + ":"
             scoreboard.text = scoreboardText
         }
+    }
+
+    // wait for bots go
+    // TODO implement waiting and behaviour AI
+    private fun waitForBots(bots: Array<Int>){
+
     }
 
     // listen to specific game branch of database
