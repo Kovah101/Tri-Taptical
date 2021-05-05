@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     // instance of database
     private val database = Firebase.database
     private val myRef = database.reference
-    //private val TAG = "OnlineGame"
     // online variables
     private var onlineGameName = ""
     private var myUsername = ""
@@ -138,7 +137,12 @@ class MainActivity : AppCompatActivity() {
     // wait for bots go
     // TODO implement waiting and behaviour AI
     private fun waitForBots(bots: Array<Int>){
-
+       // if bots = 0 then human player so skip function
+        if(bots[activePlayer-1] == 0){
+           return
+        } else {
+            botTurn(bots[activePlayer-1])
+        }
     }
 
     // listen to specific game branch of database
@@ -204,7 +208,7 @@ class MainActivity : AppCompatActivity() {
             enablePlayerButtons(false)
         }
     }
-
+    // enable or disable player buttons if it is or isn't your turn
     private fun enablePlayerButtons(enable: Boolean){
         // enable or disable player buttons
             for ( i in 0..24 step 3){
@@ -217,6 +221,7 @@ class MainActivity : AppCompatActivity() {
         confirmButton.isClickable = enable
     }
 
+    // enable or disable settings button
     private fun enableSettings(enable: Boolean){
         val settingsButton = findViewById<ImageButton>(R.id.settings)
         settingsButton.isClickable = enable
@@ -227,6 +232,7 @@ class MainActivity : AppCompatActivity() {
         return string.split("@")
     }
 
+    // cycles through possible moves and lights up selected move
     fun changeColor(view: View) {
         val selectedButton = view as Button
         var cellID = 0
@@ -289,6 +295,7 @@ class MainActivity : AppCompatActivity() {
         setSegmentColor(trueCellID, lastTrueCellID, activePlayer)
     }
 
+    // lights up the selected segment in the corresponding player color
     private fun setSegmentColor(cellID: Int, lastCellID: Int, activePlayer: Int) {
         val playerOneColor = resources.getColor(R.color.playerOne)
         val playerTwoColor = resources.getColor(R.color.playerTwo)
@@ -311,6 +318,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // confirms move to array, if online publishes the move to players
     fun confirmMove(view: View) {
         // add confirmed move to hash map with cell and active player
         confirmedMoves[trueCellID] = activePlayer
@@ -332,6 +340,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // increments active player
     private fun nextPlayer(){
         activePlayer++
         if (activePlayer > maxPlayers) {
@@ -339,6 +348,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // restarts the game by clearing board and updating scores
     fun resetBoard(view: View) {
         // reset the board
         val white = resources.getColor(R.color.white)
@@ -376,18 +386,19 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // calculates the starting player based on the score and max player number
     private fun startingPlayer(maxPlayers: Int, score: Array<Int>): Int {
         val totalScore = score[0] + score[1] + score[2] + score[3]
         return (totalScore % maxPlayers) + 1
-
     }
 
+    // reveals the settings menu
     fun showSettings(view: View) {
         val settingsMenu = findViewById<View>(R.id.settingsMenu)
         settingsMenu.visibility = View.VISIBLE
     }
 
-
+    // checks for winner, if there is then blink the winning moves, update the scores and show reset
     private fun checkForWinner() {
         var winFlag = false
         Log.d("ButtonPress", "Check Winner")
@@ -411,7 +422,6 @@ class MainActivity : AppCompatActivity() {
             winFlag = true
             Log.d("ButtonPress", "We have a diagonal winner")
         }
-
 
         // if there is a winner, add to scoreboard, show toast notification & reset board
         if (winFlag) {
@@ -443,7 +453,7 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
-
+    // takes scores and displays them to scoreboards
     private fun updateScore() {
         for (player in 1..maxPlayers) {
             val scoreBoardID = scoreBoardIDs[player - 1]
@@ -455,6 +465,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // checks for 3 in a row on the spot
     private fun spotWinner(): Boolean {
         // check for same cell winners
         for (i in 0..locationIDs.size step 3) {
@@ -468,6 +479,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    // checks for 3 in a row horizontally
     private fun horizontalWinner(): Boolean {
         // check for same size winning rows
         for (i in 0..18 step 9) {
@@ -502,6 +514,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    // checks for 3 in a row vertically
     private fun verticalWinner(): Boolean {
         // check for same size winning columns
         for (i in 0..8) {
@@ -533,6 +546,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    // checks for 3 in a row diagonally
     private fun diagonalWinner(): Boolean {
         // check topLeft to bottomRight
         // same size
@@ -599,5 +613,30 @@ class MainActivity : AppCompatActivity() {
         }
         val playerNumberView = findViewById<TextView>(R.id.maxPlayerNumber)
         playerNumberView.text = maxPlayers.toString()
+    }
+
+    // bot function
+    private fun botTurn(botDifficulty: Int){
+        when(botDifficulty){
+            1 -> easyBot()
+            2 -> mediumBot()
+            3 -> hardBot()
+            else -> Toast.makeText(this, "What sort of bot is this??", Toast.LENGTH_SHORT).show()
+        }
+    }
+    // TODO finish bot behaviour then add notifications
+    // easyBot picks a random square and lights up
+    private fun easyBot(){
+
+    }
+
+    // mediumBot trys to stop winners, otherwise picks randoms
+    private fun mediumBot(){
+
+    }
+
+    // hardBot trys to stop next person winning, otherwise trys to win
+    private fun hardBot(){
+
     }
 }
