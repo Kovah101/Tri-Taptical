@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     // bot variables
     private var botGameName = ""
     private var bots = arrayOf(0,0,0,0)
+    private var botMove = 100
 
     private val locationIDs = arrayOf(
         R.id.topLeft, R.id.topLeftMiddle, R.id.topLeftInner,
@@ -196,7 +197,7 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
-    // checks if it is your turn
+    // checks if it is your turn - ONLINE
     private fun waitYourTurn(playerNames : Array<String>, myUsername : String, currentPlayer: Int ){
         Toast.makeText(this, "P$currentPlayer: ${playerNames[currentPlayer]} turn", Toast.LENGTH_SHORT).show()
         // if it is your turn - enable buttons
@@ -208,6 +209,7 @@ class MainActivity : AppCompatActivity() {
             enablePlayerButtons(false)
         }
     }
+
     // enable or disable player buttons if it is or isn't your turn
     private fun enablePlayerButtons(enable: Boolean){
         // enable or disable player buttons
@@ -318,8 +320,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // save move to memory, go to next player
+    fun confirmButton(view: View){
+        confirmMove()
+    }
+
     // confirms move to array, if online publishes the move to players
-    fun confirmMove(view: View) {
+    private fun confirmMove() {
         // add confirmed move to hash map with cell and active player
         confirmedMoves[trueCellID] = activePlayer
         Log.d(onlineGame, "$trueCellID")
@@ -338,6 +345,8 @@ class MainActivity : AppCompatActivity() {
             checkForWinner()
             nextPlayer()
         }
+        // wait for robots if its their turn
+        waitForBots(bots)
     }
 
     // increments active player
@@ -453,6 +462,7 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
     // takes scores and displays them to scoreboards
     private fun updateScore() {
         for (player in 1..maxPlayers) {
@@ -618,25 +628,16 @@ class MainActivity : AppCompatActivity() {
     // bot function
     private fun botTurn(botDifficulty: Int){
         when(botDifficulty){
-            1 -> easyBot()
-            2 -> mediumBot()
-            3 -> hardBot()
+            1 -> botMove = easyBot(activePlayer, confirmedMoves)
+            2 -> botMove = mediumBot(activePlayer, confirmedMoves)
+            3 -> botMove = hardBot(activePlayer, confirmedMoves)
             else -> Toast.makeText(this, "What sort of bot is this??", Toast.LENGTH_SHORT).show()
         }
-    }
-    // TODO finish bot behaviour then add notifications
-    // easyBot picks a random square and lights up
-    private fun easyBot(){
-
-    }
-
-    // mediumBot trys to stop winners, otherwise picks randoms
-    private fun mediumBot(){
-
-    }
-
-    // hardBot trys to stop next person winning, otherwise trys to win
-    private fun hardBot(){
-
+        // assign botMove to true move, then confirm
+        trueCellID = botMove
+        // reset botMove
+        botMove = 100
+        setSegmentColor(trueCellID, -1, activePlayer)
+        confirmMove()
     }
 }

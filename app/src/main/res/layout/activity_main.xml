@@ -113,7 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/roundedbutton"
-        android:onClick="confirmMove"
+        android:onClick="confirmButton"
         android:text="CONFIRM"
         android:textColor="@color/whiteButton"
         android:textSize="24sp"
