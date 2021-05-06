@@ -30,14 +30,16 @@ class MainActivity : AppCompatActivity() {
     // instance of database
     private val database = Firebase.database
     private val myRef = database.reference
+
     // online variables
     private var onlineGameName = ""
     private var myUsername = ""
     private var onlineFlag = false
     private var playerNames = arrayOf("", "1", "2", "3", "4")
+
     // bot variables
     private var botGameName = ""
-    private var bots = arrayOf(0,0,0,0)
+    private var bots = arrayOf(0, 0, 0, 0)
     private var botMove = 100
 
     private val locationIDs = arrayOf(
@@ -119,7 +121,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // takes player names, assigns max players, and fills in Player hubs
-    private fun setupGame(playerNames: Array<String>){
+    private fun setupGame(playerNames: Array<String>) {
         maxPlayers = playerNames.size - 1
         // hide all hubs
         scoreBoardIDs.forEach { scoreboardID ->
@@ -127,8 +129,8 @@ class MainActivity : AppCompatActivity() {
             scoreboard.visibility = View.GONE
         }
         // show usable hubs and fill with player names
-        for (player in 1..maxPlayers){
-            val scoreboard = findViewById<TextView>(scoreBoardIDs[player-1])
+        for (player in 1..maxPlayers) {
+            val scoreboard = findViewById<TextView>(scoreBoardIDs[player - 1])
             scoreboard.visibility = View.VISIBLE
             val scoreboardText = playerNames[player] + ":"
             scoreboard.text = scoreboardText
@@ -137,12 +139,12 @@ class MainActivity : AppCompatActivity() {
 
     // wait for bots go
     // TODO implement waiting and behaviour AI
-    private fun waitForBots(bots: Array<Int>){
-       // if bots = 0 then human player so skip function
-        if(bots[activePlayer-1] == 0){
-           return
+    private fun waitForBots(bots: Array<Int>) {
+        // if bots = 0 then human player so skip function
+        if (bots[activePlayer - 1] == 0) {
+            return
         } else {
-            botTurn(bots[activePlayer-1])
+            botTurn(bots[activePlayer - 1])
         }
     }
 
@@ -169,8 +171,7 @@ class MainActivity : AppCompatActivity() {
                         nextPlayer()
                         // wait your turn
                         waitYourTurn(playerNames, myUsername, activePlayer)
-                    }
-                    catch (ex: Exception){
+                    } catch (ex: Exception) {
 
                     }
                 }
@@ -198,10 +199,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     // checks if it is your turn - ONLINE
-    private fun waitYourTurn(playerNames : Array<String>, myUsername : String, currentPlayer: Int ){
-        Toast.makeText(this, "P$currentPlayer: ${playerNames[currentPlayer]} turn", Toast.LENGTH_SHORT).show()
+    private fun waitYourTurn(playerNames: Array<String>, myUsername: String, currentPlayer: Int) {
+        Toast.makeText(
+            this,
+            "P$currentPlayer: ${playerNames[currentPlayer]} turn",
+            Toast.LENGTH_SHORT
+        ).show()
         // if it is your turn - enable buttons
-        if (playerNames[currentPlayer] == myUsername){
+        if (playerNames[currentPlayer] == myUsername) {
             enablePlayerButtons(true)
         }
         // if not your turn disable buttons
@@ -211,12 +216,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     // enable or disable player buttons if it is or isn't your turn
-    private fun enablePlayerButtons(enable: Boolean){
+    private fun enablePlayerButtons(enable: Boolean) {
         // enable or disable player buttons
-            for ( i in 0..24 step 3){
-                val buttonID = locationIDs[i]
-                val button = findViewById<Button>(buttonID)
-                button.isClickable = enable
+        for (i in 0..24 step 3) {
+            val buttonID = locationIDs[i]
+            val button = findViewById<Button>(buttonID)
+            button.isClickable = enable
         }
         // enable or disable confirm button
         val confirmButton = findViewById<Button>(R.id.confirmButton)
@@ -224,7 +229,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // enable or disable settings button
-    private fun enableSettings(enable: Boolean){
+    private fun enableSettings(enable: Boolean) {
         val settingsButton = findViewById<ImageButton>(R.id.settings)
         settingsButton.isClickable = enable
     }
@@ -321,7 +326,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // save move to memory, go to next player
-    fun confirmButton(view: View){
+    fun confirmButton(view: View) {
         confirmMove()
     }
 
@@ -331,7 +336,7 @@ class MainActivity : AppCompatActivity() {
         confirmedMoves[trueCellID] = activePlayer
         Log.d(onlineGame, "$trueCellID")
         // if online game then send confirmed move
-        if (onlineFlag){
+        if (onlineFlag) {
             val onlineMove = "$trueCellID@$activePlayer"
             myRef.child("Games").child(onlineGameName).push().setValue(onlineMove)
         }
@@ -341,16 +346,14 @@ class MainActivity : AppCompatActivity() {
         trueCellID = -1
 
         //  if local game then check winner and go to next player
-        if(!onlineFlag){
+        if (!onlineFlag) {
             checkForWinner()
-            nextPlayer()
         }
-        // wait for robots if its their turn
-        waitForBots(bots)
+
     }
 
     // increments active player
-    private fun nextPlayer(){
+    private fun nextPlayer() {
         activePlayer++
         if (activePlayer > maxPlayers) {
             activePlayer = 1
@@ -379,6 +382,9 @@ class MainActivity : AppCompatActivity() {
 
         // increment starting player
         activePlayer = startingPlayer(maxPlayers, score)
+
+        // check if its a robots turn
+        waitForBots(bots)
 
         // reset active player & scores if restarting
         if (view == findViewById(R.id.restartSettingsButton)) {
@@ -459,7 +465,10 @@ class MainActivity : AppCompatActivity() {
             // reveal reset button
             val resetButton = findViewById<Button>(R.id.resetButton)
             resetButton.visibility = View.VISIBLE
-
+        }else{
+            nextPlayer()
+            // wait for robots if its their turn
+            waitForBots(bots)
         }
     }
 
@@ -626,11 +635,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     // bot function
-    private fun botTurn(botDifficulty: Int){
-        when(botDifficulty){
-            1 -> botMove = easyBot(activePlayer, confirmedMoves)
-            2 -> botMove = mediumBot(activePlayer, confirmedMoves)
-            3 -> botMove = hardBot(activePlayer, confirmedMoves)
+    private fun botTurn(botDifficulty: Int) {
+        when (botDifficulty) {
+            1 -> botMove = easyBot(confirmedMoves)
+            2 -> botMove = mediumBot(activePlayer, confirmedMoves, maxPlayers)
+            3 -> botMove = hardBot(activePlayer, confirmedMoves, maxPlayers)
             else -> Toast.makeText(this, "What sort of bot is this??", Toast.LENGTH_SHORT).show()
         }
         // assign botMove to true move, then confirm
@@ -638,6 +647,8 @@ class MainActivity : AppCompatActivity() {
         // reset botMove
         botMove = 100
         setSegmentColor(trueCellID, -1, activePlayer)
+        // TODO add 1-2 second delay after confirming move?
         confirmMove()
+
     }
 }
