@@ -66,6 +66,9 @@ private fun winningMove(player: Int, confirmedMoves: IntArray): Int {
 // checks confirmed moves for a diagonal winner
 private fun diagonalNearWin(player: Int, confirmedMoves: IntArray): Int {
     var winningMove = -1
+    // check topLeft to bottomRight
+    // check same size diagonals
+
 
     return winningMove
 }
@@ -74,6 +77,39 @@ private fun diagonalNearWin(player: Int, confirmedMoves: IntArray): Int {
 private fun verticalNearWin(player: Int, confirmedMoves: IntArray): Int {
     var winningMove = -1
 
+    // check same size vertical
+    for (i in 0..8){
+        if (confirmedMoves[i] == player && confirmedMoves[i + 9] == player && confirmedMoves[i + 18] == 0) {
+            winningMove = i + 18
+        } else if (confirmedMoves[i] == player && confirmedMoves[i + 9] == 0 && confirmedMoves[i + 18] == player) {
+            winningMove = i + 9
+        } else if (confirmedMoves[i] == 0 && confirmedMoves[i + 9] == player && confirmedMoves[i + 18] == player) {
+            winningMove = i
+        }
+    }
+
+    // check ascending size vertical
+    for (i in 2..8 step 3){
+        if (confirmedMoves[i] == player && confirmedMoves[i + 8] == player && confirmedMoves[i + 16] == 0) {
+            winningMove = i + 16
+        } else if (confirmedMoves[i] == player && confirmedMoves[i + 8] == 0 && confirmedMoves[i + 16] == player) {
+            winningMove = i + 8
+        } else if (confirmedMoves[i] == 0 && confirmedMoves[i + 8] == player && confirmedMoves[i + 16] == player) {
+            winningMove = i
+        }
+    }
+
+    // check descending size vertical
+    for (i in 0..6 step 3){
+        if (confirmedMoves[i] == player && confirmedMoves[i + 10 ] == player && confirmedMoves[i + 20] == 0) {
+            winningMove = i + 20
+        } else if (confirmedMoves[i] == player && confirmedMoves[i + 10] == 0 && confirmedMoves[i + 20] == player) {
+            winningMove = i + 10
+        } else if (confirmedMoves[i] == 0 && confirmedMoves[i + 10] == player && confirmedMoves[i + 20] == player) {
+            winningMove = i
+        }
+    }
+
     return winningMove
 }
 
@@ -81,15 +117,58 @@ private fun verticalNearWin(player: Int, confirmedMoves: IntArray): Int {
 private fun horizontalNearWin(player: Int, confirmedMoves: IntArray): Int {
     var winningMove = -1
 
+    // check same size horizontal
+    for (i in 0..18 step 9){
+        for (j in 0..2){
+            if (confirmedMoves[i+j] == player && confirmedMoves[i+j+3] == player && confirmedMoves[i+j+6] == 0){
+                winningMove = i+j+6
+            } else if (confirmedMoves[i+j] == player && confirmedMoves[i+j+3] == 0 && confirmedMoves[i+j+6] == player){
+                winningMove = i+j+3
+            }else if (confirmedMoves[i+j] == 0 && confirmedMoves[i+j+3] == player && confirmedMoves[i+j+6] == player){
+                winningMove = i+j
+            }
+        }
+    }
+
+    // check ascending size horizontal
+    for (i in 2..20 step 9){
+        if (confirmedMoves[i] == player && confirmedMoves[i+2] == player && confirmedMoves[i+4] == 0){
+            winningMove = i+4
+        } else if (confirmedMoves[i] == player && confirmedMoves[i+2] == 0 && confirmedMoves[i+4] == player){
+            winningMove = i+2
+        }else if (confirmedMoves[i] == 0 && confirmedMoves[i+2] == player && confirmedMoves[i+4] == player){
+            winningMove = i
+        }
+    }
+
+    // check descending size horizontal
+    for (i in 0..18 step 9){
+        if (confirmedMoves[i] == player && confirmedMoves[i+4] == player && confirmedMoves[i+8] == 0){
+            winningMove = i+8
+        } else if (confirmedMoves[i] == player && confirmedMoves[i+4] == 0 && confirmedMoves[i+8] == player){
+            winningMove = i+4
+        }else if (confirmedMoves[i] == 0 && confirmedMoves[i+4] == player && confirmedMoves[i+8] == player){
+            winningMove = i
+        }
+    }
+
     return winningMove
 }
 
 // checks confirmed moves for spot winner
 private fun spotNearWin(player: Int, confirmedMoves: IntArray): Int {
- val locations = 26
- var winningMove = -1
-//    for (i in 0..locations step 3){
-//
-//    }
+    val locations = confirmedMoves.size
+    var winningMove = -1
+    // check each square
+    for (i in 0 until locations step 3) {
+        // check each combo
+        if (confirmedMoves[i] == player && confirmedMoves[i + 1] == player && confirmedMoves[i + 2] == 0) {
+            winningMove = i + 2
+        } else if (confirmedMoves[i] == player && confirmedMoves[i + 1] == 0 && confirmedMoves[i + 2] == player) {
+            winningMove = i + 1
+        } else if (confirmedMoves[i] == 0 && confirmedMoves[i + 1] == player && confirmedMoves[i + 2] == player) {
+            winningMove = i
+        }
+    }
     return winningMove
 }
