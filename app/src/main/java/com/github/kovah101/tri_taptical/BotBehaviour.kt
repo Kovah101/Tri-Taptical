@@ -4,10 +4,10 @@ import android.util.Log
 
 // TODO finish bot behaviour then add notifications
 // easyBot picks a random square and lights up
-fun easyBot(confirmedMoves: HashMap<Int, Int>): Int {
+fun easyBot(confirmedMoves: IntArray): Int {
 
     var randomMove = (0..26).random()
-    while (confirmedMoves.containsKey(randomMove)) {
+    while (confirmedMoves[randomMove] != 0) {
         randomMove = (0..26).random()
     }
     Log.d("Bot-Behaviour", "Easy-Bot: Move-$randomMove")
@@ -15,7 +15,7 @@ fun easyBot(confirmedMoves: HashMap<Int, Int>): Int {
 }
 
 // mediumBot tries to stop winners, otherwise picks randoms
-fun mediumBot(activePlayer: Int, confirmedMoves: HashMap<Int, Int>, maxPlayers: Int): Int {
+fun mediumBot(activePlayer: Int, confirmedMoves: IntArray, maxPlayers: Int): Int {
     var stoppingMove = -1
     var nextPlayer = activePlayer
     // win, otherwise stop next player from winning
@@ -40,13 +40,13 @@ fun mediumBot(activePlayer: Int, confirmedMoves: HashMap<Int, Int>, maxPlayers: 
 }
 
 // hardBot tries to stop next person winning, otherwise tries to win
-fun hardBot(activePlayer: Int, confirmedMoves: HashMap<Int, Int>, maxPlayers: Int): Int {
+fun hardBot(activePlayer: Int, confirmedMoves: IntArray, maxPlayers: Int): Int {
     Log.d("Bot-Behaviour", "Hard-Bot!")
     return 20
 }
 
 // check if player has nearly won and select their winning move
-private fun winningMove(player: Int, confirmedMoves: HashMap<Int, Int>): Int {
+private fun winningMove(player: Int, confirmedMoves: IntArray): Int {
     var winningMove = -1
 
     // check spot then horizontal then vertical then diagonal for winning move
@@ -64,28 +64,28 @@ private fun winningMove(player: Int, confirmedMoves: HashMap<Int, Int>): Int {
 }
 
 // checks confirmed moves for a diagonal winner
-private fun diagonalNearWin(player: Int, confirmedMoves: HashMap<Int, Int>): Int {
+private fun diagonalNearWin(player: Int, confirmedMoves: IntArray): Int {
     var winningMove = -1
 
     return winningMove
 }
 
 // checks confirmed moves for vertical winner
-private fun verticalNearWin(player: Int, confirmedMoves: HashMap<Int, Int>): Int {
+private fun verticalNearWin(player: Int, confirmedMoves: IntArray): Int {
     var winningMove = -1
 
     return winningMove
 }
 
 // checks confirmed moves for horizontal winner
-private fun horizontalNearWin(player: Int, confirmedMoves: HashMap<Int, Int>): Int {
+private fun horizontalNearWin(player: Int, confirmedMoves: IntArray): Int {
     var winningMove = -1
 
     return winningMove
 }
 
 // checks confirmed moves for spot winner
-private fun spotNearWin(player: Int, confirmedMoves: HashMap<Int, Int>): Int {
+private fun spotNearWin(player: Int, confirmedMoves: IntArray): Int {
  val locations = 26
  var winningMove = -1
 //    for (i in 0..locations step 3){

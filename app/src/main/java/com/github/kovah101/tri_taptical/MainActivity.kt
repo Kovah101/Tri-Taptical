@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     private var activePlayer = 1
     private var playerColors = arrayOf(0, 0, 0, 0)
     private var score = arrayOf(0, 0, 0, 0)
-    private var confirmedMoves = HashMap<Int, Int>()
+    private var confirmedMoves = IntArray(27)
     private var winningMoves = arrayListOf<Int>()
     private var selectedCell = -1
 
@@ -272,21 +272,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         // check if current cell is taken
-        if (confirmedMoves.containsKey(selectedCell)) {
+        if (confirmedMoves[selectedCell] != 0) {
             // if at inner cell, reset to outer, otherwise step to next
             if (selectedCell == cellID + 2) {
                 selectedCell = cellID
             } else {
                 selectedCell++
             } // check if next cell is taken
-            if (confirmedMoves.containsKey(selectedCell)) {
+            if (confirmedMoves[selectedCell] != 0) {
                 // if at inner cell, reset to outer, otherwise step to next
                 if (selectedCell == cellID + 2) {
                     selectedCell = cellID
                 } else {
                     selectedCell++
                 }// check if final cell is taken
-                if (confirmedMoves.containsKey(selectedCell)) {
+                if (confirmedMoves[selectedCell] != 0) {
                     return
                 }
             }
@@ -370,7 +370,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // clear saved moves
-        confirmedMoves.clear()
+        confirmedMoves.fill(0)
         winningMoves.clear()
 
         // hide reset button
@@ -487,7 +487,7 @@ class MainActivity : AppCompatActivity() {
     // checks for 3 in a row on the spot
     private fun spotWinner(): Boolean {
         // check for same cell winners
-        for (i in 0..locationIDs.size step 3) {
+        for (i in 0 until locationIDs.size step 3) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 1] == activePlayer && confirmedMoves[i + 2] == activePlayer) {
                 winningMoves.add(i)
                 winningMoves.add(i + 1)
