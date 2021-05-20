@@ -39,7 +39,7 @@ fun mediumBot(activePlayer: Int, confirmedMoves: IntArray, maxPlayers: Int): Int
     return stoppingMove
 }
 
-// hardBot tries to stop next person winning, otherwise tries to win
+// hardBot tries to win, otherwise stops next person winning
 fun hardBot(activePlayer: Int, confirmedMoves: IntArray, maxPlayers: Int): Int {
     var winningMove = -1
     var nextPlayer = activePlayer + 1
@@ -55,7 +55,7 @@ fun hardBot(activePlayer: Int, confirmedMoves: IntArray, maxPlayers: Int): Int {
     if (winningMove == -1) {
         winningMove = priorityMove(activePlayer, confirmedMoves)
     }
-    Log.d("Bot-Behaviour", "Hard-Bot!")
+    Log.d("Bot-Behaviour", "Hard-Bot: Move-$winningMove")
     return winningMove
 }
 
@@ -78,45 +78,107 @@ private fun winningMove(player: Int, confirmedMoves: IntArray): Int {
 }
 
 // check to see which priority moves are left and select the highest priority move
+// does not check with own moves
+// TODO change priorities depending on own confirmedMoves - adjust arraylists in each function
 private fun priorityMove(player: Int, confirmedMoves: IntArray): Int {
     var priorityMove = -1
 
     // middleMiddle square highest priority
+    // middleMiddle used in 13/12 win conditions
     if (confirmedMoves[13] == 0) {
         priorityMove = 13
     }
-    // outer or inner corners are next priority
+    // empty outer or inner corners are next priority
+    // used in 7 win conditions
     if (priorityMove == -1) {
-        priorityMove = cornerMoves(confirmedMoves)
+        priorityMove = emptyCornerMoves(confirmedMoves)
+    }
+    // partial corners inner/outer are next priority
+    // used in 6 win conditions
+    if (priorityMove == -1) {
+        priorityMove = partialCornerMoves(confirmedMoves)
+    }
+    // empty midline middles are next priority
+    // used in 5 win conditions
+    if (priorityMove == -1){
+        priorityMove = emptyMidlineMoves(confirmedMoves)
+    }
+    // partial midline middles or partial center are next priority
+    // used in 4 win conditions
+    if (priorityMove == -1){
+        priorityMove = partialMidlineOrCenterMoves(confirmedMoves)
+    }
+    // partial corner middles or midline inner/outer next priority
+    // used in 3 win conditions
+    if (priorityMove == -1){
+        priorityMove = middleCornerOrPartialMidline(confirmedMoves)
     }
 
     return priorityMove
 }
 
 // checks for free corner moves and randomly selects one
-// TODO develop cornerMove priority system
-private fun cornerMoves(confirmedMoves: IntArray): Int {
+private fun emptyCornerMoves(confirmedMoves: IntArray): Int {
     var cornerMove = -1
-    val allCornerMoves = intArrayOf(0, 2, 6, 8, 18, 20, 24, 26)
-    var tlFlag = false
-    var trFlag = false
-    var blFlag = false
-    var brFlag = false
-    if (confirmedMoves[0] != 0 || confirmedMoves[2] != 0) {
-        tlFlag = true
+    val emptyCorners = arrayListOf<Int>()
+    // check top left is empty
+    if (confirmedMoves[0] == 0 && confirmedMoves[1] ==0 && confirmedMoves[2] == 0) {
+        emptyCorners.add(0)
+        emptyCorners.add(2)
     }
-    if (confirmedMoves[6] != 0 || confirmedMoves[8] != 0) {
-        tlFlag = true
+    // check top right is empty
+    if (confirmedMoves[6] == 0 && confirmedMoves[7] ==0 && confirmedMoves[8] == 0) {
+        emptyCorners.add(6)
+        emptyCorners.add(8)
     }
-    if (confirmedMoves[0] != 0 || confirmedMoves[2] != 0) {
-        tlFlag = true
+    // check bottom left is empty
+    if (confirmedMoves[18] == 0 && confirmedMoves[19] ==0 && confirmedMoves[20] == 0) {
+        emptyCorners.add(18)
+        emptyCorners.add(20)
     }
-    if (confirmedMoves[0] != 0 || confirmedMoves[2] != 0) {
-        tlFlag = true
+    // check bottom right is empty
+    if (confirmedMoves[24] == 0 && confirmedMoves[25] ==0 && confirmedMoves[26] == 0) {
+        emptyCorners.add(24)
+        emptyCorners.add(26)
     }
-
+    // pick a random available empty corner
+    if (emptyCorners.isNotEmpty()){
+        cornerMove = emptyCorners.random()
+    }
 
     return cornerMove
+}
+
+// checks for partial corner moves and randomly selects one
+// TODO complete function
+private  fun partialCornerMoves(confirmedMoves: IntArray): Int {
+    var partialCorner = -1
+
+    return partialCorner
+}
+
+// checks for empty midline middle moves and randomly selects one
+// TODO complete function
+private  fun emptyMidlineMoves(confirmedMoves: IntArray): Int {
+    var emptyMidline = -1
+
+    return emptyMidline
+}
+
+// checks for partial midline or center moves and randomly selects one
+// TODO complete function
+private  fun partialMidlineOrCenterMoves(confirmedMoves: IntArray): Int {
+    var partialMidlineOrCenter = -1
+
+    return partialMidlineOrCenter
+}
+
+// checks for partial corner middle OR partial midline inner/outer moves and randomly selects one
+// TODO complete function
+private  fun middleCornerOrPartialMidline(confirmedMoves: IntArray): Int {
+    var midCornerOrPartialMidline = -1
+
+    return midCornerOrPartialMidline
 }
 
 // checks confirmed moves for a diagonal winner
