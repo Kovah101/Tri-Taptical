@@ -79,9 +79,25 @@ private fun winningMove(player: Int, confirmedMoves: IntArray): Int {
 
 // check to see which priority moves are left and select the highest priority move
 // does not check with own moves
-// TODO change priorities depending on own confirmedMoves - adjust arraylists in each function
+// TODO finish complex priority method
 private fun priorityMove(player: Int, confirmedMoves: IntArray): Int {
     var priorityMove = -1
+    // base win conditions for each possible move
+    val movePriorities =
+        intArrayOf(7, 4, 7, 4, 5, 4, 7, 4, 7, 4, 5, 4, 5, 13, 5, 4, 5, 4, 7, 4, 7, 4, 5, 4, 7, 4, 7)
+
+    var currentMovePriorities = movePriorities
+
+    // adjust for opponents moves
+    currentMovePriorities = adjustMovePriority(currentMovePriorities, confirmedMoves, player, -1)
+    // adjust for own moves
+    currentMovePriorities = adjustMovePriority(currentMovePriorities, confirmedMoves, player, 1)
+    // remove taken moves
+    currentMovePriorities = removeConfirmedMoves(currentMovePriorities, confirmedMoves)
+    // pick out highest priority moves
+    val bestMoves = pickBestMoves(currentMovePriorities)
+    // randomly pick from best moves
+    priorityMove = bestMoves.random()
 
     // middleMiddle square highest priority
     // middleMiddle used in 13/12 win conditions
@@ -100,49 +116,93 @@ private fun priorityMove(player: Int, confirmedMoves: IntArray): Int {
     }
     // empty midline middles are next priority
     // used in 5 win conditions
-    if (priorityMove == -1){
+    if (priorityMove == -1) {
         priorityMove = emptyMidlineMoves(confirmedMoves)
     }
     // partial midline middles or partial center are next priority
     // used in 4 win conditions
-    if (priorityMove == -1){
+    if (priorityMove == -1) {
         priorityMove = partialMidlineOrCenterMoves(confirmedMoves)
     }
     // partial corner middles or midline inner/outer next priority
     // used in 3 win conditions
-    if (priorityMove == -1){
+    if (priorityMove == -1) {
         priorityMove = middleCornerOrPartialMidline(confirmedMoves)
     }
 
     return priorityMove
 }
 
+// sets move priority to 0 for any confirmed moves - cant make already confirmed moves
+private fun removeConfirmedMoves(
+    currentMovePriorities: IntArray,
+    confirmedMoves: IntArray
+): IntArray {
+    // cycle through each index of confirmed moves
+    for (moveIndex in confirmedMoves.indices) {
+        // if there is a confirmed move then set currentMovePriority to 0
+        if (confirmedMoves[moveIndex] != 0) {
+            currentMovePriorities[moveIndex] = 0
+        }
+    }
+    return currentMovePriorities
+}
+
+// reduces priority for moves that are interfered by Opponents moves
+// TODO finish function
+private fun adjustMovePriority(
+    currentMovePriorities: IntArray,
+    confirmedMoves: IntArray,
+    player: Int,
+    amount: Int
+): IntArray {
+    // cycle through confirmed moves
+    for (moveIndex in confirmedMoves.indices){
+        // check for opponents move
+        if(confirmedMoves[moveIndex] != 0 && confirmedMoves[moveIndex] != player){
+
+        }
+    }
+
+
+    return currentMovePriorities
+}
+
+// finds highest priority and takes the index of these best moves
+// TODO finish function
+private fun pickBestMoves(currentMovePriorities: IntArray): IntArray {
+    val bestMoves = intArrayOf(-1)
+
+    return bestMoves
+}
+
+
 // checks for free corner moves and randomly selects one
 private fun emptyCornerMoves(confirmedMoves: IntArray): Int {
     var cornerMove = -1
     val emptyCorners = arrayListOf<Int>()
     // check top left is empty
-    if (confirmedMoves[0] == 0 && confirmedMoves[1] ==0 && confirmedMoves[2] == 0) {
+    if (confirmedMoves[0] == 0 && confirmedMoves[1] == 0 && confirmedMoves[2] == 0) {
         emptyCorners.add(0)
         emptyCorners.add(2)
     }
     // check top right is empty
-    if (confirmedMoves[6] == 0 && confirmedMoves[7] ==0 && confirmedMoves[8] == 0) {
+    if (confirmedMoves[6] == 0 && confirmedMoves[7] == 0 && confirmedMoves[8] == 0) {
         emptyCorners.add(6)
         emptyCorners.add(8)
     }
     // check bottom left is empty
-    if (confirmedMoves[18] == 0 && confirmedMoves[19] ==0 && confirmedMoves[20] == 0) {
+    if (confirmedMoves[18] == 0 && confirmedMoves[19] == 0 && confirmedMoves[20] == 0) {
         emptyCorners.add(18)
         emptyCorners.add(20)
     }
     // check bottom right is empty
-    if (confirmedMoves[24] == 0 && confirmedMoves[25] ==0 && confirmedMoves[26] == 0) {
+    if (confirmedMoves[24] == 0 && confirmedMoves[25] == 0 && confirmedMoves[26] == 0) {
         emptyCorners.add(24)
         emptyCorners.add(26)
     }
     // pick a random available empty corner
-    if (emptyCorners.isNotEmpty()){
+    if (emptyCorners.isNotEmpty()) {
         cornerMove = emptyCorners.random()
     }
 
@@ -151,7 +211,7 @@ private fun emptyCornerMoves(confirmedMoves: IntArray): Int {
 
 // checks for partial corner moves and randomly selects one
 // TODO complete function
-private  fun partialCornerMoves(confirmedMoves: IntArray): Int {
+private fun partialCornerMoves(confirmedMoves: IntArray): Int {
     var partialCorner = -1
 
     return partialCorner
@@ -159,7 +219,7 @@ private  fun partialCornerMoves(confirmedMoves: IntArray): Int {
 
 // checks for empty midline middle moves and randomly selects one
 // TODO complete function
-private  fun emptyMidlineMoves(confirmedMoves: IntArray): Int {
+private fun emptyMidlineMoves(confirmedMoves: IntArray): Int {
     var emptyMidline = -1
 
     return emptyMidline
@@ -167,7 +227,7 @@ private  fun emptyMidlineMoves(confirmedMoves: IntArray): Int {
 
 // checks for partial midline or center moves and randomly selects one
 // TODO complete function
-private  fun partialMidlineOrCenterMoves(confirmedMoves: IntArray): Int {
+private fun partialMidlineOrCenterMoves(confirmedMoves: IntArray): Int {
     var partialMidlineOrCenter = -1
 
     return partialMidlineOrCenter
@@ -175,7 +235,7 @@ private  fun partialMidlineOrCenterMoves(confirmedMoves: IntArray): Int {
 
 // checks for partial corner middle OR partial midline inner/outer moves and randomly selects one
 // TODO complete function
-private  fun middleCornerOrPartialMidline(confirmedMoves: IntArray): Int {
+private fun middleCornerOrPartialMidline(confirmedMoves: IntArray): Int {
     var midCornerOrPartialMidline = -1
 
     return midCornerOrPartialMidline
