@@ -156,22 +156,43 @@ private fun adjustMovePriority(
     player: Int,
     amount: Int
 ): IntArray {
+    var mutableMovePriorities = currentMovePriorities
     // cycle through confirmed moves
     for (moveIndex in confirmedMoves.indices){
         // check for opponents move
         if(confirmedMoves[moveIndex] != 0 && confirmedMoves[moveIndex] != player){
-
+            mutableMovePriorities = spotAdjustment(mutableMovePriorities,moveIndex,amount)
+            when(moveIndex){
+                // inside or outside corners
+                0,2,6,8,18,20,24,26 -> mutableMovePriorities = iOCornerAdjustment(mutableMovePriorities, moveIndex, amount)
+                // inside or outside midlines
+                3,5,9,11,15,17,21,23 -> mutableMovePriorities = iOMidlineAdjustment(mutableMovePriorities, moveIndex, amount)
+                // middle midlines
+                4,10,16,22 -> mutableMovePriorities = midMidlineAdjustment(mutableMovePriorities, moveIndex, amount)
+                // middle corners
+                1,7,19,25 -> mutableMovePriorities = midCornerAdjustment(mutableMovePriorities, moveIndex, amount)
+                // inside or outside center
+                12,14 -> mutableMovePriorities = iOCenterAdjustment(mutableMovePriorities, moveIndex, amount)
+                // mid center
+                13 -> mutableMovePriorities = midCenterAdjustment(mutableMovePriorities, moveIndex, amount)
+            }
         }
     }
 
-
-    return currentMovePriorities
+    return mutableMovePriorities
 }
 
 // finds highest priority and takes the index of these best moves
-// TODO finish function
-private fun pickBestMoves(currentMovePriorities: IntArray): IntArray {
-    val bestMoves = intArrayOf(-1)
+private fun pickBestMoves(currentMovePriorities: IntArray): ArrayList<Int> {
+    val bestMoves = arrayListOf<Int>()
+    val maxPriority = currentMovePriorities.maxOrNull()
+
+    // fill best moves with the indices of the highest priority moves
+    for (moveIndex in currentMovePriorities.indices){
+        if (currentMovePriorities[moveIndex] == maxPriority){
+            bestMoves.add(moveIndex)
+        }
+    }
 
     return bestMoves
 }
