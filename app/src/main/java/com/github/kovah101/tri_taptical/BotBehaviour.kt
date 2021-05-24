@@ -88,9 +88,9 @@ private fun priorityMove(player: Int, confirmedMoves: IntArray): Int {
 
     var currentMovePriorities = movePriorities
 
-    // adjust for opponents moves
+    // adjust for opponents moves by -1
     currentMovePriorities = adjustMovePriority(currentMovePriorities, confirmedMoves, player, -1)
-    // adjust for own moves
+    // adjust for own moves by +1
     currentMovePriorities = adjustMovePriority(currentMovePriorities, confirmedMoves, player, 1)
     // remove taken moves
     currentMovePriorities = removeConfirmedMoves(currentMovePriorities, confirmedMoves)
@@ -161,7 +161,8 @@ private fun adjustMovePriority(
     for (moveIndex in confirmedMoves.indices) {
         // check for opponents move
         if (confirmedMoves[moveIndex] != 0 && confirmedMoves[moveIndex] != player) {
-            mutableMovePriorities = spotAdjustment(mutableMovePriorities, moveIndex, amount)
+            // NO Spot adjustment! put them all through other combos??
+            //mutableMovePriorities = spotAdjustment(mutableMovePriorities, moveIndex, amount)
             when (moveIndex) {
                 // inside or outside corners
                 0, 2, 6, 8, 18, 20, 24, 26 -> mutableMovePriorities =
@@ -214,9 +215,95 @@ private fun spotAdjustment(movePriorities: IntArray, moveIndex: Int, modifier: I
 
 // adjusts priorities for inner or outer corner moves
 private fun iOCornerAdjustment(movePriorities: IntArray, moveIndex: Int, modifier: Int): IntArray {
+    val section = moveIndex / 3
+    val corners = intArrayOf(0, 2, 6, 8)
+    // generate adjacent and far mod patterns
+    val farModPattern = intArrayOf(modifier, 0, modifier)
+    var adjModPattern = intArrayOf(0, modifier, modifier)
+    if (moveIndex % 3 == 0) {
+        adjModPattern = intArrayOf(modifier, modifier, 0)
+    }
+    // adjust adjacent squares
+    // always adjust middle & own section
+    var adjustedPriorities = sectionAdjust(movePriorities, 4, adjModPattern)
+    adjustedPriorities = sectionAdjust(adjustedPriorities, section, adjModPattern)
+    // adjust other adjacent depending on top or bottom section
+    // top section adjustments
+    if (section <= 2) {
+        adjustedPriorities = sectionAdjust(adjustedPriorities, 1, adjModPattern)
+        adjustedPriorities = sectionAdjust(adjustedPriorities, section + 3, adjModPattern)
+    }
+    // bottom section adjustments
+    else {
+        adjustedPriorities = sectionAdjust(adjustedPriorities, 7, adjModPattern)
+        adjustedPriorities = sectionAdjust(adjustedPriorities, section - 3, adjModPattern)
+    }
+    // adjust all corner squares
+    for (corner in corners) {
+        adjustedPriorities = sectionAdjust(adjustedPriorities, corner, farModPattern)
+    }
 
+    return adjustedPriorities
+}
 
-    return movePriorities
+// adjusts priorities for inner or outer midline moves
+private fun iOMidlineAdjustment(movePriorities: IntArray, moveIndex: Int, modifier: Int): IntArray {
+    val section = moveIndex / 3
+    // adjacent, far & mid mod patterns
+    val farModPattern = intArrayOf(modifier, 0, modifier)
+    var adjModPattern = intArrayOf(0, 0, modifier)
+    var midModPattern = intArrayOf(0, modifier, modifier)
+    if (moveIndex % 3 == 0) {
+        adjModPattern = intArrayOf(modifier, 0, 0)
+        midModPattern = intArrayOf(modifier, modifier, 0)
+    }
+    // adjust adjacent squares
+    // always adjust middle & own sections
+    var adjustedPriorities = sectionAdjust(movePriorities, 4, midModPattern)
+    adjustedPriorities = spotAdjustment(adjustedPriorities, moveIndex, modifier)
+    // adjust adjacent squares
+    if (section == 1 || section == 7){
+        adjustedPriorities = sectionAdjust(adjustedPriorities, section - 1, adjModPattern)
+        adjustedPriorities = sectionAdjust(adjustedPriorities, section + 1, adjModPattern)
+    } else{
+        adjustedPriorities = sectionAdjust(adjustedPriorities, section + 3, adjModPattern)
+        adjustedPriorities = sectionAdjust(adjustedPriorities, section - 3, adjModPattern)
+    }
+    // adjust opposite square
+    when(section){
+        1 -> adjustedPriorities = sectionAdjust(adjustedPriorities, 7, farModPattern)
+        3 -> adjustedPriorities = sectionAdjust(adjustedPriorities, 5, farModPattern)
+        5 -> adjustedPriorities = sectionAdjust(adjustedPriorities, 3, farModPattern)
+        7 -> adjustedPriorities = sectionAdjust(adjustedPriorities, 1, farModPattern)
+    }
+
+    return adjustedPriorities
+}
+
+// adjusts priorities for middle midline moves
+private fun midMidlineAdjustment(movePriorities: IntArray, moveIndex: Int, modifier: Int): IntArray {
+    val section = moveIndex / 3
+    // adjacent and far mod patterns
+    val adjModPattern = intArrayOf(modifier, modifier, modifier)
+    val farModPattern = intArrayOf(0, modifier, 0)
+    var adjustedPriorities = intArrayOf(27)
+    // adjust squares depending on top/bottom
+    if (section == 1 || section == 7){
+        adjustedPriorities = sectionAdjust(movePriorities, section - 1, adjModPattern)
+        adjustedPriorities = sectionAdjust(adjustedPriorities, section + 1, adjModPattern)
+        for (square in 1..7 step 3){
+            adjustedPriorities = sectionAdjust(adjustedPriorities, square, farModPattern)
+        }
+    }// or adjust squares depending on left/right
+    if (section == 3 || section == 5){
+        adjustedPriorities = sectionAdjust(movePriorities, section - 3, adjModPattern)
+        adjustedPriorities = sectionAdjust(adjustedPriorities, section + 3, adjModPattern)
+        for (square in 3..5){
+            adjustedPriorities = sectionAdjust(adjustedPriorities, square, farModPattern)
+        }
+    }
+
+    return adjustedPriorities
 }
 
 // generic priority adjust function for a given section
