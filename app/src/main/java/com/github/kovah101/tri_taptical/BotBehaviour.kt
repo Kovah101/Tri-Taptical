@@ -158,23 +158,29 @@ private fun adjustMovePriority(
 ): IntArray {
     var mutableMovePriorities = currentMovePriorities
     // cycle through confirmed moves
-    for (moveIndex in confirmedMoves.indices){
+    for (moveIndex in confirmedMoves.indices) {
         // check for opponents move
-        if(confirmedMoves[moveIndex] != 0 && confirmedMoves[moveIndex] != player){
-            mutableMovePriorities = spotAdjustment(mutableMovePriorities,moveIndex,amount)
-            when(moveIndex){
+        if (confirmedMoves[moveIndex] != 0 && confirmedMoves[moveIndex] != player) {
+            mutableMovePriorities = spotAdjustment(mutableMovePriorities, moveIndex, amount)
+            when (moveIndex) {
                 // inside or outside corners
-                0,2,6,8,18,20,24,26 -> mutableMovePriorities = iOCornerAdjustment(mutableMovePriorities, moveIndex, amount)
+                0, 2, 6, 8, 18, 20, 24, 26 -> mutableMovePriorities =
+                    iOCornerAdjustment(mutableMovePriorities, moveIndex, amount)
                 // inside or outside midlines
-                3,5,9,11,15,17,21,23 -> mutableMovePriorities = iOMidlineAdjustment(mutableMovePriorities, moveIndex, amount)
+                3, 5, 9, 11, 15, 17, 21, 23 -> mutableMovePriorities =
+                    iOMidlineAdjustment(mutableMovePriorities, moveIndex, amount)
                 // middle midlines
-                4,10,16,22 -> mutableMovePriorities = midMidlineAdjustment(mutableMovePriorities, moveIndex, amount)
+                4, 10, 16, 22 -> mutableMovePriorities =
+                    midMidlineAdjustment(mutableMovePriorities, moveIndex, amount)
                 // middle corners
-                1,7,19,25 -> mutableMovePriorities = midCornerAdjustment(mutableMovePriorities, moveIndex, amount)
+                1, 7, 19, 25 -> mutableMovePriorities =
+                    midCornerAdjustment(mutableMovePriorities, moveIndex, amount)
                 // inside or outside center
-                12,14 -> mutableMovePriorities = iOCenterAdjustment(mutableMovePriorities, moveIndex, amount)
+                12, 14 -> mutableMovePriorities =
+                    iOCenterAdjustment(mutableMovePriorities, moveIndex, amount)
                 // mid center
-                13 -> mutableMovePriorities = midCenterAdjustment(mutableMovePriorities, moveIndex, amount)
+                13 -> mutableMovePriorities =
+                    midCenterAdjustment(mutableMovePriorities, moveIndex, amount)
             }
         }
     }
@@ -188,15 +194,39 @@ private fun pickBestMoves(currentMovePriorities: IntArray): ArrayList<Int> {
     val maxPriority = currentMovePriorities.maxOrNull()
 
     // fill best moves with the indices of the highest priority moves
-    for (moveIndex in currentMovePriorities.indices){
-        if (currentMovePriorities[moveIndex] == maxPriority){
+    for (moveIndex in currentMovePriorities.indices) {
+        if (currentMovePriorities[moveIndex] == maxPriority) {
             bestMoves.add(moveIndex)
         }
     }
-
     return bestMoves
 }
 
+// adjusts priorities for inner, middle & outer in same section
+private fun spotAdjustment(movePriorities: IntArray, moveIndex: Int, modifier: Int): IntArray {
+    // find the section
+    val section = moveIndex / 3
+    val modPattern = intArrayOf(modifier, modifier, modifier)
+
+    // adjust inner, middle and outer priorities of that section
+    return sectionAdjust(movePriorities, section, modPattern)
+}
+
+// adjusts priorities for inner or outer corner moves
+private fun iOCornerAdjustment(movePriorities: IntArray, moveIndex: Int, modifier: Int): IntArray {
+
+
+    return movePriorities
+}
+
+// generic priority adjust function for a given section
+private fun sectionAdjust(movePriorities: IntArray, section: Int, modPattern: IntArray): IntArray {
+    for (index in 0..2) {
+        movePriorities[section + index] += modPattern[index]
+    }
+
+    return movePriorities
+}
 
 // checks for free corner moves and randomly selects one
 private fun emptyCornerMoves(confirmedMoves: IntArray): Int {
