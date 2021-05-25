@@ -3,6 +3,7 @@ package com.github.kovah101.tri_taptical
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     // bot variables
     private var botGameName = ""
     private var bots = arrayOf(0, 0, 0, 0)
-    private var botMove = 100
+    //private var botMove = 100
 
     private val locationIDs = arrayOf(
         R.id.topLeft, R.id.topLeftMiddle, R.id.topLeftInner,
@@ -138,7 +139,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // wait for bots go
-    // TODO implement waiting and behaviour AI
+    // TODO implement waiting
     private fun waitForBots(bots: Array<Int>) {
         // if bots = 0 then human player so skip function
         if (bots[activePlayer - 1] == 0) {
@@ -634,21 +635,27 @@ class MainActivity : AppCompatActivity() {
         playerNumberView.text = maxPlayers.toString()
     }
 
-    // bot function
+    // bot functionality
     private fun botTurn(botDifficulty: Int) {
+        var botMove = 100
         when (botDifficulty) {
             1 -> botMove = easyBot(confirmedMoves)
             2 -> botMove = mediumBot(activePlayer, confirmedMoves, maxPlayers)
             3 -> botMove = hardBot(activePlayer, confirmedMoves, maxPlayers)
             else -> Toast.makeText(this, "What sort of bot is this??", Toast.LENGTH_SHORT).show()
         }
-        // assign botMove to true move, then confirm
+
         trueCellID = botMove
-        // reset botMove
-        botMove = 100
+        // colour chosen segment
         setSegmentColor(trueCellID, -1, activePlayer)
         // TODO add 1-2 second delay after confirming move?
-        confirmMove()
+//        Log.d("Wait", "start of wait $activePlayer")
+//        Handler().postDelayed(Runnable {
+//            // colour chosen segment
+//            setSegmentColor(trueCellID, -1, activePlayer)
+//        }, 2000)
+//        Log.d("Wait", "end of wait $activePlayer")
 
+        confirmMove()
     }
 }
