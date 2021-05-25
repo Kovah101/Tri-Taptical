@@ -53,7 +53,7 @@ fun hardBot(activePlayer: Int, confirmedMoves: IntArray, maxPlayers: Int): Int {
     }
     // else pick a priority move
     if (winningMove == -1) {
-        winningMove = priorityMove(activePlayer, confirmedMoves)
+        winningMove = priorityMove(activePlayer, confirmedMoves, maxPlayers)
     }
     Log.d("Bot-Behaviour", "Hard-Bot: Move-$winningMove")
     return winningMove
@@ -79,56 +79,38 @@ private fun winningMove(player: Int, confirmedMoves: IntArray): Int {
 
 // check to see which priority moves are left and select the highest priority move
 // does not check with own moves
-// TODO finish complex priority method
-private fun priorityMove(player: Int, confirmedMoves: IntArray): Int {
+private fun priorityMove(activePlayer: Int, confirmedMoves: IntArray, maxPlayers: Int): Int {
     var priorityMove = -1
     // base win conditions for each possible move
+    // each is x2 to weight opponents negative over own positives
     val movePriorities =
-        intArrayOf(7, 4, 7, 4, 5, 4, 7, 4, 7, 4, 5, 4, 5, 13, 5, 4, 5, 4, 7, 4, 7, 4, 5, 4, 7, 4, 7)
+        intArrayOf(
+            14,8,14,
+            8,10,8,
+            14,8,14,
+            8,10,8,
+            10,26,10,
+            8,10,8,
+            14,8,14,
+            8,10,8,
+            14,8,14
+        )
 
     var currentMovePriorities = movePriorities
-
-    // adjust for opponents moves by -1
-    currentMovePriorities = adjustMovePriority(currentMovePriorities, confirmedMoves, player, -1)
-    // adjust for own moves by +1
-    currentMovePriorities = adjustMovePriority(currentMovePriorities, confirmedMoves, player, 1)
+    // cycle through players adjusting +ve or -ve accordingly
+    for (player in 1..maxPlayers){
+        if (player == activePlayer){
+            currentMovePriorities = adjustMovePriority(currentMovePriorities, confirmedMoves, player, 1)
+        } else{
+            currentMovePriorities = adjustMovePriority(currentMovePriorities, confirmedMoves, player, -2)
+        }
+    }
     // remove taken moves
     currentMovePriorities = removeConfirmedMoves(currentMovePriorities, confirmedMoves)
     // pick out highest priority moves
     val bestMoves = pickBestMoves(currentMovePriorities)
     // randomly pick from best moves
     priorityMove = bestMoves.random()
-
-    // middleMiddle square highest priority
-    // middleMiddle used in 13/12 win conditions
-    if (confirmedMoves[13] == 0) {
-        priorityMove = 13
-    }
-    // empty outer or inner corners are next priority
-    // used in 7 win conditions
-    if (priorityMove == -1) {
-        priorityMove = emptyCornerMoves(confirmedMoves)
-    }
-    // partial corners inner/outer are next priority
-    // used in 6 win conditions
-    if (priorityMove == -1) {
-        priorityMove = partialCornerMoves(confirmedMoves)
-    }
-    // empty midline middles are next priority
-    // used in 5 win conditions
-    if (priorityMove == -1) {
-        priorityMove = emptyMidlineMoves(confirmedMoves)
-    }
-    // partial midline middles or partial center are next priority
-    // used in 4 win conditions
-    if (priorityMove == -1) {
-        priorityMove = partialMidlineOrCenterMoves(confirmedMoves)
-    }
-    // partial corner middles or midline inner/outer next priority
-    // used in 3 win conditions
-    if (priorityMove == -1) {
-        priorityMove = middleCornerOrPartialMidline(confirmedMoves)
-    }
 
     return priorityMove
 }
@@ -149,7 +131,6 @@ private fun removeConfirmedMoves(
 }
 
 // reduces priority for moves that are interfered by Opponents moves
-// TODO finish function
 private fun adjustMovePriority(
     currentMovePriorities: IntArray,
     confirmedMoves: IntArray,
@@ -161,8 +142,6 @@ private fun adjustMovePriority(
     for (moveIndex in confirmedMoves.indices) {
         // check for opponents move
         if (confirmedMoves[moveIndex] != 0 && confirmedMoves[moveIndex] != player) {
-            // NO Spot adjustment! put them all through other combos??
-            //mutableMovePriorities = spotAdjustment(mutableMovePriorities, moveIndex, amount)
             when (moveIndex) {
                 // inside or outside corners
                 0, 2, 6, 8, 18, 20, 24, 26 -> mutableMovePriorities =
@@ -226,15 +205,15 @@ private fun iOCornerAdjustment(movePriorities: IntArray, moveIndex: Int, modifie
     // adjust adjacent squares
     // always adjust middle & own section
     var adjustedPriorities = sectionAdjust(movePriorities, 4, adjModPattern)
-    adjustedPriorities = sectionAdjust(adjustedPriorities, section, adjModPattern)
+    adjustedPriorities = spotAdjustment(adjustedPriorities, moveIndex, modifier)
     // adjust other adjacent depending on top or bottom section
     // top section adjustments
-    if (section <= 2) {
+    if (section == 0 || section == 2) {
         adjustedPriorities = sectionAdjust(adjustedPriorities, 1, adjModPattern)
         adjustedPriorities = sectionAdjust(adjustedPriorities, section + 3, adjModPattern)
     }
     // bottom section adjustments
-    else {
+    if (section == 6 || section == 8) {
         adjustedPriorities = sectionAdjust(adjustedPriorities, 7, adjModPattern)
         adjustedPriorities = sectionAdjust(adjustedPriorities, section - 3, adjModPattern)
     }
@@ -262,15 +241,16 @@ private fun iOMidlineAdjustment(movePriorities: IntArray, moveIndex: Int, modifi
     var adjustedPriorities = sectionAdjust(movePriorities, 4, midModPattern)
     adjustedPriorities = spotAdjustment(adjustedPriorities, moveIndex, modifier)
     // adjust adjacent squares
-    if (section == 1 || section == 7){
+    if (section == 1 || section == 7) {
         adjustedPriorities = sectionAdjust(adjustedPriorities, section - 1, adjModPattern)
         adjustedPriorities = sectionAdjust(adjustedPriorities, section + 1, adjModPattern)
-    } else{
+    }
+    if (section == 3 || section == 5) {
         adjustedPriorities = sectionAdjust(adjustedPriorities, section + 3, adjModPattern)
         adjustedPriorities = sectionAdjust(adjustedPriorities, section - 3, adjModPattern)
     }
     // adjust opposite square
-    when(section){
+    when (section) {
         1 -> adjustedPriorities = sectionAdjust(adjustedPriorities, 7, farModPattern)
         3 -> adjustedPriorities = sectionAdjust(adjustedPriorities, 5, farModPattern)
         5 -> adjustedPriorities = sectionAdjust(adjustedPriorities, 3, farModPattern)
@@ -281,28 +261,86 @@ private fun iOMidlineAdjustment(movePriorities: IntArray, moveIndex: Int, modifi
 }
 
 // adjusts priorities for middle midline moves
-private fun midMidlineAdjustment(movePriorities: IntArray, moveIndex: Int, modifier: Int): IntArray {
+private fun midMidlineAdjustment(
+    movePriorities: IntArray,
+    moveIndex: Int,
+    modifier: Int
+): IntArray {
     val section = moveIndex / 3
     // adjacent and far mod patterns
     val adjModPattern = intArrayOf(modifier, modifier, modifier)
     val farModPattern = intArrayOf(0, modifier, 0)
-    var adjustedPriorities = intArrayOf(27)
+    var adjustedPriorities = IntArray(27)
     // adjust squares depending on top/bottom
-    if (section == 1 || section == 7){
+    if (section == 1 || section == 7) {
         adjustedPriorities = sectionAdjust(movePriorities, section - 1, adjModPattern)
         adjustedPriorities = sectionAdjust(adjustedPriorities, section + 1, adjModPattern)
-        for (square in 1..7 step 3){
+        for (square in 1..7 step 3) {
             adjustedPriorities = sectionAdjust(adjustedPriorities, square, farModPattern)
         }
     }// or adjust squares depending on left/right
-    if (section == 3 || section == 5){
+    if (section == 3 || section == 5) {
         adjustedPriorities = sectionAdjust(movePriorities, section - 3, adjModPattern)
         adjustedPriorities = sectionAdjust(adjustedPriorities, section + 3, adjModPattern)
-        for (square in 3..5){
+        for (square in 3..5) {
             adjustedPriorities = sectionAdjust(adjustedPriorities, square, farModPattern)
         }
     }
 
+    return adjustedPriorities
+}
+
+// adjusts priorities for middle corner moves
+private fun midCornerAdjustment(movePriorities: IntArray, moveIndex: Int, modifier: Int): IntArray {
+    val section = moveIndex / 3
+    // self and other mod pattern
+    val selfModPattern = intArrayOf(modifier, modifier, modifier)
+    val otherModPattern = intArrayOf(0, modifier, 0)
+    // adjust self section, all corners, center and adjacent
+    var adjustedPriorities = sectionAdjust(movePriorities, section, selfModPattern)
+    for (sector in 0..8 step 2) {
+        adjustedPriorities = sectionAdjust(adjustedPriorities, sector, otherModPattern)
+    }
+    if (section == 0 || section == 2) {
+        adjustedPriorities = sectionAdjust(adjustedPriorities, 1, otherModPattern)
+        adjustedPriorities = sectionAdjust(adjustedPriorities, section + 3, otherModPattern)
+    }
+    if (section == 6 || section == 8) {
+        adjustedPriorities = sectionAdjust(adjustedPriorities, 7, otherModPattern)
+        adjustedPriorities = sectionAdjust(adjustedPriorities, section - 3, otherModPattern)
+    }
+
+    return adjustedPriorities
+}
+
+// adjusts priorities for inner/outer center moves
+private fun iOCenterAdjustment(movePriorities: IntArray, moveIndex: Int, modifier: Int): IntArray {
+    val section = moveIndex / 3
+    // self and other mod pattern
+    val selfModPattern = intArrayOf(modifier, modifier, modifier)
+    var otherModPattern = intArrayOf(0, 0, modifier)
+    if (moveIndex % 3 == 0) {
+        otherModPattern = intArrayOf(modifier, 0, 0)
+    }
+    // adjust self and all other sections
+    var adjustedPriorities = sectionAdjust(movePriorities, section, selfModPattern)
+    for (square in 0..8) {
+        adjustedPriorities = sectionAdjust(adjustedPriorities, square, otherModPattern)
+    }
+
+    return adjustedPriorities
+}
+
+// adjusts priorities for middle center move
+private fun midCenterAdjustment(movePriorities: IntArray, moveIndex: Int, modifier: Int): IntArray {
+    var adjustedPriorities = movePriorities
+    val modPattern = intArrayOf(modifier, modifier, modifier)
+    // cycle through all sections applying modification
+    if (moveIndex == 14) {
+        for (section in 0..8) {
+            adjustedPriorities = sectionAdjust(adjustedPriorities, section, modPattern)
+        }
+    }
     return adjustedPriorities
 }
 
@@ -313,70 +351,6 @@ private fun sectionAdjust(movePriorities: IntArray, section: Int, modPattern: In
     }
 
     return movePriorities
-}
-
-// checks for free corner moves and randomly selects one
-private fun emptyCornerMoves(confirmedMoves: IntArray): Int {
-    var cornerMove = -1
-    val emptyCorners = arrayListOf<Int>()
-    // check top left is empty
-    if (confirmedMoves[0] == 0 && confirmedMoves[1] == 0 && confirmedMoves[2] == 0) {
-        emptyCorners.add(0)
-        emptyCorners.add(2)
-    }
-    // check top right is empty
-    if (confirmedMoves[6] == 0 && confirmedMoves[7] == 0 && confirmedMoves[8] == 0) {
-        emptyCorners.add(6)
-        emptyCorners.add(8)
-    }
-    // check bottom left is empty
-    if (confirmedMoves[18] == 0 && confirmedMoves[19] == 0 && confirmedMoves[20] == 0) {
-        emptyCorners.add(18)
-        emptyCorners.add(20)
-    }
-    // check bottom right is empty
-    if (confirmedMoves[24] == 0 && confirmedMoves[25] == 0 && confirmedMoves[26] == 0) {
-        emptyCorners.add(24)
-        emptyCorners.add(26)
-    }
-    // pick a random available empty corner
-    if (emptyCorners.isNotEmpty()) {
-        cornerMove = emptyCorners.random()
-    }
-
-    return cornerMove
-}
-
-// checks for partial corner moves and randomly selects one
-// TODO complete function
-private fun partialCornerMoves(confirmedMoves: IntArray): Int {
-    var partialCorner = -1
-
-    return partialCorner
-}
-
-// checks for empty midline middle moves and randomly selects one
-// TODO complete function
-private fun emptyMidlineMoves(confirmedMoves: IntArray): Int {
-    var emptyMidline = -1
-
-    return emptyMidline
-}
-
-// checks for partial midline or center moves and randomly selects one
-// TODO complete function
-private fun partialMidlineOrCenterMoves(confirmedMoves: IntArray): Int {
-    var partialMidlineOrCenter = -1
-
-    return partialMidlineOrCenter
-}
-
-// checks for partial corner middle OR partial midline inner/outer moves and randomly selects one
-// TODO complete function
-private fun middleCornerOrPartialMidline(confirmedMoves: IntArray): Int {
-    var midCornerOrPartialMidline = -1
-
-    return midCornerOrPartialMidline
 }
 
 // checks confirmed moves for a diagonal winner
