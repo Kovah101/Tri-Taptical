@@ -1,9 +1,12 @@
 package com.github.kovah101.tri_taptical
 
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -11,12 +14,18 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.widget.*
+import androidx.core.os.HandlerCompat.postDelayed
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.util.concurrent.Callable
+import java.util.concurrent.FutureTask
 import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
@@ -41,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     // bot variables
     private var botGameName = ""
     private var bots = arrayOf(0, 0, 0, 0)
-    //private var botMove = 100
+
 
     private val locationIDs = arrayOf(
         R.id.topLeft, R.id.topLeftMiddle, R.id.topLeftInner,
@@ -68,6 +77,8 @@ class MainActivity : AppCompatActivity() {
     private var confirmedMoves = IntArray(27)
     private var winningMoves = arrayListOf<Int>()
     private var selectedCell = -1
+
+    // TODO deal with draw & add notifications
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,7 +150,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // wait for bots go
-    // TODO implement waiting
     private fun waitForBots(bots: Array<Int>) {
         // if bots = 0 then human player so skip function
         if (bots[activePlayer - 1] == 0) {
@@ -178,15 +188,15 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                    TODO("Not yet implemented")
+
                 }
 
                 override fun onChildRemoved(snapshot: DataSnapshot) {
-                    TODO("Not yet implemented")
+
                 }
 
                 override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                    TODO("Not yet implemented")
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -244,6 +254,7 @@ class MainActivity : AppCompatActivity() {
     fun changeColor(view: View) {
         val selectedButton = view as Button
         var cellID = 0
+        //var trueCellID = -1
 
         when (selectedButton.id) {
             R.id.topLeft -> cellID = 0
@@ -295,12 +306,14 @@ class MainActivity : AppCompatActivity() {
 
         // store last tapped cellID
         oldCellID = cellID
-        // store last tapped cell to be decoloured
+        // store last tapped cell to be discoloured - default is -1 if no cell to discolour
         val lastTrueCellID = trueCellID
+        // change the true cell to the selected one
         trueCellID = selectedCell
-
-        // colour correct segment & decolour last picked
-        setSegmentColor(trueCellID, lastTrueCellID, activePlayer)
+        // create selected cell ID to be coloured
+        val selectedCellID = selectedCell
+        // colour correct segment & discolour last picked
+        setSegmentColor(selectedCellID, lastTrueCellID, activePlayer)
     }
 
     // lights up the selected segment in the corresponding player color
@@ -328,17 +341,17 @@ class MainActivity : AppCompatActivity() {
 
     // save move to memory, go to next player
     fun confirmButton(view: View) {
-        confirmMove()
+        confirmMove(selectedCell)
     }
 
     // confirms move to array, if online publishes the move to players
-    private fun confirmMove() {
+    private fun confirmMove(selectedCell: Int) {
         // add confirmed move to hash map with cell and active player
-        confirmedMoves[trueCellID] = activePlayer
-        Log.d(onlineGame, "$trueCellID")
+        confirmedMoves[selectedCell] = activePlayer
+        Log.d(onlineGame, "$selectedCell")
         // if online game then send confirmed move
         if (onlineFlag) {
-            val onlineMove = "$trueCellID@$activePlayer"
+            val onlineMove = "$selectedCell@$activePlayer"
             myRef.child("Games").child(onlineGameName).push().setValue(onlineMove)
         }
         // reset old cell ID
@@ -645,17 +658,16 @@ class MainActivity : AppCompatActivity() {
             else -> Toast.makeText(this, "What sort of bot is this??", Toast.LENGTH_SHORT).show()
         }
 
-        trueCellID = botMove
-        // colour chosen segment
-        setSegmentColor(trueCellID, -1, activePlayer)
-        // TODO add 1-2 second delay after confirming move?
-//        Log.d("Wait", "start of wait $activePlayer")
-//        Handler().postDelayed(Runnable {
-//            // colour chosen segment
-//            setSegmentColor(trueCellID, -1, activePlayer)
-//        }, 2000)
-//        Log.d("Wait", "end of wait $activePlayer")
+         val botDelay = 1500L
 
-        confirmMove()
+        Handler().postDelayed(
+            {
+                // colour chosen segment then save move
+                setSegmentColor(botMove, -1, activePlayer)
+                confirmMove(botMove)
+            },
+            botDelay
+        )
     }
+
 }
