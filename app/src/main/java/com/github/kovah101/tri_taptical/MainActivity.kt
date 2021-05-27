@@ -165,7 +165,6 @@ class MainActivity : AppCompatActivity() {
     // listen to specific game branch of database
     // when new move logged update screen and check for winner
     // activate or disable buttons if not your turn
-    // TODO fix crash on restart of online games
     private fun listenToGame() {
         myRef.child("Games").child(onlineGameName)
             .addChildEventListener(object : ChildEventListener {
@@ -186,8 +185,7 @@ class MainActivity : AppCompatActivity() {
                             waitYourTurn(playerNames, myUsername, activePlayer)
                         }
                         if(onlineMoveParts[0] == "RESET"){
-                            val resetButton = findViewById<Button>(R.id.resetButton)
-                            resetBoard(resetButton)
+                            resetBoard()
                             waitYourTurn(playerNames, myUsername, activePlayer)
                         }
                     } catch (ex: Exception) {
@@ -385,8 +383,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // sends reset command to other players, restarts game board if restart
+    fun resetButton(view: View){
+        resetBoard()
+        // send reset to other online players
+        if (onlineFlag && view == findViewById(R.id.resetButton)){
+            val reset = "RESET"
+            myRef.child("Games").child(onlineGameName).push().setValue(reset)
+        }
+
+        // reset active player & scores if restarting
+        if (view == findViewById(R.id.restartSettingsButton)) {
+            Log.d("ButtonPress", "Restart Game")
+            activePlayer = 1
+            // reset score array
+            for (scores in score.indices) {
+                score[scores] = 0
+            }
+            Log.d("ButtonPress", "${score[0]},${score[1]},${score[2]},${score[3]}")
+            updateScore()
+        }
+    }
+
     // restarts the game by clearing board and updating scores
-    fun resetBoard(view: View) {
+   private fun resetBoard() {
         // reset the board
         val white = resources.getColor(R.color.white)
         for (cell in locationIDs.indices) {
@@ -410,26 +430,6 @@ class MainActivity : AppCompatActivity() {
 
         // check if its a robots turn
         waitForBots(bots)
-
-        // send reset to other online players
-        if (onlineFlag){
-            val reset = "RESET"
-            myRef.child("Games").child(onlineGameName).push().setValue(reset)
-        }
-
-        // reset active player & scores if restarting
-        if (view == findViewById(R.id.restartSettingsButton)) {
-            Log.d("ButtonPress", "Restart Game")
-            activePlayer = 1
-            // reset score array
-            for (scores in score.indices) {
-                score[scores] = 0
-            }
-            Log.d("ButtonPress", "${score[0]},${score[1]},${score[2]},${score[3]}")
-            updateScore()
-        }
-
-
     }
 
     // calculates the starting player based on the score and max player number
