@@ -21,6 +21,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -79,6 +80,8 @@ class MainActivity : AppCompatActivity() {
     private var selectedCell = -1
 
     // TODO deal with draw & add notifications
+    //  App symbol
+    //  bots to online
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,7 +165,7 @@ class MainActivity : AppCompatActivity() {
     // listen to specific game branch of database
     // when new move logged update screen and check for winner
     // activate or disable buttons if not your turn
-    // TODO reset board after online winner
+    // TODO fix crash on restart of online games
     private fun listenToGame() {
         myRef.child("Games").child(onlineGameName)
             .addChildEventListener(object : ChildEventListener {
@@ -170,18 +173,23 @@ class MainActivity : AppCompatActivity() {
                     try {
                         val submittedMove = snapshot.value as String
                         val onlineMoveParts = splitString(submittedMove)
-                        val onlineMove = onlineMoveParts[0].toInt()
-                        val onlinePlayer = onlineMoveParts[1].toInt()
-                        // take online move and update local board
-                        setSegmentColor(onlineMove, -1, onlinePlayer)
-                        // update local variables
-                        confirmedMoves[onlineMove] = onlinePlayer
-                        // check for winner
-                        checkForWinner()
-                        // increment active player
-                        nextPlayer()
-                        // wait your turn
-                        waitYourTurn(playerNames, myUsername, activePlayer)
+                        if (onlineMoveParts[0] != "RESET") {
+                            val onlineMove = onlineMoveParts[0].toInt()
+                            val onlinePlayer = onlineMoveParts[1].toInt()
+                            // take online move and update local board
+                            setSegmentColor(onlineMove, -1, onlinePlayer)
+                            // update local variables
+                            confirmedMoves[onlineMove] = onlinePlayer
+                            // check for winner - also increments to next player
+                            checkForWinner()
+                            // wait your turn
+                            waitYourTurn(playerNames, myUsername, activePlayer)
+                        }
+                        if(onlineMoveParts[0] == "RESET"){
+                            val resetButton = findViewById<Button>(R.id.resetButton)
+                            resetBoard(resetButton)
+                            waitYourTurn(playerNames, myUsername, activePlayer)
+                        }
                     } catch (ex: Exception) {
 
                     }
@@ -237,6 +245,9 @@ class MainActivity : AppCompatActivity() {
         // enable or disable confirm button
         val confirmButton = findViewById<Button>(R.id.confirmButton)
         confirmButton.isClickable = enable
+        // enable or disable reset button
+        val resetButton = findViewById<Button>(R.id.resetButton)
+        resetButton.isClickable = enable
     }
 
     // enable or disable settings button
@@ -399,6 +410,12 @@ class MainActivity : AppCompatActivity() {
 
         // check if its a robots turn
         waitForBots(bots)
+
+        // send reset to other online players
+        if (onlineFlag){
+            val reset = "RESET"
+            myRef.child("Games").child(onlineGameName).push().setValue(reset)
+        }
 
         // reset active player & scores if restarting
         if (view == findViewById(R.id.restartSettingsButton)) {
