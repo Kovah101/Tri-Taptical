@@ -381,6 +381,7 @@ class MainActivity : AppCompatActivity() {
         if (activePlayer > maxPlayers) {
             activePlayer = 1
         }
+        highlightPlayer(activePlayer)
     }
 
     // sends reset command to other players, restarts game board if restart
@@ -427,6 +428,8 @@ class MainActivity : AppCompatActivity() {
 
         // increment starting player
         activePlayer = startingPlayer(maxPlayers, score)
+        // show starting player
+        highlightPlayer(activePlayer)
 
         // check if its a robots turn
         waitForBots(bots)
@@ -436,6 +439,18 @@ class MainActivity : AppCompatActivity() {
     private fun startingPlayer(maxPlayers: Int, score: Array<Int>): Int {
         val totalScore = score[0] + score[1] + score[2] + score[3]
         return (totalScore % maxPlayers) + 1
+    }
+
+    //highlights the hub of current player
+    private fun highlightPlayer(currentPlayer: Int){
+        val playerHub = scoreBoardIDs[currentPlayer-1]
+
+        // set up blink animation
+        val blinkAnimation = AlphaAnimation(1f, 0f)
+        blinkAnimation.duration = 300
+        blinkAnimation.interpolator = LinearInterpolator()
+        blinkAnimation.repeatCount = 5
+        blinkAnimation.repeatMode = Animation.RESTART
     }
 
     // reveals the settings menu
