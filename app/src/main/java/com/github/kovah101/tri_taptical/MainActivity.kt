@@ -113,6 +113,8 @@ class MainActivity : AppCompatActivity() {
                 maxPlayers = playerNames.size - 1
                 setupGame(playerNames)
                 enableSettings(false)
+                activePlayer = startingPlayer(maxPlayers, score)
+                highlightPlayer(activePlayer)
                 listenToGame()
                 waitYourTurn(playerNames, myUsername, activePlayer)
             }
@@ -128,8 +130,9 @@ class MainActivity : AppCompatActivity() {
                 bots = splitString(botString).map { it.toInt() }.toTypedArray()
                 playerNames = splitString(botGameName).toTypedArray()
                 setupGame(playerNames)
-                //Toast.makeText(this, "Player Names: ${playerNames.contentToString()}", Toast.LENGTH_SHORT).show()
                 enableSettings(false)
+                activePlayer = startingPlayer(maxPlayers, score)
+                highlightPlayer(activePlayer)
                 waitForBots(bots)
 
             }
@@ -449,16 +452,19 @@ class MainActivity : AppCompatActivity() {
     //highlights the hub of current player
     private fun highlightPlayer(currentPlayer: Int){
         val playerBorders = arrayOf(R.id.p1Border, R.id.p2Border, R.id.p3Border, R.id.p4Border)
+        val playerColors = arrayOf(R.color.black, R.color.playerOne, R.color.playerTwo, R.color.playerThree, R.color.playerFour)
         val playerBorder = findViewById<View>(playerBorders[currentPlayer-1])
 
-        // set up blink animation
-        val blinkAnimation = AlphaAnimation(1f, 0f)
-        blinkAnimation.duration = 300
-        blinkAnimation.interpolator = LinearInterpolator()
-        blinkAnimation.repeatCount = 5
-        blinkAnimation.repeatMode = Animation.RESTART
-
-        playerBorder.startAnimation(blinkAnimation)
+        for (playerNumber in playerBorders.indices){
+            val border = findViewById<View>(playerBorders[playerNumber])
+            // current player highlighted
+            if (playerNumber + 1 == currentPlayer){
+                val playerColour = resources.getColor(playerColors[currentPlayer])
+                border.setBackgroundColor(playerColour)
+            } else {
+                border.setBackgroundColor(playerColors[0])
+            }
+        }
     }
 
     // reveals the settings menu
