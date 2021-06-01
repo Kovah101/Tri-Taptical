@@ -96,7 +96,12 @@ class MainActivity : AppCompatActivity() {
             localGame -> {
                 Toast.makeText(this, "Local Game!", Toast.LENGTH_SHORT).show()
                 onlineFlag = false
-                enableSettings(false)
+                enableSettings(true)
+                // increment starting player
+                activePlayer = startingPlayer(maxPlayers, score)
+                // show starting player
+                highlightPlayer(activePlayer)
+
             }
             // setup for online game
             onlineGame -> {
@@ -443,7 +448,8 @@ class MainActivity : AppCompatActivity() {
 
     //highlights the hub of current player
     private fun highlightPlayer(currentPlayer: Int){
-        val playerHub = scoreBoardIDs[currentPlayer-1]
+        val playerBorders = arrayOf(R.id.p1Border, R.id.p2Border, R.id.p3Border, R.id.p4Border)
+        val playerBorder = findViewById<View>(playerBorders[currentPlayer-1])
 
         // set up blink animation
         val blinkAnimation = AlphaAnimation(1f, 0f)
@@ -451,6 +457,8 @@ class MainActivity : AppCompatActivity() {
         blinkAnimation.interpolator = LinearInterpolator()
         blinkAnimation.repeatCount = 5
         blinkAnimation.repeatMode = Animation.RESTART
+
+        playerBorder.startAnimation(blinkAnimation)
     }
 
     // reveals the settings menu

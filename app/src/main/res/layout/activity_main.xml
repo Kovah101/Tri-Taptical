@@ -600,65 +600,118 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="16dp"
             android:background="@color/black"
             android:elevation="3dp"
             android:text="P1:"
             android:textColor="@color/playerOne"
-            android:textSize="64sp"
+            android:textSize="56sp"
             app:layout_constraintBottom_toBottomOf="@id/p1Border"
             app:layout_constraintEnd_toEndOf="@id/p1Border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/p1Border" />
 
+        <View
+            android:id="@+id/p2Border"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/playerTwo"
+            android:gravity="center|center_horizontal"
+            android:elevation="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p2ScoreBoard"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/p2ScoreBoard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:gravity="center|center_horizontal"
+            android:layout_marginBottom="2dp"
+            android:background="@color/black"
+            android:elevation="3dp"
             android:text="P2:"
             android:textColor="@color/playerTwo"
-            android:textSize="64sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textSize="56sp"
+            app:layout_constraintBottom_toBottomOf="@+id/p2Border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/p2Border"
+            app:layout_constraintVertical_bias="1.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomScoreBoard"
         android:layout_width="match_parent"
-        android:layout_height="85dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout">
+
+        <View
+            android:id="@+id/p3Border"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/playerThree"
+            android:elevation="1dp"
+            android:gravity="center|center_horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/p3ScoreBoard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/p3ScoreBoard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/black"
+            android:elevation="3dp"
             android:gravity="center|center_horizontal"
             android:text="P3:"
             android:textColor="@color/playerThree"
-            android:textSize="64sp"
+            android:textSize="56sp"
+            app:layout_constraintBottom_toBottomOf="@id/p3Border"
+            app:layout_constraintEnd_toEndOf="@+id/p3Border"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/p3Border" />
+
+        <View
+            android:id="@+id/p4Border"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/playerFour"
+            android:gravity="center|center_horizontal"
+            android:elevation="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p4ScoreBoard"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/p4ScoreBoard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:gravity="center|center_horizontal"
+            android:layout_marginBottom="2dp"
+            android:background="@color/black"
+            android:elevation="3dp"
             android:text="P4:"
             android:textColor="@color/playerFour"
-            android:textSize="64sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textSize="56sp"
+            app:layout_constraintBottom_toBottomOf="@id/p4Border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p4Border"
+            app:layout_constraintVertical_bias="1.0"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
