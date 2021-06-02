@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     private var onlineGameName = ""
     private var myUsername = ""
     private var onlineFlag = false
-    private var playerNames = arrayOf("", "1", "2", "3", "4")
+    private var playerNames = arrayOf("", "P1", "P2", "P3", "P4")
 
     // bot variables
     private var botGameName = ""
@@ -80,8 +80,9 @@ class MainActivity : AppCompatActivity() {
     private var selectedCell = -1
 
     // TODO deal with draw & add notifications
-    //  App symbol
     //  bots to online
+    //  replace local multiplayer option with renamed bot games
+    //  deal with settings/restart in online & offline
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

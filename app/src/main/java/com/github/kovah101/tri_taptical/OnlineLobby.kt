@@ -337,7 +337,6 @@ class OnlineLobby : AppCompatActivity() {
                             lightUpSquare(playerNumber, 2)
                             lightUpSquare(playerNumber, 3)
                             maxPlayers = lobbyPlayers.size -1
-                            // TODO Hide or show player hubs
                             displayPlayerHubs(maxPlayers)
                         }
                         confirmAndClearHub.visibility = View.GONE
