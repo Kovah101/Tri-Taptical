@@ -215,13 +215,13 @@ class OnlineLobby : AppCompatActivity() {
     }
 
     // play button launches game passing the gameName in the intent
-    // TODO launch activity with result
     fun playOnline(view: View) {
         val onlineGame = Intent(this, MainActivity::class.java)
         onlineGame.putExtra("gameType", "OnlineGame")
         onlineGame.putExtra("gameName", onlineGameName)
         onlineGame.putExtra("myUsername", myUsername)
         startActivity(onlineGame)
+        finish()
     }
 
     // listen to your own requests in database

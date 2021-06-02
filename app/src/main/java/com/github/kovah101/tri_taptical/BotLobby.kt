@@ -306,6 +306,7 @@ class BotLobby : AppCompatActivity() {
         botGame.putExtra("bots", bots)
 
         startActivity(botGame)
+        finish()
     }
 
     private fun fillPlayerHub(username: String, playerNumber: Int) {
