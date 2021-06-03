@@ -10,4 +10,6 @@
     <string name="play">Play</string>
     <string name="human">Human</string>
     <string name="bot">Bot</string>
+    <string name="plus">Add 1 to player count</string>
+    <string name="minus">Minus 1 to player count</string>
 </resources>

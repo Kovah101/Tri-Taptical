@@ -1,12 +1,9 @@
 package com.github.kovah101.tri_taptical
 
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -14,20 +11,12 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.widget.*
-import androidx.core.os.HandlerCompat.postDelayed
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.util.concurrent.Callable
-import java.util.concurrent.FutureTask
-import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
 
@@ -80,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     private var selectedCell = -1
 
     // TODO deal with draw & add notifications
-    //  bots to online
+    //  bots to online in main - lobby done + light up buttons?
     //  replace local multiplayer option with renamed bot games
     //  deal with settings/restart in online & offline
 

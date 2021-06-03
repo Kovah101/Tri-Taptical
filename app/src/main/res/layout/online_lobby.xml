@@ -35,7 +35,7 @@
             android:text="@string/four"
             android:textColor="@color/whiteButton"
             android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="@+id/downArrow"
+            app:layout_constraintBottom_toBottomOf="@+id/minus"
             app:layout_constraintEnd_toStartOf="@+id/plus" />
 
         <ImageButton
@@ -47,13 +47,13 @@
             android:onClick="incrementPlayers"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/downArrow"
+            app:layout_constraintEnd_toStartOf="@+id/minus"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.489"
             app:srcCompat="@drawable/plus_symbol" />
 
         <ImageButton
-            android:id="@+id/downArrow"
+            android:id="@+id/minus"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/roundedbutton"
@@ -82,7 +82,7 @@
         android:id="@+id/playerHubs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        app:layout_constraintBottom_toTopOf="@+id/confirmAndClearHub"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userInfo">
@@ -101,7 +101,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/p1BotOnline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/p1Request">
 
@@ -139,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="Player 1 Username"
+                android:hint="Player 1"
                 android:inputType="textPersonName"
                 android:textColor="@color/whiteButton"
                 android:textColorHint="@color/whiteButton"
@@ -153,8 +153,8 @@
                 android:background="@drawable/roundedbutton"
                 android:onClick="sendRequest"
                 android:text="@string/send"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player1Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -168,11 +168,28 @@
                 android:backgroundTint="@color/purpleButton"
                 android:onClick="acceptRequest"
                 android:text="@string/accept"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p1Request"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/p1BotOnline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/roundedbutton"
+                android:backgroundTint="@color/purpleButton"
+                android:onClick="genOnlineBot"
+                android:text="@string/bot"
+                android:textColor="@color/whiteButton"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/p1Request"
+                app:layout_constraintTop_toBottomOf="@id/p1Accept" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -190,7 +207,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/p2BotOnline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/p2Request">
 
@@ -229,7 +246,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="Player 2 Username"
+                android:hint="Player 2"
                 android:inputType="textPersonName"
                 android:textColor="@color/whiteButton"
                 android:textColorHint="@color/whiteButton"
@@ -243,8 +260,8 @@
                 android:background="@drawable/roundedbutton"
                 android:onClick="sendRequest"
                 android:text="@string/send"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player2Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -257,11 +274,28 @@
                 android:background="@drawable/roundedbutton"
                 android:onClick="acceptRequest"
                 android:text="@string/accept"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p2Request"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/p2BotOnline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/roundedbutton"
+                android:backgroundTint="@color/purpleButton"
+                android:onClick="genOnlineBot"
+                android:text="@string/bot"
+                android:textColor="@color/whiteButton"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/p2Request"
+                app:layout_constraintTop_toBottomOf="@id/p2Accept" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -279,7 +313,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/p3BotOnline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/p3Request">
 
@@ -318,7 +352,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="Player 3 Username"
+                android:hint="Player 3"
                 android:inputType="textPersonName"
                 android:textColor="@color/whiteButton"
                 android:textColorHint="@color/whiteButton"
@@ -332,8 +366,8 @@
                 android:background="@drawable/roundedbutton"
                 android:onClick="sendRequest"
                 android:text="@string/send"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player3Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -346,11 +380,28 @@
                 android:background="@drawable/roundedbutton"
                 android:onClick="acceptRequest"
                 android:text="@string/accept"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p3Request"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/p3BotOnline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/roundedbutton"
+                android:backgroundTint="@color/purpleButton"
+                android:onClick="genOnlineBot"
+                android:text="@string/bot"
+                android:textColor="@color/whiteButton"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/p3Request"
+                app:layout_constraintTop_toBottomOf="@id/p3Accept" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -368,7 +419,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/p4BotOnline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/p4Request">
 
@@ -407,7 +458,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="Player 4 Username"
+                android:hint="Player 4"
                 android:inputType="textPersonName"
                 android:textColor="@color/whiteButton"
                 android:textColorHint="@color/whiteButton"
@@ -421,8 +472,8 @@
                 android:background="@drawable/roundedbutton"
                 android:onClick="sendRequest"
                 android:text="@string/send"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player4Username"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -435,11 +486,28 @@
                 android:background="@drawable/roundedbutton"
                 android:onClick="acceptRequest"
                 android:text="@string/accept"
-                android:textSize="12sp"
                 android:textColor="@color/whiteButton"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p4Request"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/p4BotOnline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/roundedbutton"
+                android:backgroundTint="@color/purpleButton"
+                android:onClick="genOnlineBot"
+                android:text="@string/bot"
+                android:textColor="@color/whiteButton"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/p4Request"
+                app:layout_constraintTop_toBottomOf="@id/p4Accept" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

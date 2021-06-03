@@ -13,7 +13,25 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.bot_lobby.*
 import kotlinx.android.synthetic.main.online_lobby.*
+import kotlinx.android.synthetic.main.online_lobby.p1BigSquare
+import kotlinx.android.synthetic.main.online_lobby.p1MiddleSquare
+import kotlinx.android.synthetic.main.online_lobby.p1SmallSquare
+import kotlinx.android.synthetic.main.online_lobby.p2BigSquare
+import kotlinx.android.synthetic.main.online_lobby.p2MiddleSquare
+import kotlinx.android.synthetic.main.online_lobby.p2SmallSquare
+import kotlinx.android.synthetic.main.online_lobby.p3BigSquare
+import kotlinx.android.synthetic.main.online_lobby.p3MiddleSquare
+import kotlinx.android.synthetic.main.online_lobby.p3SmallSquare
+import kotlinx.android.synthetic.main.online_lobby.p4BigSquare
+import kotlinx.android.synthetic.main.online_lobby.p4MiddleSquare
+import kotlinx.android.synthetic.main.online_lobby.p4SmallSquare
+import kotlinx.android.synthetic.main.online_lobby.player1Username
+import kotlinx.android.synthetic.main.online_lobby.player2Username
+import kotlinx.android.synthetic.main.online_lobby.player3Username
+import kotlinx.android.synthetic.main.online_lobby.player4Username
+import kotlinx.android.synthetic.main.online_lobby.username
 
 class OnlineLobby : AppCompatActivity() {
 
@@ -23,9 +41,11 @@ class OnlineLobby : AppCompatActivity() {
     private lateinit var myUsername: String
     private lateinit var hostUsername: String
     private lateinit var onlineGameName: String
+    private lateinit var bots : String
     private var myPlayerNumber = 0
     private var playerNames = arrayOf("", "", "", "")
     private var myTotalPlayerNumbers = arrayOf(0, 0, 0, 0)
+    private var botPlayers = arrayOf(0, 0, 0, 0)
 
     // instance of database
     private val database = Firebase.database
@@ -91,24 +111,32 @@ class OnlineLobby : AppCompatActivity() {
                 guestPlayer = player1Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 1
+                botPlayers[playerNumber - 1] = 0
+                resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
             }
             p2Request -> {
                 guestPlayer = player2Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 2
+                botPlayers[playerNumber - 1] = 0
+                resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
             }
             p3Request -> {
                 guestPlayer = player3Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 3
+                botPlayers[playerNumber - 1] = 0
+                resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
             }
             p4Request -> {
                 guestPlayer = player4Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 4
+                botPlayers[playerNumber - 1] = 0
+                resetLoadingSquares(playerNumber)
                 lightUpSquare(playerNumber, 1)
             }
         }
@@ -163,12 +191,10 @@ class OnlineLobby : AppCompatActivity() {
         myPlayerNumber = 0
         myTotalPlayerNumbers = arrayOf(0, 0, 0, 0)
         playerNames = arrayOf("", "", "", "")
+        botPlayers = arrayOf(0, 0, 0, 0)
         // reset loading squares to black
-        val black = R.color.black
-        for (loadingSquareID in loadingSquareIDs) {
-            val loadingSquare = findViewById<View>(loadingSquareID)
-            loadingSquare.setBackgroundColor(resources.getColor(black))
-        }
+        // reset loading squares to black
+        resetLoadingSquares(0)
         // clear player inputs
         player1Username.text.clear()
         player2Username.text.clear()
@@ -210,6 +236,8 @@ class OnlineLobby : AppCompatActivity() {
                 Log.d(TAG, name)
             }
         }
+        // create bot string to pass on
+        bots = createBotString(botPlayers)
         // create the unique game on the Games branch
         myRef.child("Games").push().setValue(gameName)
     }
@@ -220,6 +248,8 @@ class OnlineLobby : AppCompatActivity() {
         onlineGame.putExtra("gameType", "OnlineGame")
         onlineGame.putExtra("gameName", onlineGameName)
         onlineGame.putExtra("myUsername", myUsername)
+        onlineGame.putExtra("bots", bots)
+
         startActivity(onlineGame)
         finish()
     }
@@ -508,5 +538,113 @@ class OnlineLobby : AppCompatActivity() {
             }
         }
         return gameName
+    }
+
+    // creates a bot of easy, medium or hard difficulty
+    fun genOnlineBot(view: View) {
+        var playerNumber = 0
+        var guestPlayer = ""
+
+        when (view) {
+            p1BotOnline -> {
+                guestPlayer = player1Username.text.toString()
+                if (checkIfEmpty(guestPlayer)) return
+                playerNumber = 1
+                playerNames[playerNumber - 1] = guestPlayer
+                resetLoadingSquares(playerNumber)
+                cycleBots(playerNumber)
+            }
+            p2BotOnline -> {
+                guestPlayer = player2Username.text.toString()
+                if (checkIfEmpty(guestPlayer)) return
+                playerNumber = 2
+                playerNames[playerNumber - 1] = guestPlayer
+                resetLoadingSquares(playerNumber)
+                cycleBots(playerNumber)
+            }
+            p3BotOnline -> {
+                guestPlayer = player3Username.text.toString()
+                if (checkIfEmpty(guestPlayer)) return
+                playerNumber = 3
+                playerNames[playerNumber - 1] = guestPlayer
+                resetLoadingSquares(playerNumber)
+                cycleBots(playerNumber)
+            }
+            p4BotOnline -> {
+                guestPlayer = player4Username.text.toString()
+                if (checkIfEmpty(guestPlayer)) return
+                playerNumber = 4
+                playerNames[playerNumber - 1] = guestPlayer
+                resetLoadingSquares(playerNumber)
+                cycleBots(playerNumber)
+            }
+        }
+    }
+
+    private fun resetLoadingSquares(hubNumber: Int) {
+        val black = R.color.black
+        when (hubNumber) {
+            0 -> {
+                for (loadingSquareID in loadingSquareIDs) {
+                    val loadingSquare = findViewById<View>(loadingSquareID)
+                    loadingSquare.setBackgroundColor(resources.getColor(black))
+                }
+            }
+            1 -> {
+                for (loadingSquareID in 0..2) {
+                    val loadingSquare = findViewById<View>(loadingSquareIDs[loadingSquareID])
+                    loadingSquare.setBackgroundColor(resources.getColor(black))
+                }
+            }
+            2 -> {
+                for (loadingSquareID in 3..5) {
+                    val loadingSquare = findViewById<View>(loadingSquareIDs[loadingSquareID])
+                    loadingSquare.setBackgroundColor(resources.getColor(black))
+                }
+            }
+            3 -> {
+                for (loadingSquareID in 6..8) {
+                    val loadingSquare = findViewById<View>(loadingSquareIDs[loadingSquareID])
+                    loadingSquare.setBackgroundColor(resources.getColor(black))
+                }
+            }
+            4 -> {
+                for (loadingSquareID in 9..11) {
+                    val loadingSquare = findViewById<View>(loadingSquareIDs[loadingSquareID])
+                    loadingSquare.setBackgroundColor(resources.getColor(black))
+                }
+            }
+        }
+    }
+
+    // cycle through easy, medium or hard (1-2-3) bots, fill array, and light squares
+    private fun cycleBots(playerNumber: Int) {
+        botPlayers[playerNumber - 1]++
+        if (botPlayers[playerNumber - 1] >= 4) {
+            botPlayers[playerNumber - 1] = 1
+        }
+        lightUpSquare(playerNumber, botPlayers[playerNumber - 1])
+        Log.d(TAG, "${botPlayers[playerNumber - 1]}")
+        renameBotButton(playerNumber)
+    }
+
+    // rename corresponding bot button to display correct difficulty
+    private fun renameBotButton(playerNumber: Int){
+        val botNames = arrayOf("Bot", "Easy-Bot", "Med-Bot", "Hard-Bot")
+        when(playerNumber){
+            1 -> p1BotOnline.text = botNames[botPlayers[playerNumber-1]]
+            2 -> p2BotOnline.text = botNames[botPlayers[playerNumber-1]]
+            3 -> p3BotOnline.text = botNames[botPlayers[playerNumber-1]]
+            4 -> p4BotOnline.text = botNames[botPlayers[playerNumber-1]]
+        }
+    }
+
+    private fun createBotString(botPlayers: Array<Int>): String {
+        var botString = ""
+        for (bots in botPlayers){
+            botString += bots.toString()
+            botString += "@"
+        }
+        return botString
     }
 }
