@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.bot_lobby.*
 import kotlinx.android.synthetic.main.online_lobby.*
 import kotlinx.android.synthetic.main.online_lobby.p1BigSquare
@@ -84,6 +86,8 @@ class BotLobby : AppCompatActivity() {
                 renameBotButton(playerNumber)
                 lightUpSquare(playerNumber, 1)
                 lightUpSquare(playerNumber, 2)
+                resetButtonColor(view)
+                recolorButton(view)
             }
             p2Human -> {
                 guestPlayer = player2Username.text.toString()
@@ -424,5 +428,54 @@ class BotLobby : AppCompatActivity() {
             botString += "@"
         }
         return botString
+    }
+
+    // changes button colour to the corresponding player colour
+    // TODO make the recolour function work!
+    private fun recolorButton(view: View) {
+        // pick the appropriate colour
+        when(view){
+            p1Human, p1Bot -> {
+                Log.d("ButtonChanges", "Inside!!")
+                val p1Button = findViewById<Button>(R.id.p1Human)
+                val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p1button, null)
+                p1Button.setBackgroundResource(R.drawable.p1button)
+            }
+            p2Human, p2Bot -> {
+                val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p2button, null)
+                view.background = playerButton
+            }
+            p3Human, p3Bot -> {
+                val colour = resources.getColor(R.color.playerThree)
+                view.setBackgroundColor(colour)
+            }
+            p4Human, p4Bot -> {
+                val colour = resources.getColor(R.color.playerFour)
+                view.setBackgroundColor(colour)
+            }
+        }
+    }
+
+    // recolour corresponding human & bot buttons back to purple
+    private fun resetButtonColor(view: View) {
+        val purpleButton = resources.getDrawable(R.drawable.roundedbutton)
+        when(view){
+            p1Human, p1Bot -> {
+                p1Human.background = purpleButton
+                p1Bot.background = purpleButton
+            }
+            p2Human, p2Bot -> {
+                p2Human.background = purpleButton
+                p2Bot.background = purpleButton
+            }
+            p3Human, p3Bot -> {
+                p3Human.background = purpleButton
+                p3Bot.background = purpleButton
+            }
+            p4Human, p4Bot -> {
+                p4Human.background = purpleButton
+                p4Bot.background = purpleButton
+            }
+        }
     }
 }

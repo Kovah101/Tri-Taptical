@@ -69,8 +69,7 @@ class MainActivity : AppCompatActivity() {
     private var selectedCell = -1
 
     // TODO deal with draw & add notifications
-    //  bots to online in main - lobby done + light up buttons?
-    //  replace local multiplayer option with renamed bot games
+    //  light up buttons to player colour in lobby
     //  deal with settings/restart in online & offline
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,21 +95,26 @@ class MainActivity : AppCompatActivity() {
             // setup for online game
             onlineGame -> {
                 onlineFlag = true
-                Toast.makeText(this, "Online Game!", Toast.LENGTH_SHORT).show()
                 onlineGameName = loadingIntent.getStringExtra("gameName")!!
                 myUsername = loadingIntent.getStringExtra("myUsername")!!
                 playerNames = splitString(onlineGameName).toTypedArray()
+                // -1 due to the unique ID in first space of array
                 maxPlayers = playerNames.size - 1
+                var botString = loadingIntent.getStringExtra("bots")!!
+                botString = botString.dropLast(1)
+                // convert string to array of strings then to integers
+                bots = splitString(botString).map { it.toInt() }.toTypedArray()
                 setupGame(playerNames)
+                Toast.makeText(this, "Online Game with $maxPlayers Players!", Toast.LENGTH_SHORT).show()
                 enableSettings(false)
                 activePlayer = startingPlayer(maxPlayers, score)
                 highlightPlayer(activePlayer)
                 listenToGame()
+                waitForBots(bots)
                 waitYourTurn(playerNames, myUsername, activePlayer)
             }
             // setup bot game
             botGame -> {
-                Toast.makeText(this, "Bot Game!", Toast.LENGTH_SHORT).show()
                 onlineFlag = false
                 botGameName = loadingIntent.getStringExtra("gameName")!!
                 myUsername = loadingIntent.getStringExtra("myUsername")!!
@@ -119,7 +123,9 @@ class MainActivity : AppCompatActivity() {
                 // convert string to array of strings then to integers
                 bots = splitString(botString).map { it.toInt() }.toTypedArray()
                 playerNames = splitString(botGameName).toTypedArray()
+                maxPlayers = playerNames.size - 1
                 setupGame(playerNames)
+                Toast.makeText(this, "Local Game with $maxPlayers Players", Toast.LENGTH_SHORT).show()
                 enableSettings(false)
                 activePlayer = startingPlayer(maxPlayers, score)
                 highlightPlayer(activePlayer)
@@ -178,12 +184,15 @@ class MainActivity : AppCompatActivity() {
                             // update local variables
                             confirmedMoves[onlineMove] = onlinePlayer
                             // check for winner - also increments to next player
-                            checkForWinner()
-                            // wait your turn
-                            waitYourTurn(playerNames, myUsername, activePlayer)
+                            val winner = checkForWinner()
+                            if (!winner){
+                                // wait your turn
+                                waitYourTurn(playerNames, myUsername, activePlayer)
+                            }
                         }
                         if(onlineMoveParts[0] == "RESET"){
                             resetBoard()
+                            //activePlayer = startingPlayer(maxPlayers, score)
                             waitYourTurn(playerNames, myUsername, activePlayer)
                         }
                     } catch (ex: Exception) {
@@ -353,6 +362,13 @@ class MainActivity : AppCompatActivity() {
 
     // confirms move to array, if online publishes the move to players
     private fun confirmMove(selectedCell: Int) {
+        // check for draw
+        if (!confirmedMoves.contains(0)){
+            // TODO deal with draw
+                Log.d("Draw", "Inside Draw condition")
+            // display message and restart round
+            return
+        }
         // add confirmed move to hash map with cell and active player
         confirmedMoves[selectedCell] = activePlayer
         Log.d(onlineGame, "$selectedCell")
@@ -384,11 +400,13 @@ class MainActivity : AppCompatActivity() {
 
     // sends reset command to other players, restarts game board if restart
     fun resetButton(view: View){
-        resetBoard()
+
         // send reset to other online players
         if (onlineFlag && view == findViewById(R.id.resetButton)){
             val reset = "RESET"
             myRef.child("Games").child(onlineGameName).push().setValue(reset)
+        } else {
+            resetBoard()
         }
 
         // reset active player & scores if restarting
@@ -399,6 +417,7 @@ class MainActivity : AppCompatActivity() {
             for (scores in score.indices) {
                 score[scores] = 0
             }
+            resetBoard()
             Log.d("ButtonPress", "${score[0]},${score[1]},${score[2]},${score[3]}")
             updateScore()
         }
@@ -426,6 +445,7 @@ class MainActivity : AppCompatActivity() {
 
         // increment starting player
         activePlayer = startingPlayer(maxPlayers, score)
+
         // show starting player
         highlightPlayer(activePlayer)
 
@@ -464,7 +484,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // checks for winner, if there is then blink the winning moves, update the scores and show reset
-    private fun checkForWinner() {
+    private fun checkForWinner(): Boolean {
         var winFlag = false
         Log.d("ButtonPress", "Check Winner")
         // check for Spot winner
@@ -520,6 +540,8 @@ class MainActivity : AppCompatActivity() {
             // wait for robots if its their turn
             waitForBots(bots)
         }
+
+        return winFlag
     }
 
     // takes scores and displays them to scoreboards
@@ -700,10 +722,13 @@ class MainActivity : AppCompatActivity() {
             {
                 // colour chosen segment then save move
                 setSegmentColor(botMove, -1, activePlayer)
+                // enable reset button in case of bot win
+                enablePlayerButtons(true)
                 confirmMove(botMove)
             },
             botDelay
         )
+
     }
 
 }

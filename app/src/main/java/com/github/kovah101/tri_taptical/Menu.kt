@@ -27,7 +27,7 @@ class Menu : AppCompatActivity() {
          myUsername = loginIntent.getStringExtra("username")
 
         usernameLabel.text = myUsername
-        // do i keep this label???
+        // do I need this label???
 
         Toast.makeText(applicationContext, "email:$myEmail, username:$myUsername", Toast.LENGTH_SHORT).show()
     }
@@ -36,8 +36,8 @@ class Menu : AppCompatActivity() {
 
     // starts classic local multi-player game
     fun launchLocalGame(view: View) {
-        val localGame = Intent(this, MainActivity::class.java)
-        localGame.putExtra("gameType", "LocalGame")
+        val localGame = Intent(this, BotLobby::class.java)
+        localGame.putExtra("username", myUsername)
         startActivity(localGame)
     }
 
@@ -50,22 +50,15 @@ class Menu : AppCompatActivity() {
         onlineLobby.putExtra("username", myUsername)
 
         startActivity(onlineLobby)
-
-        //Log.d(menuTag, "Online Games coming soon")
-        //Toast.makeText(applicationContext, "$myEmail, $myID, $myUsername", Toast.LENGTH_SHORT).show()
     }
 
     // Pop up for bot difficulty & number
     // Confirm to launch bot game
     fun launchBots(view: View) {
         val botLobby = Intent(this, BotLobby::class.java)
-        //botLobby.putExtra("email", myEmail)
-        //botLobby.putExtra("userID", myID)
         botLobby.putExtra("username", myUsername)
 
         startActivity(botLobby)
-        //Log.d(menuTag, "Bot Game coming soon")
-        //Toast.makeText(applicationContext, "Bot Games Coming Soon", Toast.LENGTH_SHORT).show()
     }
 
     fun signOut(view: View){
