@@ -80,50 +80,36 @@ class BotLobby : AppCompatActivity() {
                 guestPlayer = player1Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 1
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
-                botPlayers[playerNumber - 1] = 0
-                renameBotButton(playerNumber)
-                lightUpSquare(playerNumber, 1)
-                lightUpSquare(playerNumber, 2)
-                resetButtonColor(view)
-                recolorButton(view)
+                generateHuman(playerNumber, guestPlayer, view)
             }
             p2Human -> {
                 guestPlayer = player2Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 2
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
-                botPlayers[playerNumber - 1] = 0
-                renameBotButton(playerNumber)
-                lightUpSquare(playerNumber, 1)
-                lightUpSquare(playerNumber, 2)
+                generateHuman(playerNumber, guestPlayer, view)
             }
             p3Human -> {
                 guestPlayer = player3Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 3
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
-                botPlayers[playerNumber - 1] = 0
-                renameBotButton(playerNumber)
-                lightUpSquare(playerNumber, 1)
-                lightUpSquare(playerNumber, 2)
+                generateHuman(playerNumber, guestPlayer, view)
             }
             p4Human -> {
                 guestPlayer = player4Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 4
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
-                botPlayers[playerNumber - 1] = 0
-                renameBotButton(playerNumber)
-                lightUpSquare(playerNumber, 1)
-                lightUpSquare(playerNumber, 2)
+                generateHuman(playerNumber, guestPlayer, view)
             }
         }
 
+    }
+
+    private fun generateHuman(playerNumber: Int, guestPlayer: String, view: View){
+        generatePlayer(playerNumber, guestPlayer, view)
+        botPlayers[playerNumber - 1] = 0
+        renameBotButton(playerNumber)
+        lightUpSquare(playerNumber, 1)
+        lightUpSquare(playerNumber, 2)
     }
 
     // check if edit text is empty
@@ -143,46 +129,51 @@ class BotLobby : AppCompatActivity() {
 
         when (view) {
             p1Bot -> {
+                playerNumber = 1
                 guestPlayer = player1Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
-                playerNumber = 1
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
+                generatePlayer(playerNumber, guestPlayer, view)
                 cycleBots(playerNumber)
             }
             p2Bot -> {
+                playerNumber = 2
                 guestPlayer = player2Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
-                playerNumber = 2
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
+                generatePlayer(playerNumber, guestPlayer, view)
                 cycleBots(playerNumber)
             }
             p3Bot -> {
+                playerNumber = 3
                 guestPlayer = player3Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
-                playerNumber = 3
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
+                generatePlayer(playerNumber, guestPlayer, view)
                 cycleBots(playerNumber)
             }
             p4Bot -> {
+                playerNumber = 4
                 guestPlayer = player4Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
-                playerNumber = 4
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
+                generatePlayer(playerNumber, guestPlayer, view)
                 cycleBots(playerNumber)
             }
         }
     }
-    // possibly use for refactoring
-    private fun generatePlayer(playerNumber: Int){
-        val usernameHubs = arrayOf(player1Username, player2Username, player3Username, player4Username)
-        val guestPlayer = usernameHubs[playerNumber-1].text.toString()
-        if (checkIfEmpty(guestPlayer)) return
+
+//    guestPlayer = player4Username.text.toString()
+//    if (checkIfEmpty(guestPlayer)) return
+//    playerNumber = 4
+//    playerNames[playerNumber - 1] = guestPlayer
+//    resetLoadingSquares(playerNumber)
+//    cycleBots(playerNumber)
+//    resetButtonColor(view)
+//    recolorButton(view)
+
+    // set name, light up loading squares & colour button
+    private fun generatePlayer(playerNumber: Int, guestPlayer: String, view: View){
         playerNames[playerNumber - 1] = guestPlayer
         resetLoadingSquares(playerNumber)
+        resetButtonColor(view)
+        recolorButton(view)
     }
 
     // cycle through easy, medium or hard (1-2-3) bots, fill array, and light squares
@@ -437,21 +428,20 @@ class BotLobby : AppCompatActivity() {
         when(view){
             p1Human, p1Bot -> {
                 Log.d("ButtonChanges", "Inside!!")
-                val p1Button = findViewById<Button>(R.id.p1Human)
                 val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p1button, null)
-                p1Button.setBackgroundResource(R.drawable.p1button)
+                view.background = playerButton
             }
             p2Human, p2Bot -> {
                 val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p2button, null)
                 view.background = playerButton
             }
             p3Human, p3Bot -> {
-                val colour = resources.getColor(R.color.playerThree)
-                view.setBackgroundColor(colour)
+                val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p3button, null)
+                view.background = playerButton
             }
             p4Human, p4Bot -> {
-                val colour = resources.getColor(R.color.playerFour)
-                view.setBackgroundColor(colour)
+                val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p4button, null)
+                view.background = playerButton
             }
         }
     }

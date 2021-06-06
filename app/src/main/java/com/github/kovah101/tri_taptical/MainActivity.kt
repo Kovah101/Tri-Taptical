@@ -69,8 +69,8 @@ class MainActivity : AppCompatActivity() {
     private var selectedCell = -1
 
     // TODO deal with draw & add notifications
-    //  light up buttons to player colour in lobby
     //  deal with settings/restart in online & offline
+    //  refactor online lobby & readMe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

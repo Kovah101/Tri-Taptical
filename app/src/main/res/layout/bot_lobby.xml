@@ -159,7 +159,8 @@
                 android:textColor="@color/whiteButton"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player1Username"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:backgroundTint="@null"/>
 
             <Button
                 android:id="@+id/p1Bot"
@@ -168,14 +169,14 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/roundedbutton"
-                android:backgroundTint="@color/purpleButton"
                 android:onClick="generateBot"
                 android:text="@string/bot"
                 android:textColor="@color/whiteButton"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p1Human"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:backgroundTint="@null"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -250,7 +251,8 @@
                 android:textColor="@color/whiteButton"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player2Username"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:backgroundTint="@null"/>
 
             <Button
                 android:id="@+id/p2Bot"
@@ -265,7 +267,8 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p2Human"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:backgroundTint="@null"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -340,7 +343,8 @@
                 android:textColor="@color/whiteButton"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player3Username"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:backgroundTint="@null"/>
 
             <Button
                 android:id="@+id/p3Bot"
@@ -355,7 +359,8 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p3Human"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:backgroundTint="@null"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -430,7 +435,8 @@
                 android:textColor="@color/whiteButton"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/player4Username"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:backgroundTint="@null"/>
 
             <Button
                 android:id="@+id/p4Bot"
@@ -445,7 +451,8 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/p4Human"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:backgroundTint="@null"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
