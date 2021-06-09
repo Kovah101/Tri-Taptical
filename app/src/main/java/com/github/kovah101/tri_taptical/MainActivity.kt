@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                 setupGame(playerNames)
                 Toast.makeText(this, "Online Game with $maxPlayers Players!", Toast.LENGTH_SHORT)
                     .show()
-                enableSettings(false)
+                enableSettings(true)
                 activePlayer = startingPlayer(maxPlayers, score)
                 highlightPlayer(activePlayer)
                 listenToGame()
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
                 setupGame(playerNames)
                 Toast.makeText(this, "Local Game with $maxPlayers Players", Toast.LENGTH_SHORT)
                     .show()
-                enableSettings(false)
+                enableSettings(true)
                 activePlayer = startingPlayer(maxPlayers, score)
                 highlightPlayer(activePlayer)
                 waitForBots(bots)
@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity() {
                     try {
                         val submittedMove = snapshot.value as String
                         val onlineMoveParts = splitString(submittedMove)
-                        if (onlineMoveParts[0] != "RESET") {
+                        if (onlineMoveParts[0] != "RESET" && onlineMoveParts[0] != "RESTART") {
                             val onlineMove = onlineMoveParts[0].toInt()
                             val onlinePlayer = onlineMoveParts[1].toInt()
                             // take online move and update local board
@@ -194,8 +194,11 @@ class MainActivity : AppCompatActivity() {
                         }
                         if (onlineMoveParts[0] == "RESET") {
                             resetBoard()
-                            //activePlayer = startingPlayer(maxPlayers, score)
-                            waitYourTurn(playerNames, myUsername, activePlayer)
+                            //waitYourTurn(playerNames, myUsername, activePlayer)
+                        }
+                        if (onlineMoveParts[0] == "RESTART") {
+                            restartGame()
+                            //waitYourTurn(playerNames, myUsername, activePlayer)
                         }
                     } catch (ex: Exception) {
 
@@ -226,11 +229,6 @@ class MainActivity : AppCompatActivity() {
 
     // checks if it is your turn - ONLINE
     private fun waitYourTurn(playerNames: Array<String>, myUsername: String, currentPlayer: Int) {
-        Toast.makeText(
-            this,
-            "P$currentPlayer: ${playerNames[currentPlayer]} turn",
-            Toast.LENGTH_SHORT
-        ).show()
         // if it is your turn - enable buttons
         if (playerNames[currentPlayer] == myUsername) {
             enablePlayerButtons(true)
@@ -429,15 +427,25 @@ class MainActivity : AppCompatActivity() {
         // reset active player & scores if restarting
         if (view == findViewById(R.id.restartSettingsButton)) {
             Log.d("ButtonPress", "Restart Game")
-            activePlayer = 1
-            // reset score array
-            for (scores in score.indices) {
-                score[scores] = 0
+            if (onlineFlag) {
+                val restart = "RESTART"
+                myRef.child("Games").child(onlineGameName).push().setValue(restart)
+            } else {
+                restartGame()
             }
-            resetBoard()
-            Log.d("ButtonPress", "${score[0]},${score[1]},${score[2]},${score[3]}")
-            updateScore()
+
         }
+    }
+
+    // fully wipes scores and starts fresh
+    private fun restartGame() {
+        // reset score array
+        for (scores in score.indices) {
+            score[scores] = 0
+        }
+        Log.d("ButtonPress", "${score[0]},${score[1]},${score[2]},${score[3]}")
+        updateScore()
+        resetBoard()
     }
 
     // restarts the game by clearing board and updating scores
@@ -465,6 +473,9 @@ class MainActivity : AppCompatActivity() {
 
         // show starting player
         highlightPlayer(activePlayer)
+
+        // check whos turn it is
+        waitYourTurn(playerNames, myUsername, activePlayer)
 
         // check if its a robots turn
         waitForBots(bots)
@@ -714,8 +725,6 @@ class MainActivity : AppCompatActivity() {
         if (maxPlayers > 4) {
             maxPlayers = 4
         }
-        val playerNumberView = findViewById<TextView>(R.id.maxPlayerNumber)
-        playerNumberView.text = maxPlayers.toString()
     }
 
     // or decrease max player count
@@ -724,8 +733,6 @@ class MainActivity : AppCompatActivity() {
         if (maxPlayers < 2) {
             maxPlayers = 2
         }
-        val playerNumberView = findViewById<TextView>(R.id.maxPlayerNumber)
-        playerNumberView.text = maxPlayers.toString()
     }
 
     // bot functionality

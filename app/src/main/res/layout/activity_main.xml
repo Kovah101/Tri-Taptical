@@ -17,12 +17,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tableLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/restartSettingsButton"
             android:layout_width="80dp"
             android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/roundedbutton"
             android:gravity="center"
             android:onClick="resetButton"
@@ -33,67 +37,27 @@
             app:backgroundTint="@color/purpleButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/playerNumberLabel"
-            app:layout_constraintTop_toBottomOf="@+id/playerNumberLabel" />
+            app:layout_constraintStart_toEndOf="@+id/closeSettingsMenu"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/closeSettingsMenu"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/roundedbutton"
             android:onClick="closeSettings"
             android:scaleType="fitCenter"
             android:src="@drawable/close_icon"
+            app:layout_constraintEnd_toStartOf="@+id/restartSettingsButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/incrementNumber"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/roundedbutton"
-            android:onClick="incrementPlayers"
-            android:scaleType="fitCenter"
-            android:src="@drawable/up_arrow"
-            android:text="Button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        >
 
-        <ImageButton
-            android:id="@+id/decrementNumber"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/roundedbutton"
-            android:onClick="decrementPlayers"
-            android:scaleType="fitCenter"
-            android:src="@drawable/down_arrow"
-            android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:id="@+id/maxPlayerNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="12dp"
-            android:paddingRight="16dp"
-            android:text="4"
-            android:textColor="@color/whiteButton"
-            android:textSize="32sp"
-            app:layout_constraintBottom_toTopOf="@+id/decrementNumber"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/incrementNumber" />
-
-        <TextView
-            android:id="@+id/playerNumberLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Number of Players:"
-            android:textColor="@color/whiteButton"
-            android:textSize="28sp"
-            android:paddingLeft="12dp"
-            app:layout_constraintBottom_toTopOf="@+id/decrementNumber"
-            app:layout_constraintEnd_toStartOf="@+id/maxPlayerNumber" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
