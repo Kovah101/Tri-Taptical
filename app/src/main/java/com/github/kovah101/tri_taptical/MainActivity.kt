@@ -68,9 +68,9 @@ class MainActivity : AppCompatActivity() {
     private var winningMoves = arrayListOf<Int>()
     private var selectedCell = -1
 
-    // TODO deal with draw & add notifications
+    // TODO add notifications
     //  deal with settings/restart in online & offline
-    //  refactor online lobby & readMe
+    //  readMe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,7 +105,8 @@ class MainActivity : AppCompatActivity() {
                 // convert string to array of strings then to integers
                 bots = splitString(botString).map { it.toInt() }.toTypedArray()
                 setupGame(playerNames)
-                Toast.makeText(this, "Online Game with $maxPlayers Players!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Online Game with $maxPlayers Players!", Toast.LENGTH_SHORT)
+                    .show()
                 enableSettings(false)
                 activePlayer = startingPlayer(maxPlayers, score)
                 highlightPlayer(activePlayer)
@@ -125,7 +126,8 @@ class MainActivity : AppCompatActivity() {
                 playerNames = splitString(botGameName).toTypedArray()
                 maxPlayers = playerNames.size - 1
                 setupGame(playerNames)
-                Toast.makeText(this, "Local Game with $maxPlayers Players", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Local Game with $maxPlayers Players", Toast.LENGTH_SHORT)
+                    .show()
                 enableSettings(false)
                 activePlayer = startingPlayer(maxPlayers, score)
                 highlightPlayer(activePlayer)
@@ -185,12 +187,12 @@ class MainActivity : AppCompatActivity() {
                             confirmedMoves[onlineMove] = onlinePlayer
                             // check for winner - also increments to next player
                             val winner = checkForWinner()
-                            if (!winner){
+                            if (!winner) {
                                 // wait your turn
                                 waitYourTurn(playerNames, myUsername, activePlayer)
                             }
                         }
-                        if(onlineMoveParts[0] == "RESET"){
+                        if (onlineMoveParts[0] == "RESET") {
                             resetBoard()
                             //activePlayer = startingPlayer(maxPlayers, score)
                             waitYourTurn(playerNames, myUsername, activePlayer)
@@ -363,10 +365,8 @@ class MainActivity : AppCompatActivity() {
     // confirms move to array, if online publishes the move to players
     private fun confirmMove(selectedCell: Int) {
         // check for draw
-        if (!confirmedMoves.contains(0)){
-            // TODO deal with draw
-                Log.d("Draw", "Inside Draw condition")
-            // display message and restart round
+        if (!confirmedMoves.contains(0)) {
+            dealWithDraw()
             return
         }
         // add confirmed move to hash map with cell and active player
@@ -389,6 +389,23 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun dealWithDraw() {
+        Log.d("Draw", "Inside Draw condition")
+        // display message and restart round
+        Toast.makeText(
+            this,
+            "Its a Draw!",
+            Toast.LENGTH_SHORT
+        ).show()
+
+        if (onlineFlag) {
+            val reset = "RESET"
+            myRef.child("Games").child(onlineGameName).push().setValue(reset)
+        } else {
+            resetBoard()
+        }
+    }
+
     // increments active player
     private fun nextPlayer() {
         activePlayer++
@@ -399,10 +416,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     // sends reset command to other players, restarts game board if restart
-    fun resetButton(view: View){
+    fun resetButton(view: View) {
 
         // send reset to other online players
-        if (onlineFlag && view == findViewById(R.id.resetButton)){
+        if (onlineFlag && view == findViewById(R.id.resetButton)) {
             val reset = "RESET"
             myRef.child("Games").child(onlineGameName).push().setValue(reset)
         } else {
@@ -424,7 +441,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // restarts the game by clearing board and updating scores
-   private fun resetBoard() {
+    private fun resetBoard() {
         // reset the board
         val white = resources.getColor(R.color.white)
         for (cell in locationIDs.indices) {
@@ -460,15 +477,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     //highlights the hub of current player
-    private fun highlightPlayer(currentPlayer: Int){
+    private fun highlightPlayer(currentPlayer: Int) {
         val playerBorders = arrayOf(R.id.p1Border, R.id.p2Border, R.id.p3Border, R.id.p4Border)
-        val playerColors = arrayOf(R.color.black, R.color.playerOne, R.color.playerTwo, R.color.playerThree, R.color.playerFour)
-        val playerBorder = findViewById<View>(playerBorders[currentPlayer-1])
+        val playerColors = arrayOf(
+            R.color.black,
+            R.color.playerOne,
+            R.color.playerTwo,
+            R.color.playerThree,
+            R.color.playerFour
+        )
 
-        for (playerNumber in playerBorders.indices){
+        for (playerNumber in playerBorders.indices) {
             val border = findViewById<View>(playerBorders[playerNumber])
             // current player highlighted
-            if (playerNumber + 1 == currentPlayer){
+            if (playerNumber + 1 == currentPlayer) {
                 val playerColour = resources.getColor(playerColors[currentPlayer])
                 border.setBackgroundColor(playerColour)
             } else {
@@ -535,7 +557,7 @@ class MainActivity : AppCompatActivity() {
             // reveal reset button
             val resetButton = findViewById<Button>(R.id.resetButton)
             resetButton.visibility = View.VISIBLE
-        }else{
+        } else {
             nextPlayer()
             // wait for robots if its their turn
             waitForBots(bots)
@@ -716,13 +738,13 @@ class MainActivity : AppCompatActivity() {
             else -> Toast.makeText(this, "What sort of bot is this??", Toast.LENGTH_SHORT).show()
         }
 
-         val botDelay = 1500L
+        val botDelay = 1500L
 
         Handler().postDelayed(
             {
                 // colour chosen segment then save move
                 setSegmentColor(botMove, -1, activePlayer)
-                // enable reset button in case of bot win
+                // enable reset button in case of bot win or draw on bot turn
                 enablePlayerButtons(true)
                 confirmMove(botMove)
             },

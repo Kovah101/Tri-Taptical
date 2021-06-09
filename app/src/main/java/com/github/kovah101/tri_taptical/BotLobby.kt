@@ -104,12 +104,13 @@ class BotLobby : AppCompatActivity() {
 
     }
 
+    // resets bot number & button label, lights up squares 1+2 OR 1+3
     private fun generateHuman(playerNumber: Int, guestPlayer: String, view: View){
         generatePlayer(playerNumber, guestPlayer, view)
         botPlayers[playerNumber - 1] = 0
         renameBotButton(playerNumber)
         lightUpSquare(playerNumber, 1)
-        lightUpSquare(playerNumber, 2)
+        lightUpSquare(playerNumber, 3)
     }
 
     // check if edit text is empty
@@ -304,16 +305,6 @@ class BotLobby : AppCompatActivity() {
         finish()
     }
 
-    private fun fillPlayerHub(username: String, playerNumber: Int) {
-        when (playerNumber) {
-            1 -> player1Username.setText(username)
-            2 -> player2Username.setText(username)
-            3 -> player3Username.setText(username)
-            4 -> player4Username.setText(username)
-            else -> Log.d(TAG, "Error: player number incorrect")
-        }
-    }
-
     private fun lightUpSquare(playerNumber: Int, stageToColor: Int) {
         val playerColors =
             arrayOf(R.color.playerOne, R.color.playerTwo, R.color.playerThree, R.color.playerFour)
@@ -422,12 +413,10 @@ class BotLobby : AppCompatActivity() {
     }
 
     // changes button colour to the corresponding player colour
-    // TODO make the recolour function work!
     private fun recolorButton(view: View) {
         // pick the appropriate colour
         when(view){
             p1Human, p1Bot -> {
-                Log.d("ButtonChanges", "Inside!!")
                 val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p1button, null)
                 view.background = playerButton
             }

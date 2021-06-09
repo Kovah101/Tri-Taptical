@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -111,38 +112,40 @@ class OnlineLobby : AppCompatActivity() {
                 guestPlayer = player1Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 1
-                botPlayers[playerNumber - 1] = 0
-                resetLoadingSquares(playerNumber)
-                lightUpSquare(playerNumber, 1)
+                humanRequest(playerNumber, view)
             }
             p2Request -> {
                 guestPlayer = player2Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 2
-                botPlayers[playerNumber - 1] = 0
-                resetLoadingSquares(playerNumber)
-                lightUpSquare(playerNumber, 1)
+                humanRequest(playerNumber, view)
             }
             p3Request -> {
                 guestPlayer = player3Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 3
-                botPlayers[playerNumber - 1] = 0
-                resetLoadingSquares(playerNumber)
-                lightUpSquare(playerNumber, 1)
+                humanRequest(playerNumber, view)
             }
             p4Request -> {
                 guestPlayer = player4Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 4
-                botPlayers[playerNumber - 1] = 0
-                resetLoadingSquares(playerNumber)
-                lightUpSquare(playerNumber, 1)
+                humanRequest(playerNumber, view)
             }
         }
         myRef.child("Users").child(guestPlayer).child("Requests").push()
             .setValue("$myUsername@$playerNumber")
 
+    }
+
+    // remove any bot info and light up appropriate loading square & button
+    private fun humanRequest(playerNumber: Int, view: View) {
+        botPlayers[playerNumber - 1] = 0
+        renameBotButton(playerNumber)
+        resetLoadingSquares(playerNumber)
+        lightUpSquare(playerNumber, 1)
+        resetButtonColor(view)
+        recolorButton(view)
     }
 
     // check if edit text is empty
@@ -161,10 +164,10 @@ class OnlineLobby : AppCompatActivity() {
     fun acceptRequest(view: View) {
         if (myPlayerNumber != 0) {
             when (view) {
-                p1Accept -> lightUpSquare(1, 2)
-                p2Accept -> lightUpSquare(2, 2)
-                p3Accept -> lightUpSquare(3, 2)
-                p4Accept -> lightUpSquare(4, 2)
+                p1Accept -> acceptActions(1, view)
+                p2Accept -> acceptActions(2, view)
+                p3Accept -> acceptActions(3, view)
+                p4Accept -> acceptActions(4, view)
             }
             myRef.child("Users").child(hostUsername).child("Accepts").push()
                 .setValue("$myUsername@$myPlayerNumber")
@@ -175,6 +178,16 @@ class OnlineLobby : AppCompatActivity() {
         }
     }
 
+    // lights up appropriate loading square and button
+    private fun acceptActions(playerNumber: Int, view: View) {
+        botPlayers[playerNumber - 1] = 0
+        renameBotButton(playerNumber)
+        resetLoadingSquares(playerNumber)
+        lightUpSquare(playerNumber, 2)
+        resetButtonColor(view)
+        recolorButton(view)
+
+    }
 
     fun clearButton(view: View) {
         clearEverything()
@@ -272,7 +285,7 @@ class OnlineLobby : AppCompatActivity() {
                         ).show()
                         fillPlayerHub(myUsername, myPlayerNumber)
                         lightUpSquare(myPlayerNumber, 1)
-                        //TODO add waiting for other players + light up first square
+                        //TODO add waiting for other players
                         myTotalPlayerNumbers[myPlayerNumber - 1] = myPlayerNumber
                     } catch (ex: Exception) {
                         Log.w(TAG, "requestListener:onChildAdded", ex)
@@ -303,6 +316,7 @@ class OnlineLobby : AppCompatActivity() {
             })
     }
 
+    // waits for accept of request to store confirmed player details
     private fun listenForAccepts() {
         myRef.child("Users").child(myUsername).child("Accepts")
             .addChildEventListener(object : ChildEventListener {
@@ -321,7 +335,10 @@ class OnlineLobby : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         // disable the relevant editText & light up accept square
+                        lightUpSquare(acceptedPlayerNumber,1)
                         lightUpSquare(acceptedPlayerNumber, 2)
+                        botPlayers[acceptedPlayerNumber - 1] = 0
+                        renameBotButton(acceptedPlayerNumber)
                         disableUsernameInput(acceptedPlayerNumber)
                     } catch (ex: java.lang.Exception) {
                         Log.w(TAG, "acceptListener:onChildAdded", ex)
@@ -351,6 +368,7 @@ class OnlineLobby : AppCompatActivity() {
             })
     }
 
+    // waits for completed game info to be sent, displays it and ready to play
     private fun listenForGames() {
         myRef.child("Users").child(myUsername).child("Games")
             .addChildEventListener(object : ChildEventListener {
@@ -400,6 +418,7 @@ class OnlineLobby : AppCompatActivity() {
             })
     }
 
+    // online function to show players each others names in lobby
     private fun fillPlayerHub(username: String, playerNumber: Int) {
         when (playerNumber) {
             1 -> player1Username.setText(username)
@@ -410,6 +429,7 @@ class OnlineLobby : AppCompatActivity() {
         }
     }
 
+    // recolours corresponding loading square in player colour
     private fun lightUpSquare(playerNumber: Int, stageToColor: Int) {
         val playerColors =
             arrayOf(R.color.playerOne, R.color.playerTwo, R.color.playerThree, R.color.playerFour)
@@ -495,6 +515,7 @@ class OnlineLobby : AppCompatActivity() {
         playerNumberView.text = maxPlayers.toString()
     }
 
+    // show or hide player hubs according to max number of players
     private fun displayPlayerHubs(maxPlayers: Int){
         val player3Hub = findViewById<ConstraintLayout>(R.id.p3Hub)
         val player4Hub = findViewById<ConstraintLayout>(R.id.p4Hub)
@@ -540,7 +561,7 @@ class OnlineLobby : AppCompatActivity() {
         return gameName
     }
 
-    // creates a bot of easy, medium or hard difficulty
+    // creates a bot of easy, medium or hard difficulty and stores bot details
     fun genOnlineBot(view: View) {
         var playerNumber = 0
         var guestPlayer = ""
@@ -550,37 +571,39 @@ class OnlineLobby : AppCompatActivity() {
                 guestPlayer = player1Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 1
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
-                cycleBots(playerNumber)
+                botDetails(playerNumber, view, guestPlayer)
             }
             p2BotOnline -> {
                 guestPlayer = player2Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 2
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
-                cycleBots(playerNumber)
+                botDetails(playerNumber, view, guestPlayer)
             }
             p3BotOnline -> {
                 guestPlayer = player3Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 3
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
-                cycleBots(playerNumber)
+                botDetails(playerNumber, view, guestPlayer)
             }
             p4BotOnline -> {
                 guestPlayer = player4Username.text.toString()
                 if (checkIfEmpty(guestPlayer)) return
                 playerNumber = 4
-                playerNames[playerNumber - 1] = guestPlayer
-                resetLoadingSquares(playerNumber)
-                cycleBots(playerNumber)
+                botDetails(playerNumber, view, guestPlayer)
             }
         }
     }
 
+    // stores player name, lights up appropriate square and button
+    private fun botDetails(playerNumber: Int, view: View, guestPlayer:  String) {
+        playerNames[playerNumber - 1] = guestPlayer
+        resetLoadingSquares(playerNumber)
+        resetButtonColor(view)
+        recolorButton(view)
+        cycleBots(playerNumber)
+    }
+
+    // recolour all loading squares black
     private fun resetLoadingSquares(hubNumber: Int) {
         val black = R.color.black
         when (hubNumber) {
@@ -639,6 +662,7 @@ class OnlineLobby : AppCompatActivity() {
         }
     }
 
+    // takes all bot info and creates string to be passed to main activity
     private fun createBotString(botPlayers: Array<Int>): String {
         var botString = ""
         for (bots in botPlayers){
@@ -646,5 +670,55 @@ class OnlineLobby : AppCompatActivity() {
             botString += "@"
         }
         return botString
+    }
+
+    // changes button colour to the corresponding player colour
+    private fun recolorButton(view: View) {
+        // pick the appropriate colour
+        when(view){
+            p1Request, p1BotOnline, p1Accept -> {
+                val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p1button, null)
+                view.background = playerButton
+            }
+            p2Request, p2BotOnline, p2Accept -> {
+                val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p2button, null)
+                view.background = playerButton
+            }
+            p3Request, p3BotOnline, p3Accept -> {
+                val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p3button, null)
+                view.background = playerButton
+            }
+            p4Request, p4BotOnline, p4Accept -> {
+                val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p4button, null)
+                view.background = playerButton
+            }
+        }
+    }
+
+    // recolour corresponding human & bot buttons back to purple
+    private fun resetButtonColor(view: View) {
+        val purpleButton = resources.getDrawable(R.drawable.roundedbutton)
+        when(view){
+            p1Request, p1BotOnline, p1Accept -> {
+                p1Request.background = purpleButton
+                p1BotOnline.background = purpleButton
+                p1Accept.background = purpleButton
+            }
+            p2Request, p2BotOnline, p2Accept -> {
+                p2Request.background = purpleButton
+                p2BotOnline.background = purpleButton
+                p2Accept.background = purpleButton
+            }
+            p3Request, p3BotOnline, p3Accept -> {
+                p3Request.background = purpleButton
+                p3BotOnline.background = purpleButton
+                p3Accept.background = purpleButton
+            }
+            p4Request, p4BotOnline, p4Accept -> {
+                p4Request.background = purpleButton
+                p4BotOnline.background = purpleButton
+                p4Accept.background = purpleButton
+            }
+        }
     }
 }
