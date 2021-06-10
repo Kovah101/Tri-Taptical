@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity() {
     private var selectedCell = -1
 
     // TODO add notifications
-    //  deal with settings/restart in online & offline
     //  readMe
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +82,6 @@ class MainActivity : AppCompatActivity() {
         when (gameType) {
             // setup for local game
             localGame -> {
-                Toast.makeText(this, "Local Game!", Toast.LENGTH_SHORT).show()
                 onlineFlag = false
                 enableSettings(true)
                 // increment starting player
@@ -105,8 +103,6 @@ class MainActivity : AppCompatActivity() {
                 // convert string to array of strings then to integers
                 bots = splitString(botString).map { it.toInt() }.toTypedArray()
                 setupGame(playerNames)
-                Toast.makeText(this, "Online Game with $maxPlayers Players!", Toast.LENGTH_SHORT)
-                    .show()
                 enableSettings(true)
                 activePlayer = startingPlayer(maxPlayers, score)
                 highlightPlayer(activePlayer)
@@ -126,8 +122,6 @@ class MainActivity : AppCompatActivity() {
                 playerNames = splitString(botGameName).toTypedArray()
                 maxPlayers = playerNames.size - 1
                 setupGame(playerNames)
-                Toast.makeText(this, "Local Game with $maxPlayers Players", Toast.LENGTH_SHORT)
-                    .show()
                 enableSettings(true)
                 activePlayer = startingPlayer(maxPlayers, score)
                 highlightPlayer(activePlayer)
@@ -417,20 +411,25 @@ class MainActivity : AppCompatActivity() {
     fun resetButton(view: View) {
 
         // send reset to other online players
-        if (onlineFlag && view == findViewById(R.id.resetButton)) {
-            val reset = "RESET"
-            myRef.child("Games").child(onlineGameName).push().setValue(reset)
-        } else {
-            resetBoard()
+        if (view == findViewById(R.id.resetButton)) {
+            // if online then send command, else local reset
+            if (onlineFlag) {
+                val reset = "RESET"
+                myRef.child("Games").child(onlineGameName).push().setValue(reset)
+            } else {
+                resetBoard()
+            }
         }
 
         // reset active player & scores if restarting
         if (view == findViewById(R.id.restartSettingsButton)) {
-            Log.d("ButtonPress", "Restart Game")
+            // if online send command, else local restart
             if (onlineFlag) {
                 val restart = "RESTART"
                 myRef.child("Games").child(onlineGameName).push().setValue(restart)
+                closeSettings(view)
             } else {
+                Log.d("Restart", "Restart offline")
                 restartGame()
             }
 
@@ -443,7 +442,7 @@ class MainActivity : AppCompatActivity() {
         for (scores in score.indices) {
             score[scores] = 0
         }
-        Log.d("ButtonPress", "${score[0]},${score[1]},${score[2]},${score[3]}")
+        Log.d("Restart", "${score[0]},${score[1]},${score[2]},${score[3]}")
         updateScore()
         resetBoard()
     }
@@ -470,7 +469,7 @@ class MainActivity : AppCompatActivity() {
 
         // increment starting player
         activePlayer = startingPlayer(maxPlayers, score)
-
+        Log.d("Restart", "Restart: active player = $activePlayer")
         // show starting player
         highlightPlayer(activePlayer)
 
@@ -546,7 +545,6 @@ class MainActivity : AppCompatActivity() {
             // increment score counter & update score boards
             score[activePlayer - 1]++
             updateScore()
-            Toast.makeText(this, "Player $activePlayer is the Winner!", Toast.LENGTH_SHORT).show()
 
             // set up blink animation
             val blinkAnimation = AlphaAnimation(1f, 0f)
@@ -554,13 +552,17 @@ class MainActivity : AppCompatActivity() {
             blinkAnimation.interpolator = LinearInterpolator()
             blinkAnimation.repeatCount = 5
             blinkAnimation.repeatMode = Animation.RESTART
-            // show winning moves by blinking
 
+            // show winning moves by blinking
             for (move in winningMoves) {
                 println("winning move: $move")
                 val winningCell = findViewById<View>(locationIDs[move])
                 winningCell.startAnimation(blinkAnimation)
             }
+            // blink winning player border
+            val borders = arrayOf(R.id.p1Border, R.id.p2Border, R.id.p3Border, R.id.p4Border)
+            val winningBorder = findViewById<View>(borders[activePlayer-1])
+            winningBorder.startAnimation(blinkAnimation)
 
             // hide confirm button
             val confirmButton = findViewById<Button>(R.id.confirmButton)
