@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.res.ResourcesCompat
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -389,6 +390,7 @@ class OnlineLobby : AppCompatActivity() {
                         }
                         confirmAndClearHub.visibility = View.GONE
                         playHub.visibility = View.VISIBLE
+                        reapplyHubConstraintsOnline()
 
                     } catch (ex: java.lang.Exception) {
                         Log.w(TAG, "gameListener:onChildAdded", ex)
@@ -416,6 +418,15 @@ class OnlineLobby : AppCompatActivity() {
                     ).show()
                 }
             })
+    }
+
+    private fun reapplyHubConstraintsOnline(){
+        val parentCL = findViewById<ConstraintLayout>(R.id.topLevelOnline)
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(parentCL)
+        constraintSet.clear(R.id.playerHubs, ConstraintSet.BOTTOM)
+        constraintSet.connect(R.id.playerHubs, ConstraintSet.BOTTOM, R.id.playHub, ConstraintSet.TOP)
+        constraintSet.applyTo(parentCL)
     }
 
     // online function to show players each others names in lobby

@@ -5,10 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.bot_lobby.*
 import kotlinx.android.synthetic.main.online_lobby.*
@@ -291,6 +291,16 @@ class BotLobby : AppCompatActivity() {
         }
         confirmAndClearHubBots.visibility  = View.GONE
         playHubBots.visibility = View.VISIBLE
+        reapplyHubConstraints()
+    }
+
+    private fun reapplyHubConstraints(){
+        val parentCL = findViewById<ConstraintLayout>(R.id.topLevelLocal)
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(parentCL)
+        constraintSet.clear(R.id.playerHubs,ConstraintSet.BOTTOM)
+        constraintSet.connect(R.id.playerHubs, ConstraintSet.BOTTOM, R.id.playHubBots, ConstraintSet.TOP)
+        constraintSet.applyTo(parentCL)
     }
 
     // play button launches game passing the gameName in the intent

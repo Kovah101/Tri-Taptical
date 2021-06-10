@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity() {
     private var selectedCell = -1
 
     // TODO add notifications
+    //  lobby back button clear invites
     //  readMe
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -430,6 +431,7 @@ class MainActivity : AppCompatActivity() {
                 closeSettings(view)
             } else {
                 Log.d("Restart", "Restart offline")
+                closeSettings(view)
                 restartGame()
             }
 
