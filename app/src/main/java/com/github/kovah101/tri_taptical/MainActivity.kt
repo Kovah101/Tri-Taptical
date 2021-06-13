@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     private var selectedCell = -1
 
     // TODO add notifications
-    //  lobby back button clear invites
+    //  lobby back button clear invites ?
     //  readMe
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -440,12 +440,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     // fully wipes scores and starts fresh
+    // TODO restart bug midway through turns, bot only games?
     private fun restartGame() {
         // reset score array
         for (scores in score.indices) {
             score[scores] = 0
         }
-        Log.d("Restart", "${score[0]},${score[1]},${score[2]},${score[3]}")
         updateScore()
         resetBoard()
     }
@@ -742,6 +742,8 @@ class MainActivity : AppCompatActivity() {
 
     // bot functionality
     private fun botTurn(botDifficulty: Int) {
+        // firstly disable buttons
+        enablePlayerButtons(false)
         var botMove = 100
         when (botDifficulty) {
             1 -> botMove = easyBot(confirmedMoves)
