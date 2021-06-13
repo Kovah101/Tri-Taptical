@@ -189,11 +189,9 @@ class MainActivity : AppCompatActivity() {
                         }
                         if (onlineMoveParts[0] == "RESET") {
                             resetBoard()
-                            //waitYourTurn(playerNames, myUsername, activePlayer)
                         }
                         if (onlineMoveParts[0] == "RESTART") {
                             restartGame()
-                            //waitYourTurn(playerNames, myUsername, activePlayer)
                         }
                     } catch (ex: Exception) {
 
@@ -225,12 +223,15 @@ class MainActivity : AppCompatActivity() {
     // checks if it is your turn - ONLINE
     private fun waitYourTurn(playerNames: Array<String>, myUsername: String, currentPlayer: Int) {
         // if it is your turn - enable buttons
-        if (playerNames[currentPlayer] == myUsername) {
-            enablePlayerButtons(true)
-        }
-        // if not your turn disable buttons
-        else {
-            enablePlayerButtons(false)
+        Log.d("Reset", "Waiting: Player$currentPlayer ${playerNames[currentPlayer]}= $myUsername")
+        if(onlineFlag) {
+            if (playerNames[currentPlayer] == myUsername) {
+                enablePlayerButtons(true)
+            }
+            // if not your turn disable buttons
+            else {
+                enablePlayerButtons(false)
+            }
         }
     }
 
@@ -471,7 +472,7 @@ class MainActivity : AppCompatActivity() {
 
         // increment starting player
         activePlayer = startingPlayer(maxPlayers, score)
-        Log.d("Restart", "Restart: active player = $activePlayer")
+        Log.d("Reset", "Restart: active player = $activePlayer")
         // show starting player
         highlightPlayer(activePlayer)
 
