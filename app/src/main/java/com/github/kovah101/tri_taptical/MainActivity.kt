@@ -69,7 +69,9 @@ class MainActivity : AppCompatActivity() {
     private var selectedCell = -1
 
     // TODO add notifications
-    //  lobby back button clear invites ?
+    //  1-Generate token
+    //  A- Open notifications - fix clicking behaviour & add login listener
+    //  B- Closed notifications
     //  readMe
 
     override fun onCreate(savedInstanceState: Bundle?) {

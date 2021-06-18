@@ -43,7 +43,7 @@ class OnlineLobby : AppCompatActivity() {
     private lateinit var myUsername: String
     private lateinit var hostUsername: String
     private lateinit var onlineGameName: String
-    private lateinit var bots : String
+    private lateinit var bots: String
     private var myPlayerNumber = 0
     private var playerNames = arrayOf("", "", "", "")
     private var myTotalPlayerNumbers = arrayOf(0, 0, 0, 0)
@@ -64,6 +64,7 @@ class OnlineLobby : AppCompatActivity() {
 
     // TODO: fix bug - when playing with self and you do not send-accept each player in turn, only last invite is logged - have p1Invite, p3Accept variables from switch case structure
 
+    // TODO - disable play button till host has clicked, add listener from login page
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,6 +90,10 @@ class OnlineLobby : AppCompatActivity() {
 
         // set up game listeners on your own Games branch of the database
         listenForGames()
+
+        // create notification channel
+        val notifyMe = Notifications()
+        notifyMe.createChannel(applicationContext)
 
 
         // if Send button clicks then disable Accept as player is host
@@ -193,6 +198,7 @@ class OnlineLobby : AppCompatActivity() {
     fun clearButton(view: View) {
         clearEverything()
     }
+
     // clears your Request and Accept lists
     // colours loading squares black
     // TODO reset buttons to clickable = true
@@ -250,14 +256,15 @@ class OnlineLobby : AppCompatActivity() {
                 Log.d(TAG, name)
             }
         }
-        // create bot string to pass on
-        bots = createBotString(botPlayers)
         // create the unique game on the Games branch
         myRef.child("Games").push().setValue(gameName)
     }
 
     // play button launches game passing the gameName in the intent
     fun playOnline(view: View) {
+        // create bot string to pass on
+        bots = createBotString(botPlayers)
+
         val onlineGame = Intent(this, MainActivity::class.java)
         onlineGame.putExtra("gameType", "OnlineGame")
         onlineGame.putExtra("gameName", onlineGameName)
@@ -279,14 +286,19 @@ class OnlineLobby : AppCompatActivity() {
                         val requestParts = splitString(requestValue)
                         myPlayerNumber = requestParts[1].toInt()
                         hostUsername = requestParts[0]
-                        Toast.makeText(
-                            applicationContext,
-                            "Request from $hostUsername, You are player:${requestParts[1]}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        val notifyMe = Notifications()
+                        notifyMe.createChannel(applicationContext)
+                        if (hostUsername != myUsername) {
+                            notifyMe.Notify(applicationContext, hostUsername, 37, myPlayerNumber)
+                        }
+//                        Toast.makeText(
+//                            applicationContext,
+//                            "Request from $hostUsername, You are player:${requestParts[1]}",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
                         fillPlayerHub(myUsername, myPlayerNumber)
                         lightUpSquare(myPlayerNumber, 1)
-                        //TODO add waiting for other players
+                        //TODO add waiting for other players message
                         myTotalPlayerNumbers[myPlayerNumber - 1] = myPlayerNumber
                     } catch (ex: Exception) {
                         Log.w(TAG, "requestListener:onChildAdded", ex)
@@ -336,7 +348,7 @@ class OnlineLobby : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         // disable the relevant editText & light up accept square
-                        lightUpSquare(acceptedPlayerNumber,1)
+                        lightUpSquare(acceptedPlayerNumber, 1)
                         lightUpSquare(acceptedPlayerNumber, 2)
                         botPlayers[acceptedPlayerNumber - 1] = 0
                         renameBotButton(acceptedPlayerNumber)
@@ -385,7 +397,7 @@ class OnlineLobby : AppCompatActivity() {
                             lightUpSquare(playerNumber, 1)
                             lightUpSquare(playerNumber, 2)
                             lightUpSquare(playerNumber, 3)
-                            maxPlayers = lobbyPlayers.size -1
+                            maxPlayers = lobbyPlayers.size - 1
                             displayPlayerHubs(maxPlayers)
                         }
                         confirmAndClearHub.visibility = View.GONE
@@ -420,12 +432,17 @@ class OnlineLobby : AppCompatActivity() {
             })
     }
 
-    private fun reapplyHubConstraintsOnline(){
+    private fun reapplyHubConstraintsOnline() {
         val parentCL = findViewById<ConstraintLayout>(R.id.topLevelOnline)
         val constraintSet = ConstraintSet()
         constraintSet.clone(parentCL)
         constraintSet.clear(R.id.playerHubs, ConstraintSet.BOTTOM)
-        constraintSet.connect(R.id.playerHubs, ConstraintSet.BOTTOM, R.id.playHub, ConstraintSet.TOP)
+        constraintSet.connect(
+            R.id.playerHubs,
+            ConstraintSet.BOTTOM,
+            R.id.playHub,
+            ConstraintSet.TOP
+        )
         constraintSet.applyTo(parentCL)
     }
 
@@ -527,11 +544,11 @@ class OnlineLobby : AppCompatActivity() {
     }
 
     // show or hide player hubs according to max number of players
-    private fun displayPlayerHubs(maxPlayers: Int){
+    private fun displayPlayerHubs(maxPlayers: Int) {
         val player3Hub = findViewById<ConstraintLayout>(R.id.p3Hub)
         val player4Hub = findViewById<ConstraintLayout>(R.id.p4Hub)
 
-        when(maxPlayers){
+        when (maxPlayers) {
             2 -> {
                 player3Hub.visibility = View.GONE
                 player4Hub.visibility = View.GONE
@@ -606,7 +623,7 @@ class OnlineLobby : AppCompatActivity() {
     }
 
     // stores player name, lights up appropriate square and button
-    private fun botDetails(playerNumber: Int, view: View, guestPlayer:  String) {
+    private fun botDetails(playerNumber: Int, view: View, guestPlayer: String) {
         playerNames[playerNumber - 1] = guestPlayer
         resetLoadingSquares(playerNumber)
         resetButtonColor(view)
@@ -663,20 +680,20 @@ class OnlineLobby : AppCompatActivity() {
     }
 
     // rename corresponding bot button to display correct difficulty
-    private fun renameBotButton(playerNumber: Int){
+    private fun renameBotButton(playerNumber: Int) {
         val botNames = arrayOf("Bot", "Easy-Bot", "Med-Bot", "Hard-Bot")
-        when(playerNumber){
-            1 -> p1BotOnline.text = botNames[botPlayers[playerNumber-1]]
-            2 -> p2BotOnline.text = botNames[botPlayers[playerNumber-1]]
-            3 -> p3BotOnline.text = botNames[botPlayers[playerNumber-1]]
-            4 -> p4BotOnline.text = botNames[botPlayers[playerNumber-1]]
+        when (playerNumber) {
+            1 -> p1BotOnline.text = botNames[botPlayers[playerNumber - 1]]
+            2 -> p2BotOnline.text = botNames[botPlayers[playerNumber - 1]]
+            3 -> p3BotOnline.text = botNames[botPlayers[playerNumber - 1]]
+            4 -> p4BotOnline.text = botNames[botPlayers[playerNumber - 1]]
         }
     }
 
     // takes all bot info and creates string to be passed to main activity
     private fun createBotString(botPlayers: Array<Int>): String {
         var botString = ""
-        for (bots in botPlayers){
+        for (bots in botPlayers) {
             botString += bots.toString()
             botString += "@"
         }
@@ -686,7 +703,7 @@ class OnlineLobby : AppCompatActivity() {
     // changes button colour to the corresponding player colour
     private fun recolorButton(view: View) {
         // pick the appropriate colour
-        when(view){
+        when (view) {
             p1Request, p1BotOnline, p1Accept -> {
                 val playerButton = ResourcesCompat.getDrawable(resources, R.drawable.p1button, null)
                 view.background = playerButton
@@ -709,7 +726,7 @@ class OnlineLobby : AppCompatActivity() {
     // recolour corresponding human & bot buttons back to purple
     private fun resetButtonColor(view: View) {
         val purpleButton = resources.getDrawable(R.drawable.roundedbutton)
-        when(view){
+        when (view) {
             p1Request, p1BotOnline, p1Accept -> {
                 p1Request.background = purpleButton
                 p1BotOnline.background = purpleButton

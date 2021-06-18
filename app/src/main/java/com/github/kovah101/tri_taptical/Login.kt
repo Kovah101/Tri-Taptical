@@ -28,6 +28,9 @@ class Login : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         mAuth = Firebase.auth
+        //create notification channel
+        val notifyMe = Notifications()
+        notifyMe.createChannel(applicationContext)
     }
 
     public override fun onStart() {
