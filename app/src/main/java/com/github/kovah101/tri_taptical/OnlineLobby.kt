@@ -276,7 +276,7 @@ class OnlineLobby : AppCompatActivity() {
     }
 
     // listen to your own requests in database
-    private fun listenForInvites() {
+    fun listenForInvites() {
         myRef.child("Users").child(myUsername).child("Requests")
             .addChildEventListener(object : ChildEventListener {
                 // get latest request
