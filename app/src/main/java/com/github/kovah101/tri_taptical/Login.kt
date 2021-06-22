@@ -36,6 +36,7 @@ class Login : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         // TODO https://stackoverflow.com/questions/17315842/how-to-call-a-method-in-mainactivity-from-another-class?answertab=votes#tab-top
+        //  OR make local function
         loadMenu()
     }
 

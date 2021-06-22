@@ -355,6 +355,7 @@ class MainActivity : AppCompatActivity() {
 
     // save move to memory, go to next player
     fun confirmButton(view: View) {
+        // TODO try changing to trueCellID to fix confirm bug ELSE put check in confirmButton
         confirmMove(selectedCell)
     }
 
