@@ -355,8 +355,12 @@ class MainActivity : AppCompatActivity() {
 
     // save move to memory, go to next player
     fun confirmButton(view: View) {
-        // TODO try changing to trueCellID to fix confirm bug ELSE put check in confirmButton
-        confirmMove(selectedCell)
+        // do nothing if no selected cell, otherwise confirm the move!
+        if (trueCellID != -1) {
+            confirmMove(trueCellID)
+        } else {
+            Log.d("ConfirmButton", "no cell selected!")
+        }
     }
 
     // confirms move to array, if online publishes the move to players
