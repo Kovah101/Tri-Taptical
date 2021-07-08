@@ -14,7 +14,8 @@ import androidx.core.content.ContextCompat.getSystemService
 
 class Notifications() {
     var notificationID = 0
-    val channelID = "TTT Invite"
+    val channelID = "TTT_Invite"
+    private val TAG = "NOTIFICATION-TEST"
 
     fun createChannel(context: Context){
             // Create the NotificationChannel, but only on API 26+ because
@@ -22,7 +23,7 @@ class Notifications() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
                 val name = "TTT Invite"
-                val descriptionText = "Tri-Tac-Toe Invites"
+                val descriptionText = "Tri-Tac-Toe Invite"
                 val importance = NotificationManager.IMPORTANCE_DEFAULT
                 val channel = NotificationChannel(channelID, name, importance).apply {
                     description = descriptionText
@@ -31,15 +32,20 @@ class Notifications() {
                 val notificationManager: NotificationManager =
                     context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 notificationManager.createNotificationChannel(channel)
-                Log.d("Notification", "Notification Channel Created")
+                Log.d(TAG, "Notification Channel Created")
 
             }
         }
 
 
-    fun Notify(context: Context, hostName: String, number: Int, playerNumber: Int) {
+    fun Notify(context: Context, hostName: String, number: Int, playerNumber: Int, myUsername: String, myEmail: String) {
         // intent notification will send recipient to online lobby
         val onlineLobby = Intent(context, OnlineLobby::class.java)
+        // store source of intent (notification) and the player data to populate opened lobby
+        onlineLobby.putExtra("Notification", true)
+        onlineLobby.putExtra("playerNumber", playerNumber)
+        onlineLobby.putExtra("userName", myUsername)
+        onlineLobby.putExtra("email", myEmail)
         // need Task Stack Builder to bypass Login screen
         val bypassLogin: PendingIntent? = TaskStackBuilder.create(context).run {
             // add intent that inflates the back stack
@@ -75,6 +81,6 @@ class Notifications() {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         notManager.notify(NOTIFYTAG, notificationID, builder.build())
-        Log.d("Notification", "Inside notify function")
+        Log.d(TAG, "Inside notify function")
     }
 }

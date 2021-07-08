@@ -71,10 +71,19 @@ class OnlineLobby : AppCompatActivity() {
         setContentView(R.layout.online_lobby)
 
         // extract info from login page
-        val menuIntent = intent
-        myEmail = menuIntent.getStringExtra("email")
-        myID = menuIntent.getStringExtra("userID")
-        myUsername = menuIntent.getStringExtra("username")
+        val intent = intent
+        // not notification - intent from menu
+        if (!intent.getBooleanExtra("Notification", false)){
+            myEmail = intent.getStringExtra("email")
+            myID = intent.getStringExtra("userID")
+            myUsername = intent.getStringExtra("username")
+        } else {
+            // intent from notification
+            myUsername = intent.getStringExtra("username")
+            myEmail = intent.getStringExtra("email")
+            // TODO create function to fill in lobby with playerNumber
+        }
+
 
         //set username field to your actual username
         username.text = myUsername
@@ -276,7 +285,7 @@ class OnlineLobby : AppCompatActivity() {
     }
 
     // listen to your own requests in database
-    fun listenForInvites() {
+    private fun listenForInvites() {
         myRef.child("Users").child(myUsername).child("Requests")
             .addChildEventListener(object : ChildEventListener {
                 // get latest request
@@ -289,7 +298,7 @@ class OnlineLobby : AppCompatActivity() {
                         val notifyMe = Notifications()
                         notifyMe.createChannel(applicationContext)
                         if (hostUsername != myUsername) {
-                            notifyMe.Notify(applicationContext, hostUsername, 37, myPlayerNumber)
+                            notifyMe.Notify(applicationContext, hostUsername, 37, myPlayerNumber, myUsername, myEmail)
                         }
 //                        Toast.makeText(
 //                            applicationContext,

@@ -10,6 +10,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
@@ -84,7 +86,7 @@ class Login : AppCompatActivity() {
                     if (task.isSuccessful) {
                         Toast.makeText(applicationContext, "Successful login", Toast.LENGTH_SHORT)
                             .show()
-                        val userName =mAuth.currentUser.displayName
+                        val userName = mAuth.currentUser?.displayName
                         Log.d(TAG, "Current User:$userName")
                         loadMenu()
                     } else {
@@ -140,8 +142,7 @@ class Login : AppCompatActivity() {
                                         .child("Games")
                                         .setValue(currentUser.email)
                                     loadMenu()
-                                }
-                                else{
+                                } else {
                                     Log.d(TAG, "Failed to update username!")
                                     Log.d(TAG, "${it.exception}")
                                 }
