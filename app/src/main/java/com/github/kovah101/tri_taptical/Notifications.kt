@@ -72,7 +72,7 @@ class Notifications() {
             .setContentTitle("Tri-Tac-Toe Invite!")
             .setContentText("$hostName invited you - You are P:$playerNumber")
             .setNumber(number)
-            .setSmallIcon(R.drawable.tri_tac_toe_icon)
+            .setSmallIcon(R.drawable.tri_tap_toe_notification)
             .setContentIntent(bypassLogin)
             .setAutoCancel(true)
 
