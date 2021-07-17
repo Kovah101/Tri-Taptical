@@ -10,6 +10,8 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
+import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Resources
 import androidx.core.content.ContextCompat.getSystemService
 
 class Notifications() {
@@ -44,7 +46,7 @@ class Notifications() {
         // store source of intent (notification) and the player data to populate opened lobby
         onlineLobby.putExtra("Notification", true)
         onlineLobby.putExtra("playerNumber", playerNumber)
-        onlineLobby.putExtra("userName", myUsername)
+        onlineLobby.putExtra("username", myUsername)
         onlineLobby.putExtra("email", myEmail)
         // need Task Stack Builder to bypass Login screen
         val bypassLogin: PendingIntent? = TaskStackBuilder.create(context).run {
@@ -64,6 +66,7 @@ class Notifications() {
             3 -> playerColor = R.color.playerThree
             4 -> playerColor = R.color.playerFour
         }
+
         // play around with colours & sounds
         // player number dependant
         val builder = NotificationCompat.Builder(context, channelID)

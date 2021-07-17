@@ -33,12 +33,15 @@ class Menu : AppCompatActivity() {
         setContentView(R.layout.activity_menu)
 
         val loginIntent = intent
-         myEmail = loginIntent.getStringExtra("email")
-         myID = loginIntent.getStringExtra("userID")
-         myUsername = loginIntent.getStringExtra("username")
+        // check if intent is from login page or notification
+        if(loginIntent.getStringExtra("email") != null) {
+            myEmail = loginIntent.getStringExtra("email")
+            myID = loginIntent.getStringExtra("userID")
+            myUsername = loginIntent.getStringExtra("username")
 
-        usernameLabel.text = myUsername
-        // do I need this label???
+            usernameLabel.text = myUsername
+            // do I need this label???
+        }
 
         // listen for invites
         notifyOnInvite()

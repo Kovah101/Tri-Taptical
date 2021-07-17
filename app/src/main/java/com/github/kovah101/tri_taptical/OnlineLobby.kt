@@ -79,6 +79,7 @@ class OnlineLobby : AppCompatActivity() {
             myUsername = intent.getStringExtra("username")
         } else {
             // intent from notification
+                Log.d(TAG, "Intent from Notification")
             myUsername = intent.getStringExtra("username")
             myEmail = intent.getStringExtra("email")
             // TODO create function to fill in lobby with playerNumber
