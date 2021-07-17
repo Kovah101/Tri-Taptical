@@ -64,7 +64,7 @@ class OnlineLobby : AppCompatActivity() {
 
     // TODO: fix bug - when playing with self and you do not send-accept each player in turn, only last invite is logged - have p1Invite, p3Accept variables from switch case structure
 
-    // TODO - disable play button till host has clicked, add listener from login page
+    // TODO - disable play button till host has clicked
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
+    //TODO 1-readMe on Github, 2-FCM notification (2 weeks), 3-Clean up & publish
+
     // game types
     private val localGame = "LocalGame"
     private val onlineGame = "OnlineGame"
@@ -68,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     private var winningMoves = arrayListOf<Int>()
     private var selectedCell = -1
 
-    // TODO add notifications
+    // TODO add Firebase Cloud Messaging notifications
     //  1-Generate token
     //  A- Open notifications - fix clicking behaviour & add login listener
     //  B- Closed notifications
