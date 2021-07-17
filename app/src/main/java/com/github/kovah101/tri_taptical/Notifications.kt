@@ -66,12 +66,12 @@ class Notifications() {
             3 -> playerColor = R.color.playerThree
             4 -> playerColor = R.color.playerFour
         }
-
+        val notificationColor = context.resources.getColor(playerColor)
         // play around with colours & sounds
         // player number dependant
         val builder = NotificationCompat.Builder(context, channelID)
             .setDefaults(Notification.DEFAULT_ALL)
-            .setColor(playerColor)
+            .setColor(notificationColor)
             .setContentTitle("Tri-Tac-Toe Invite!")
             .setContentText("$hostName invited you - You are P:$playerNumber")
             .setNumber(number)

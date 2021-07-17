@@ -70,6 +70,8 @@ class OnlineLobby : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.online_lobby)
 
+
+
         // extract info from login page
         val intent = intent
         // not notification - intent from menu
@@ -77,20 +79,21 @@ class OnlineLobby : AppCompatActivity() {
             myEmail = intent.getStringExtra("email")
             myID = intent.getStringExtra("userID")
             myUsername = intent.getStringExtra("username")
+            // clear the screen & invites
+            clearEverything()
         } else {
             // intent from notification
                 Log.d(TAG, "Intent from Notification")
             myUsername = intent.getStringExtra("username")
             myEmail = intent.getStringExtra("email")
-            // TODO create function to fill in lobby with playerNumber
+            val myPlayerNumber = intent.getIntExtra("playerNumber", 1)
+            Log.d(TAG, "about to fill player hub")
+            fillPlayerHub(myUsername, myPlayerNumber)
         }
 
 
         //set username field to your actual username
         username.text = myUsername
-
-        // clear the screen & invites
-        clearEverything()
 
         // set up request listeners on your own Requests branch of database
         listenForInvites()
@@ -296,11 +299,11 @@ class OnlineLobby : AppCompatActivity() {
                         val requestParts = splitString(requestValue)
                         myPlayerNumber = requestParts[1].toInt()
                         hostUsername = requestParts[0]
-                        val notifyMe = Notifications()
-                        notifyMe.createChannel(applicationContext)
-                        if (hostUsername != myUsername) {
-                            notifyMe.Notify(applicationContext, hostUsername, 37, myPlayerNumber, myUsername, myEmail)
-                        }
+//                        val notifyMe = Notifications()
+//                        notifyMe.createChannel(applicationContext)
+//                        if (hostUsername != myUsername) {
+//                            notifyMe.Notify(applicationContext, hostUsername, 37, myPlayerNumber, myUsername, myEmail)
+//                        }
 //                        Toast.makeText(
 //                            applicationContext,
 //                            "Request from $hostUsername, You are player:${requestParts[1]}",
