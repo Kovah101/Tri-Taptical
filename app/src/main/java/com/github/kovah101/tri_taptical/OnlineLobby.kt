@@ -83,7 +83,7 @@ class OnlineLobby : AppCompatActivity() {
             clearEverything()
         } else {
             // intent from notification
-                Log.d(TAG, "Intent from Notification")
+                //Log.d(TAG, "Intent from Notification")
             myUsername = intent.getStringExtra("username")
             myEmail = intent.getStringExtra("email")
             val myPlayerNumber = intent.getIntExtra("playerNumber", 1)
@@ -299,22 +299,12 @@ class OnlineLobby : AppCompatActivity() {
                         val requestParts = splitString(requestValue)
                         myPlayerNumber = requestParts[1].toInt()
                         hostUsername = requestParts[0]
-//                        val notifyMe = Notifications()
-//                        notifyMe.createChannel(applicationContext)
-//                        if (hostUsername != myUsername) {
-//                            notifyMe.Notify(applicationContext, hostUsername, 37, myPlayerNumber, myUsername, myEmail)
-//                        }
-//                        Toast.makeText(
-//                            applicationContext,
-//                            "Request from $hostUsername, You are player:${requestParts[1]}",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
                         fillPlayerHub(myUsername, myPlayerNumber)
                         lightUpSquare(myPlayerNumber, 1)
                         //TODO add waiting for other players message
                         myTotalPlayerNumbers[myPlayerNumber - 1] = myPlayerNumber
                     } catch (ex: Exception) {
-                        Log.w(TAG, "requestListener:onChildAdded", ex)
+                        //Log.w(TAG, "requestListener:onChildAdded", ex)
                         Toast.makeText(
                             applicationContext, "Failed to listen for added Request-Child.",
                             Toast.LENGTH_SHORT
@@ -333,7 +323,7 @@ class OnlineLobby : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.w(TAG, "requestListener:onCancelled", error.toException())
+                   // Log.w(TAG, "requestListener:onCancelled", error.toException())
                     Toast.makeText(
                         applicationContext, "Failed to listen to Requests.",
                         Toast.LENGTH_SHORT
@@ -367,7 +357,7 @@ class OnlineLobby : AppCompatActivity() {
                         renameBotButton(acceptedPlayerNumber)
                         disableUsernameInput(acceptedPlayerNumber)
                     } catch (ex: java.lang.Exception) {
-                        Log.w(TAG, "acceptListener:onChildAdded", ex)
+                       // Log.w(TAG, "acceptListener:onChildAdded", ex)
                         Toast.makeText(
                             applicationContext, "Failed to listen for added Accept-Child.",
                             Toast.LENGTH_SHORT
@@ -385,7 +375,7 @@ class OnlineLobby : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.w(TAG, "acceptListener:onCancelled", error.toException())
+                   // Log.w(TAG, "acceptListener:onCancelled", error.toException())
                     Toast.makeText(
                         applicationContext, "Failed to listen to Accepts.",
                         Toast.LENGTH_SHORT
@@ -418,7 +408,7 @@ class OnlineLobby : AppCompatActivity() {
                         reapplyHubConstraintsOnline()
 
                     } catch (ex: java.lang.Exception) {
-                        Log.w(TAG, "gameListener:onChildAdded", ex)
+                       // Log.w(TAG, "gameListener:onChildAdded", ex)
                         Toast.makeText(
                             applicationContext, "Failed to listen for added Games-Child.",
                             Toast.LENGTH_SHORT
@@ -436,7 +426,7 @@ class OnlineLobby : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.w(TAG, "gameListener:onCancelled", error.toException())
+                  //  Log.w(TAG, "gameListener:onCancelled", error.toException())
                     Toast.makeText(
                         applicationContext, "Failed to listen to Games.",
                         Toast.LENGTH_SHORT
@@ -445,6 +435,7 @@ class OnlineLobby : AppCompatActivity() {
             })
     }
 
+    // reapplies UI constraints when confirm button replaced with play button so UI doesn't jump around
     private fun reapplyHubConstraintsOnline() {
         val parentCL = findViewById<ConstraintLayout>(R.id.topLevelOnline)
         val constraintSet = ConstraintSet()
@@ -466,7 +457,7 @@ class OnlineLobby : AppCompatActivity() {
             2 -> player2Username.setText(username)
             3 -> player3Username.setText(username)
             4 -> player4Username.setText(username)
-            else -> Log.d(TAG, "Error: player number incorrect")
+           // else -> Log.d(TAG, "Error: player number incorrect")
         }
     }
 
@@ -512,22 +503,6 @@ class OnlineLobby : AppCompatActivity() {
     // splits string into list around "@"
     private fun splitString(string: String): List<String> {
         return string.split("@")
-    }
-
-    private fun sentButtonClicked() {
-        Log.d("Test", "sentButton Clicked")
-        p1Accept.isClickable = false
-        p2Accept.isClickable = false
-        p3Accept.isClickable = false
-        p4Accept.isClickable = false
-    }
-
-    private fun acceptButtonClicked() {
-        Log.d("Test", "acceptButton Clicked")
-        p1Request.isClickable = false
-        p2Request.isClickable = false
-        p3Request.isClickable = false
-        p4Request.isClickable = false
     }
 
     // increase max player count
@@ -688,7 +663,7 @@ class OnlineLobby : AppCompatActivity() {
             botPlayers[playerNumber - 1] = 1
         }
         lightUpSquare(playerNumber, botPlayers[playerNumber - 1])
-        Log.d(TAG, "${botPlayers[playerNumber - 1]}")
+        //Log.d(TAG, "${botPlayers[playerNumber - 1]}")
         renameBotButton(playerNumber)
     }
 

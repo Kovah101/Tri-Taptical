@@ -92,11 +92,11 @@ class Menu : AppCompatActivity() {
                         notifyMe.createChannel(applicationContext)
                         if (hostUsername != myUsername) {
                             notifyMe.Notify(applicationContext, hostUsername, 37, myPlayerNumber, myUsername, myEmail)
-                            Log.d(TAG, "Notification created!")
+                           // Log.d(TAG, "Notification created!")
                         }
 
                     } catch (ex: Exception) {
-                        Log.w(TAG, "requestListener:onChildAdded", ex)
+                       // Log.w(TAG, "requestListener:onChildAdded", ex)
                         Toast.makeText(
                             applicationContext, "Failed to listen for added Request-Child.",
                             Toast.LENGTH_SHORT

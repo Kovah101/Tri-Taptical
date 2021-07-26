@@ -22,7 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
-    //TODO 1-readMe on Github, 2-FCM notification (2 weeks), 3-Clean up & publish
+    //TODO: Clean up and Publish
+    // TODO Extras : FCM notifications, RT DB Rules
 
     // game types
     private val localGame = "LocalGame"
@@ -74,7 +75,6 @@ class MainActivity : AppCompatActivity() {
     //  1-Generate token
     //  A- Open notifications - fix clicking behaviour & add login listener
     //  B- Closed notifications
-    //  readMe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -215,7 +215,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.w(onlineGame, "gameListener:onCancelled", error.toException())
+                   // Log.w(onlineGame, "gameListener:onCancelled", error.toException())
                     Toast.makeText(
                         applicationContext, "Failed to listen to Game.",
                         Toast.LENGTH_SHORT
@@ -227,7 +227,7 @@ class MainActivity : AppCompatActivity() {
     // checks if it is your turn - ONLINE
     private fun waitYourTurn(playerNames: Array<String>, myUsername: String, currentPlayer: Int) {
         // if it is your turn - enable buttons
-        Log.d("Reset", "Waiting: Player$currentPlayer ${playerNames[currentPlayer]}= $myUsername")
+       // Log.d("Reset", "Waiting: Player$currentPlayer ${playerNames[currentPlayer]}= $myUsername")
         if(onlineFlag) {
             if (playerNames[currentPlayer] == myUsername) {
                 enablePlayerButtons(true)
@@ -360,9 +360,10 @@ class MainActivity : AppCompatActivity() {
         // do nothing if no selected cell, otherwise confirm the move!
         if (trueCellID != -1) {
             confirmMove(trueCellID)
-        } else {
-            Log.d("ConfirmButton", "no cell selected!")
         }
+        //else {
+           // Log.d("ConfirmButton", "no cell selected!")
+       // }
     }
 
     // confirms move to array, if online publishes the move to players
@@ -374,7 +375,7 @@ class MainActivity : AppCompatActivity() {
         }
         // add confirmed move to hash map with cell and active player
         confirmedMoves[selectedCell] = activePlayer
-        Log.d(onlineGame, "$selectedCell")
+        //Log.d(onlineGame, "$selectedCell")
         // if online game then send confirmed move
         if (onlineFlag) {
             val onlineMove = "$selectedCell@$activePlayer"
@@ -393,7 +394,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun dealWithDraw() {
-        Log.d("Draw", "Inside Draw condition")
+        //Log.d("Draw", "Inside Draw condition")
         // display message and restart round
         Toast.makeText(
             this,
@@ -440,7 +441,7 @@ class MainActivity : AppCompatActivity() {
                 myRef.child("Games").child(onlineGameName).push().setValue(restart)
                 closeSettings(view)
             } else {
-                Log.d("Restart", "Restart offline")
+                //Log.d("Restart", "Restart offline")
                 closeSettings(view)
                 restartGame()
             }
@@ -481,11 +482,11 @@ class MainActivity : AppCompatActivity() {
 
         // increment starting player
         activePlayer = startingPlayer(maxPlayers, score)
-        Log.d("Reset", "Restart: active player = $activePlayer")
+        //Log.d("Reset", "Restart: active player = $activePlayer")
         // show starting player
         highlightPlayer(activePlayer)
 
-        // check whos turn it is
+        // check who's turn it is
         waitYourTurn(playerNames, myUsername, activePlayer)
 
         // check if its a robots turn
@@ -530,26 +531,26 @@ class MainActivity : AppCompatActivity() {
     // checks for winner, if there is then blink the winning moves, update the scores and show reset
     private fun checkForWinner(): Boolean {
         var winFlag = false
-        Log.d("ButtonPress", "Check Winner")
+        //Log.d("ButtonPress", "Check Winner")
         // check for Spot winner
         if (spotWinner()) {
             winFlag = true
-            Log.d("ButtonPress", "We have a spot winner")
+           // Log.d("ButtonPress", "We have a spot winner")
         }
         // check for horizontal winner
         if (horizontalWinner()) {
             winFlag = true
-            Log.d("ButtonPress", "We have a horizontal winner")
+            //Log.d("ButtonPress", "We have a horizontal winner")
         }
         //check for vertical winner
         if (verticalWinner()) {
             winFlag = true
-            Log.d("ButtonPress", "We have a vertical winner")
+           // Log.d("ButtonPress", "We have a vertical winner")
         }
         //check for diagonal winner
         if (diagonalWinner()) {
             winFlag = true
-            Log.d("ButtonPress", "We have a diagonal winner")
+           // Log.d("ButtonPress", "We have a diagonal winner")
         }
 
         // if there is a winner, add to scoreboard, show toast notification & reset board
@@ -567,7 +568,7 @@ class MainActivity : AppCompatActivity() {
 
             // show winning moves by blinking
             for (move in winningMoves) {
-                println("winning move: $move")
+                //println("winning move: $move")
                 val winningCell = findViewById<View>(locationIDs[move])
                 winningCell.startAnimation(blinkAnimation)
             }
@@ -606,7 +607,7 @@ class MainActivity : AppCompatActivity() {
     // checks for 3 in a row on the spot
     private fun spotWinner(): Boolean {
         // check for same cell winners
-        for (i in 0 until locationIDs.size step 3) {
+        for (i in locationIDs.indices step 3) {
             if (confirmedMoves[i] == activePlayer && confirmedMoves[i + 1] == activePlayer && confirmedMoves[i + 2] == activePlayer) {
                 winningMoves.add(i)
                 winningMoves.add(i + 1)

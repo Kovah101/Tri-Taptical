@@ -10,7 +10,7 @@ fun easyBot(confirmedMoves: IntArray): Int {
     while (confirmedMoves[randomMove] != 0) {
         randomMove = (0..26).random()
     }
-    Log.d("Bot-Behaviour", "Easy-Bot: Move-$randomMove")
+    //Log.d("Bot-Behaviour", "Easy-Bot: Move-$randomMove")
     return randomMove
 }
 
@@ -35,7 +35,7 @@ fun mediumBot(activePlayer: Int, confirmedMoves: IntArray, maxPlayers: Int): Int
     if (stoppingMove == -1) {
         stoppingMove = easyBot(confirmedMoves)
     }
-    Log.d("Bot-Behaviour", "Medium-Bot: Move-$stoppingMove")
+    //Log.d("Bot-Behaviour", "Medium-Bot: Move-$stoppingMove")
     return stoppingMove
 }
 
@@ -55,7 +55,7 @@ fun hardBot(activePlayer: Int, confirmedMoves: IntArray, maxPlayers: Int): Int {
     if (winningMove == -1) {
         winningMove = priorityMove(activePlayer, confirmedMoves, maxPlayers)
     }
-    Log.d("Bot-Behaviour", "Hard-Bot: Move-$winningMove")
+    //Log.d("Bot-Behaviour", "Hard-Bot: Move-$winningMove")
     return winningMove
 }
 

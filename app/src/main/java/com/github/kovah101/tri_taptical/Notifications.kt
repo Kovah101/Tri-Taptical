@@ -34,7 +34,7 @@ class Notifications() {
                 val notificationManager: NotificationManager =
                     context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 notificationManager.createNotificationChannel(channel)
-                Log.d(TAG, "Notification Channel Created")
+                //Log.d(TAG, "Notification Channel Created")
 
             }
         }
@@ -84,6 +84,6 @@ class Notifications() {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         notManager.notify(NOTIFYTAG, notificationID, builder.build())
-        Log.d(TAG, "Inside notify function")
+       // Log.d(TAG, "Inside notify function")
     }
 }

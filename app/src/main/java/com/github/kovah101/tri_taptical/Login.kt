@@ -37,8 +37,6 @@ class Login : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        // TODO https://stackoverflow.com/questions/17315842/how-to-call-a-method-in-mainactivity-from-another-class?answertab=votes#tab-top
-        //  OR make local function
         loadMenu()
     }
 
@@ -87,7 +85,7 @@ class Login : AppCompatActivity() {
                         Toast.makeText(applicationContext, "Successful login", Toast.LENGTH_SHORT)
                             .show()
                         val userName = mAuth.currentUser?.displayName
-                        Log.d(TAG, "Current User:$userName")
+                        //Log.d(TAG, "Current User:$userName")
                         loadMenu()
                     } else {
                         Toast.makeText(
@@ -96,7 +94,7 @@ class Login : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         )
                             .show()
-                        Log.d("Task", "${task.exception}")
+                        //Log.d("Task", "${task.exception}")
                     }
                 }
         }
@@ -120,7 +118,7 @@ class Login : AppCompatActivity() {
                             "Successful create user",
                             Toast.LENGTH_SHORT
                         ).show()
-                        Log.d(TAG, "Just before username attempt!")
+                        //Log.d(TAG, "Just before username attempt!")
                         // set user name
                         val currentUser = mAuth.currentUser
                         val profileUpdates =
@@ -128,7 +126,7 @@ class Login : AppCompatActivity() {
                         currentUser!!.updateProfile(profileUpdates)
                             .addOnCompleteListener {
                                 if (it.isSuccessful) {
-                                    Log.d(TAG, "Successfully updated username")
+                                    //Log.d(TAG, "Successfully updated username")
                                     // save to database then create Requests, Accepts & Games branches
                                     myRef.child("Users").child(currentUser.displayName!!)
                                         .setValue(currentUser.uid)
@@ -143,11 +141,11 @@ class Login : AppCompatActivity() {
                                         .setValue(currentUser.email)
                                     loadMenu()
                                 } else {
-                                    Log.d(TAG, "Failed to update username!")
-                                    Log.d(TAG, "${it.exception}")
+                                    //Log.d(TAG, "Failed to update username!")
+                                    //Log.d(TAG, "${it.exception}")
+                                    Toast.makeText(applicationContext, "Failed to update username", Toast.LENGTH_SHORT)
                                 }
                             }
-                        //loadMenu()
                     } else {
                         Toast.makeText(
                             applicationContext,
@@ -155,7 +153,7 @@ class Login : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         )
                             .show()
-                        Log.d(TAG, "${task.exception}")
+                        //Log.d(TAG, "${task.exception}")
 
                     }
                 }

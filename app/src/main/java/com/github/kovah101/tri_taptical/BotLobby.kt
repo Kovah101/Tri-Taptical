@@ -160,14 +160,6 @@ class BotLobby : AppCompatActivity() {
         }
     }
 
-//    guestPlayer = player4Username.text.toString()
-//    if (checkIfEmpty(guestPlayer)) return
-//    playerNumber = 4
-//    playerNames[playerNumber - 1] = guestPlayer
-//    resetLoadingSquares(playerNumber)
-//    cycleBots(playerNumber)
-//    resetButtonColor(view)
-//    recolorButton(view)
 
     // set name, light up loading squares & colour button
     private fun generatePlayer(playerNumber: Int, guestPlayer: String, view: View){
@@ -344,7 +336,6 @@ class BotLobby : AppCompatActivity() {
 
     // increase max player count
     fun incrementPlayers(view: View) {
-        Log.d("Test", "Button Clicked successfully")
         maxPlayers++
         if (maxPlayers > 4) {
             maxPlayers = 4
@@ -357,7 +348,6 @@ class BotLobby : AppCompatActivity() {
 
     // or decrease max player count
     fun decrementPlayers(view: View) {
-        Log.d("Test", "Button Clicked successfully")
         maxPlayers--
         if (maxPlayers < 2) {
             maxPlayers = 2
