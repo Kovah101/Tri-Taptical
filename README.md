@@ -1,5 +1,6 @@
-# Tri-Taptical
- 3d Tic-Tac-Toe for Android, includes online and local multiplayer with 3 difficulties of bots!
+# Tri-Tap-Toe
+ 3d Tic-Tac-Toe for Android, includes online and local multiplayer with 3 types of bots!
+ ---
  
  ## Summary
  Connect 3 Squares of the same size or ascending/descending size in your colour to win. Play in up to 4 players games and stop your friends winning first with both local and online play, with customisable player names and 3 types of bots to fill your games or practise against.
@@ -7,15 +8,14 @@
  Designed to further learn & practise Kotlin & XML for mobile development. I seem more motivated to make games so this is inspired by the physical board game Otrio. Players have unlimited turns (until the board is full or a winner is declared) to connect 3 squares in a row or even in the same space.
  This project was useful to practise XML again and cement my Kotlin fundamentals, while also providing learning opportunites and challenges - such a bot AI, notifications and Firebase for online multiplayer.
  
-| <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/Lobby%20Cutdown.png" width="260"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/Game%20Cutdown.png" width="260"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/Restart%20Cutdown.png" width="260"> |
+| **Lobby** | **Game** | **Restart** |
 | ---| ---| ---|
-| *Lobby* | *Game* | *Restart* |
+| <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/Lobby%20Cutdown.png" width="260"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/Game%20Cutdown.png" width="260"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/Restart%20Cutdown.png" width="260"> |
+
+---
  
  ## Features
- | Firebase Login/Sign-up screen | Menu | Local/Online Lobby | Main Game | Notificaton |
- | --- | --- | --- | --- | --- |
- |<img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Login%201.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Menu.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20%20Lobby%201.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Start%20Game.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Notification.jpeg" width="250">
- 
+
  * Firebase Login - Fiebase integration for online multiplayer and user stats
  
  * Local Lobby - picks max player number, player names and human or bot (with 3 different difficulties)
@@ -33,6 +33,12 @@
    - Hard looks at all moves, adds all possible win conditions of each move adjusted for both own moves and other players and picks the highest priority move if it cant outright win or stop the next player from winning.
 
  * Notifications - Sent with online game request, informs guest player of hosts name, which player they are and takes them to populated Online Lobby 
+
+| Firebase Login/Sign-up screen | Menu | Local/Online Lobby | Main Game | Notificaton |
+ | --- | --- | --- | --- | --- |
+ |<img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Login%201.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Menu.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20%20Lobby%201.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Start%20Game.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Notification.jpeg" width="250">
+ 
+ ---
  
  ## Workflow
  1. Build the Main Game, with 4 players, different colours, settings to reset and adjust max players, AI to check for wins and flash winning moves - test for bugs
@@ -44,11 +50,15 @@
  7. Test offline bot functionality, then implement online bots and test them, took a while to figure out how to delay bot turns
  8. Design notification & implement TaskStackBuilder to jump straight to lobby, clean up code and design icons and symbols
  9. Write README
+
+---
  
  ## Future Tasks
  * Refine Bot AI, make Easy bot slightly more complex, relook at priority system for Hard bots
  * Try using FireBase Cloud Messaging to send notifications when app is off
  * Go through design choices (colours, sizes, padding, shapes) 
+
+---
  
  ## Helpful Links
- * Otrio link
+ * [Otrio Boardgame](https://boardgamegeek.com/boardgame/188465/otrio)
