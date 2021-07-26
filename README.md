@@ -4,15 +4,16 @@
  ## Summary
  Connect 3 Squares of the same size or ascending/descending size in your colour to win. Play in up to 4 players games and stop your friends winning first with both local and online play, with customisable player names and 3 types of bots to fill your games or practise against.
  
- **INSERT SCREEN SHOTS HERE**
- 
  Designed to further learn & practise Kotlin & XML for mobile development. I seem more motivated to make games so this is inspired by the physical board game Otrio. Players have unlimited turns (until the board is full or a winner is declared) to connect 3 squares in a row or even in the same space.
- This project was useful to practise XML again and cement my Kotlin fundamentals, while also providing learning opportunites and challenges - such a bot AI, notifications and Firebase for online multiplayer.
+ This project was useful to practise XML again and cement my Kotlin fundamentals, while also providing learning opportunites and challenges - such a bot AI, notifications and Firebase for online multiplayer. <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Game%20Win.jpeg" width="260"> 
  
  ## Features
- * Firebase Login/Sign-up screen **ADD SCREENSHOT**
- * Menu - choose gamemode or logout **ADD SCREENSHOT**
+ * Firebase Login/Sign-up screen 
+ <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Login%201.jpeg" width="250">
+ * Menu - choose gamemode or logout 
+ <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Menu.jpeg" width="250">
  * Local Lobby - picks max player number, player names and human or bot (with 3 different difficulties) **ADD SCREENSHOT**
+ 
  * Online Lobby sends requests and accepts via Firebase Realtime Database, when host confirms then all players can start. Notifications are sent to guests that will take them to the lobby. **ADD SCREENSHOT**
  * Main Game - unique colours for each player, turn indicator, reset button, winning moves flash on screen, starting player increments and bots wait before moving to simulate real players
  * Bot AI -Easy, Medium and Hard bots:
