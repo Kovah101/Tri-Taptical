@@ -6,22 +6,33 @@
  
  Designed to further learn & practise Kotlin & XML for mobile development. I seem more motivated to make games so this is inspired by the physical board game Otrio. Players have unlimited turns (until the board is full or a winner is declared) to connect 3 squares in a row or even in the same space.
  This project was useful to practise XML again and cement my Kotlin fundamentals, while also providing learning opportunites and challenges - such a bot AI, notifications and Firebase for online multiplayer.
- <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Game%20Win.jpeg" width="260"> 
+ 
+| <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/Lobby%20Cutdown.png" width="260"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/Game%20Cutdown.png" width="260"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/Restart%20Cutdown.png" width="260"> |
+| ---| ---| ---|
+| *Lobby* | *Game* | *Restart* |
  
  ## Features
- * Firebase Login/Sign-up screen 
- <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Login%201.jpeg" width="250">
- * Menu - choose gamemode or logout 
- <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Menu.jpeg" width="250">
+ | Firebase Login/Sign-up screen | Menu | Local/Online Lobby | Main Game | Notificaton |
+ | --- | --- | --- | --- | --- |
+ |<img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Login%201.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Menu.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20%20Lobby%201.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Start%20Game.jpeg" width="250"> | <img src="https://github.com/Kovah101/Kovah101/blob/main/T-T-T%20Screenshots/T-T-T%20Notification.jpeg" width="250">
+ 
+ * Firebase Login - Fiebase integration for online multiplayer and user stats
+ 
  * Local Lobby - picks max player number, player names and human or bot (with 3 different difficulties)
+
+
  *  Online Lobby sends requests and accepts via Firebase Realtime Database, when host confirms then all players can start. Notifications are sent to guests that will take them to the lobby. 
+
+
  * Main Game - unique colours for each player, turn indicator, reset button, winning moves flash on screen, starting player increments and bots wait before moving to simulate real players
+
+
  * Bot AI -Easy, Medium and Hard bots:
    - Easy simply picks a random free square. 
    - Medium trys to win if 2/3 moves correct, otherwise stops other players from winning, otherwise random moves. 
    - Hard looks at all moves, adds all possible win conditions of each move adjusted for both own moves and other players and picks the highest priority move if it cant outright win or stop the next player from winning.
- **ADD Codeshot**
- * Notifications - Sent with online game request, informs guest player of hosts name, which player they are and takes them to populated Online Lobby **ADD SCREENSHOT** 
+
+ * Notifications - Sent with online game request, informs guest player of hosts name, which player they are and takes them to populated Online Lobby 
  
  ## Workflow
  1. Build the Main Game, with 4 players, different colours, settings to reset and adjust max players, AI to check for wins and flash winning moves - test for bugs
