@@ -6,12 +6,20 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\et_bo\\Documents\\Coding\\Keystore\\HavokIndustriesKeystore.jks')
+            storePassword 'H4v0kIndustries!'
+            keyAlias 'tritaptoeKey'
+            keyPassword 'P0rt4lJanus!'
+        }
+    }
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.github.kovah101.tri_taptical"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -36,14 +44,14 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.core:core-ktx:1.6.0'
     implementation  "androidx.collection:collection-ktx:1.1.0"
-    implementation "androidx.activity:activity-ktx:1.2.2"
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation "androidx.activity:activity-ktx:1.3.0"
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     // Import support for notifications
-    implementation('androidx.core:core:1.0.0')
+    implementation('androidx.core:core-ktx:1.6.0')
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
 
@@ -55,6 +63,6 @@ dependencies {
 
     implementation 'androidx.multidex:multidex:2.0.1'
     testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }

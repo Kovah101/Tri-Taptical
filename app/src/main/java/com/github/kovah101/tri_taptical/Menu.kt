@@ -35,9 +35,9 @@ class Menu : AppCompatActivity() {
         val loginIntent = intent
         // check if intent is from login page or notification
         if(loginIntent.getStringExtra("email") != null) {
-            myEmail = loginIntent.getStringExtra("email")
-            myID = loginIntent.getStringExtra("userID")
-            myUsername = loginIntent.getStringExtra("username")
+            myEmail = loginIntent.getStringExtra("email")!!
+            myID = loginIntent.getStringExtra("userID")!!
+            myUsername = loginIntent.getStringExtra("username")!!
 
             usernameLabel.text = myUsername
             // do I need this label???

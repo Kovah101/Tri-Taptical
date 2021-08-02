@@ -76,16 +76,16 @@ class OnlineLobby : AppCompatActivity() {
         val intent = intent
         // not notification - intent from menu
         if (!intent.getBooleanExtra("Notification", false)){
-            myEmail = intent.getStringExtra("email")
-            myID = intent.getStringExtra("userID")
-            myUsername = intent.getStringExtra("username")
+            myEmail = intent.getStringExtra("email").toString()
+            myID = intent.getStringExtra("userID").toString()
+            myUsername = intent.getStringExtra("username").toString()
             // clear the screen & invites
             clearEverything()
         } else {
             // intent from notification
                 //Log.d(TAG, "Intent from Notification")
-            myUsername = intent.getStringExtra("username")
-            myEmail = intent.getStringExtra("email")
+            myUsername = intent.getStringExtra("username").toString()
+            myEmail = intent.getStringExtra("email").toString()
             val myPlayerNumber = intent.getIntExtra("playerNumber", 1)
             Log.d(TAG, "about to fill player hub")
             fillPlayerHub(myUsername, myPlayerNumber)
