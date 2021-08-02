@@ -10,8 +10,8 @@ android {
         release {
             storeFile file('C:\\Users\\et_bo\\Documents\\Coding\\Keystore\\HavokIndustriesKeystore.jks')
             storePassword 'H4v0kIndustries!'
-            keyAlias 'tritaptoeKey'
-            keyPassword 'P0rt4lJanus!'
+            keyAlias 'TriTapToeKey'
+            keyPassword 'H4v0kIndustries!'
         }
     }
     compileSdkVersion 30
