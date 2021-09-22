@@ -54,6 +54,7 @@
 ---
  
  ## Future Tasks
+ * Refactor using Data Binding Library
  * Refine Bot AI, make Easy bot slightly more complex, relook at priority system for Hard bots
  * Try using FireBase Cloud Messaging to send notifications when app is off
  * Go through design choices (colours, sizes, padding, shapes) 
