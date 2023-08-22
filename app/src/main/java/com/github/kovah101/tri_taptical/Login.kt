@@ -94,7 +94,7 @@ class Login : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         )
                             .show()
-                        //Log.d("Task", "${task.exception}")
+                        Log.d("Task", "${task.exception}")
                     }
                 }
         }
@@ -149,11 +149,11 @@ class Login : AppCompatActivity() {
                     } else {
                         Toast.makeText(
                             applicationContext,
-                            "Failed to create new user - ${task.exception}",
+                            task.exception.toString().split(":")[1].trim(),
                             Toast.LENGTH_SHORT
                         )
                             .show()
-                        //Log.d(TAG, "${task.exception}")
+                        Log.d(TAG, "${task.exception}")
 
                     }
                 }
