@@ -24,7 +24,7 @@ Tri-Tap-Toe is suitable for players of all ages, including children. We do not k
 
 ## 6. Contact Us
 
-If you have any questions or concerns about this Privacy Policy or any privacy-related matters regarding Tri-Tap-Toe, please contact us at et_boy101@hotmail.com.
+If you have any questions or concerns about this Privacy Policy or any privacy-related matters regarding Tri-Tap-Toe, or would like to request your account and associated data be deleted please contact us at et_boy101@hotmail.com.
 
 Thank you for choosing to play Tri-Tap-Toe. We hope you have a fantastic gaming experience!
 
