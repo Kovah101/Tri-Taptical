@@ -8,11 +8,11 @@ Welcome to Tri-Tap-Toe, the 3D tic-tac-toe-inspired game designed for players of
 
 ## 2. Information Collection
 
-Tri-Tap-Toe does not collect any personal information or user data from players. We do not require or request any personal details, including but not limited to names, email addresses, or location data.
+Tri-Tap-Toe does not collect any personal information or user data from players other than player generated usernames and passwords. We do not require or request any other personal details, including but not limited to names, email addresses, or location data.
 
 ## 3. Optional Online Multiplayer
 
-Tri-Tap-Toe offers optional online multiplayer gameplay. Please note that while you may choose to engage in multiplayer matches, we do not collect any personal information related to these interactions. Your privacy is a top priority.
+Tri-Tap-Toe offers optional online multiplayer gameplay. Usernames and passwords are the only data collected and these are only used to matchmake and ensure account retention. Data is deleted after 90 days of inactivity. Please note that while you may choose to engage in multiplayer matches, we do not collect any other personal information related to these interactions. Your privacy is a top priority.
 
 ## 4. Bots with Difficulty Settings
 
